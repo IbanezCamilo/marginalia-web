@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,9 +13,18 @@ import { Textarea } from "@/components/ui/textarea";
 export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
   const [editedData, setEditedData] = useState({
     name: user.name,
-    bio: user.bio,
+    description: user.description,
   });
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && user) {
+      setEditedData({
+        name: user.name || "",
+        description: user.description || "",
+      });
+    }
+  }, [isOpen, user]);
 
   // Manejar cambios en inputs
   const handleChange = (e) => {
@@ -28,9 +37,17 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
 
   // Guardar cambios
   const handleSave = async () => {
+    if (!editedData.name.trim()) {
+      alert("El nombre no puede estar vacío");
+      return;
+    }
+
     try {
       setSaving(true);
-      await onSave(editedData);
+      await onSave({
+        name: editedData.name.trim(),
+        description: editedData.description.trim(),
+      });
       onClose();
     } catch (err) {
       alert("Error al guardar: " + err.message);
@@ -43,13 +60,13 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
   const handleCancel = () => {
     setEditedData({
       name: user.name,
-      bio: user.bio,
+      description: user.description,
     });
     onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleCancel}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Editar perfil</DialogTitle>
@@ -85,18 +102,19 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
 
           {/* Biografía */}
           <div className="space-y-2">
-            <Label htmlFor="bio">Biografía</Label>
+            <Label htmlFor="description">Biografía</Label>
             <Textarea
-              id="bio"
-              name="bio"
-              value={editedData.bio}
+              id="description"
+              name="description"
+              value={editedData.description}
               onChange={handleChange}
               placeholder="Cuéntanos sobre ti..."
               rows={4}
               disabled={saving}
+              maxLength={500}
             />
             <p className="text-xs text-gray-500">
-              {editedData.bio.length}/500 caracteres
+              {editedData.description.length}/500 caracteres
             </p>
           </div>
 

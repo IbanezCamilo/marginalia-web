@@ -1,92 +1,222 @@
-// src/services/userService.js
-
 const API_URL = 'http://localhost:8080/api';
-const USE_MOCK = true; // ← Cambia a false cuando quieras usar la API real
+const USE_MOCK = false; // ← Cambia a false cuando quieras usar la API real
 
 const getToken = () => localStorage.getItem('token');
 
-// ===== DATOS MOCK (falsos) =====
+// ===== DATOS MOCK (simulan respuesta del backend) =====
 const mockUser = {
-  idUsuario: 1,
-  nombre: "Camilo Ibáñez",
+  userId: 1,
+  name: "Camilo Ibáñez",
   email: "camilo@example.com",
-  descripcion: "Apasionado por la escritura y la tecnología. Me gusta crear contenido que inspire y eduque.",
-  fotoPerfil: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
-  rol: "Autor"
+  description: "Apasionado por la escritura y la tecnología. Me gusta crear contenido que inspire y eduque.",
+  image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
+  role: "Autor"
 };
 
 // ===== FUNCIONES MOCK =====
 const mockService = {
+    login: async (credentials) => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    console.log("[MOCK] Login simulado:", credentials.email);
+    
+    // Simula validación (en el mock siempre es exitosa)
+    if (!credentials.email || !credentials.password) {
+      throw new Error('Email y contraseña son requeridos');
+    }
+
+    // Genera un token falso
+    const fakeToken = `mock-token-${Date.now()}-${Math.random()}`;
+    console.log("[MOCK] Token generado:", fakeToken);
+    
+    // Guarda el token automáticamente
+    localStorage.setItem('token', fakeToken);
+    
+    return { token: fakeToken };
+  },
+  
   getProfile: async () => {
     // Simula delay de red
     await new Promise(resolve => setTimeout(resolve, 500));
-    console.log("📦 [MOCK] Obteniendo perfil...");
-    return mockUser;
+    console.log("[MOCK] Obteniendo perfil...");
+    console.log("[MOCK] Datos:", mockUser);
+    return mockUser; // ← Devuelve el objeto completo
   },
 
   updateProfile: async (userData) => {
     await new Promise(resolve => setTimeout(resolve, 800));
-    console.log("📦 [MOCK] Actualizando perfil:", userData);
+    console.log("[MOCK] Actualizando perfil:", userData);
     
     // Actualiza el mock local
-    mockUser.nombre = userData.nombre;
-    mockUser.descripcion = userData.descripcion;
+    mockUser.name = userData.name;
+    mockUser.description = userData.description;
     
+    console.log("[MOCK] Usuario actualizado:", mockUser);
     return mockUser;
   },
 
   uploadProfileImage: async (imageFile) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log("📦 [MOCK] Subiendo imagen:", imageFile.name);
+    console.log("[MOCK] Subiendo imagen:", imageFile.name);
     
     // Simula que devuelve una URL
     const fakeUrl = URL.createObjectURL(imageFile);
-    mockUser.fotoPerfil = fakeUrl;
+    mockUser.image = fakeUrl; // ← IMPORTANTE: usar "image", no "profilePicture"
     
+    console.log("[MOCK] Nueva imagen:", mockUser.image);
     return mockUser;
   },
+
+  isAuthenticated: () => {
+    const token = localStorage.getItem('token');
+    const isAuth = !!token;
+    console.log("[MOCK] ¿Autenticado?", isAuth, "| Token:", token?.substring(0, 20) + "...");
+    return isAuth;
+  },
+
+  logout: () => {
+    console.log("[MOCK] Cerrando sesión...");
+    localStorage.removeItem('token');
+  },
+  
 };
 
 // ===== SERVICIO REAL =====
 const realService = {
+
+  login: async (credentials) => {
+    const res = await fetch(`${API_URL}/auth/login`,{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: credentials.email,
+        password: credentials.password,
+      }),
+    });
+
+  if (!res.ok) {
+  setError("Credenciales incorrectas");
+  return;
+  }
+
+  const data = await res.json();
+  localStorage.setItem("token", data.token);
+  return data;
+  },
+
   getProfile: async () => {
-    const response = await fetch(`${API_URL}/users/profile`, {
+    const token = getToken();
+    if (!token) {
+      throw new Error('No hay sesión activa. Por favor inicia sesión.');
+    }
+
+    const response = await fetch(`${API_URL}/user/profile`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${getToken()}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });
-    if (!response.ok) throw new Error('Error al obtener el perfil');
-    return response.json();
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Sesión expirada. Por favor inicia sesión nuevamente.');
+      }
+      throw new Error('Error al obtener el perfil');
+    }
+
+    const data = await response.json();
+    
+    // Mapear respuesta del backend a formato frontend
+    return {
+      userId: data.id,
+      name: data.name,
+      email: data.email,
+      description: data.description || "",
+      image: data.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
+      role: data.role,
+    };
   },
 
   updateProfile: async (userData) => {
-    const response = await fetch(`${API_URL}/users/profile`, {
+    const token = getToken();
+    if (!token) {
+      throw new Error('No hay sesión activa');
+    }
+
+    console.log("Datos que llegan desde el frontend: "+ "nombre"+ userData.name + " descripcion: "+ userData.description);
+
+    const response = await fetch(`${API_URL}/user/profile`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${getToken()}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        nombre: userData.nombre,
-        descripcion: userData.descripcion || '',
+        name: userData.name,
+        description: userData.description || '',
       }),
     });
-    if (!response.ok) throw new Error('Error al actualizar perfil');
-    return response.json();
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Sesión expirada');
+      }
+      throw new Error('Error al actualizar perfil');
+    }
+
+    const data = await response.json();
+    
+    // Mapear respuesta
+    return {
+      name: data.name,
+      description: data.description || "",
+    };
   },
 
   uploadProfileImage: async (imageFile) => {
+    const token = getToken();
+    if (!token) {
+      throw new Error('No hay sesión activa');
+    }
+
     const formData = new FormData();
     formData.append('imagen', imageFile);
-    const response = await fetch(`${API_URL}/users/profile/image`, {
+
+    const response = await fetch(`${API_URL}/user/profile/image`, {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${getToken()}` },
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        // NO incluir Content-Type con FormData
+      },
       body: formData,
     });
-    if (!response.ok) throw new Error('Error al subir la imagen');
-    return response.json();
+
+    if (!response.ok) {
+      throw new Error('Error al subir la imagen');
+    }
+
+    const data = await response.json();
+    
+    // Mapear respuesta
+    return {
+      userId: data.id || data.idUsuario,
+      name: data.name,
+      email: data.email,
+      description: data.description || "",
+      image: data.image,
+      role: data.rol,
+    };
+  },
+
+  isAuthenticated: () => {
+    const token = localStorage.getItem('token');
+    return !!token;
+  },
+
+  logout: () => {
+    localStorage.removeItem('token');
   },
 };
 

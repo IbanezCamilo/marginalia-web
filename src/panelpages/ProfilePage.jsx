@@ -32,13 +32,13 @@ export default function ProfilePage() {
 
       // Mapear respuesta del backend a nuestro formato
       const mappedUser = {
-        id: data.idUsuario,
-        name: data.nombre,
-        role: data.rol,
+        id: data.userId,
+        name: data.name,
+        role: data.role,
         email: data.email,
-        bio: data.descripcion || "",
+        description: data.description || "",
         image:
-          data.fotoPerfil ||
+          data.image ||
           "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
       };
 
@@ -54,28 +54,36 @@ export default function ProfilePage() {
   const handleImageUpdate = async (file) => {
     const response = await userService.uploadProfileImage(file);
 
-    const imageUrl = response.fotoPerfil.startsWith("http")
-      ? response.fotoPerfil
-      : `http://localhost:8080${response.fotoPerfil}`;
+    const imageUrl = response.image.startsWith("http")
+      ? response.image
+      : `http://localhost:8080${response.image}`;
 
     setUser((prev) => ({ ...prev, image: imageUrl }));
     alert("Imagen actualizada correctamente ✓");
   };
 
   // Manejar actualización de datos
-  const handleDataUpdate = async (editedData) => {
-    const response = await userService.updateProfile({
-      nombre: editedData.name,
-      descripcion: editedData.bio,
-    });
+  const handleDataUpdate = async (updatedData) => {
+    try {
+      console.log(
+        "Datos recibidos en ProfilePage: " +
+          "nombre: " +
+          updatedData.name +
+          " descripcion: " +
+          updatedData.description
+      );
 
-    setUser((prev) => ({
-      ...prev,
-      name: response.nombre,
-      bio: response.descripcion || "",
-    }));
+      const updatedUser = await userService.updateProfile(updatedData);
 
-    alert("Perfil actualizado correctamente ✓");
+      setUser((prev) => ({
+        ...prev,
+        name: updatedUser.name,
+        description: updatedUser.description || "",
+      }));
+      alert("Perfil actualizado correctamente");
+    } catch (error) {
+      setError("Error al editar usuario");
+    }
   };
 
   // Estados de carga
@@ -139,7 +147,7 @@ export default function ProfilePage() {
               <span>{user.email}</span>
             </div>
             <p className="text-gray-700 text-sm leading-relaxed italic">
-              {user.bio || "Sin descripción"}
+              {user.description || "Sin descripción"}
             </p>
 
             <div className="flex justify-center md:justify-start mt-4">
