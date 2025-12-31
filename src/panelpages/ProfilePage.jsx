@@ -27,7 +27,7 @@ export default function ProfilePage() {
       setLoading(true);
       setError(null);
 
-      // ← Usa el servicio (mock o real según CONFIG)
+      // Usa el servicio (mock o real )
       const data = await userService.getProfile();
 
       // Mapear respuesta del backend a nuestro formato
@@ -41,7 +41,6 @@ export default function ProfilePage() {
           data.image ||
           "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
       };
-
       setUser(mappedUser);
     } catch (err) {
       setError("Error al cargar el perfil: " + err.message);
@@ -51,12 +50,11 @@ export default function ProfilePage() {
   };
 
   // Manejar subida de imagen
-  const handleImageUpdate = async (file) => {
-    const response = await userService.uploadProfileImage(file);
-
-    const imageUrl = response.image.startsWith("http")
-      ? response.image
-      : `http://localhost:8080${response.image}`;
+  const handleImageUpdate = async (imageFile) => {
+    const response = await userService.uploadProfileImage(imageFile);
+    const imageUrl = response.imageUrl.startsWith("http")
+      ? response.imageUrl
+      : `http://localhost:8080${response.imageUrl}`;
 
     setUser((prev) => ({ ...prev, image: imageUrl }));
     alert("Imagen actualizada correctamente ✓");
@@ -125,6 +123,7 @@ export default function ProfilePage() {
             className="relative group cursor-pointer"
             onClick={() => setImageModalOpen(true)}
           >
+            {console.log("Imagen recibida del Backend:", user.image)}
             <img
               src={user.image}
               alt="Foto de perfil"
@@ -137,6 +136,7 @@ export default function ProfilePage() {
 
           {/* Información del perfil */}
           <div className="flex-1 space-y-3 text-center md:text-left">
+            {console.log("Nombre recibida del Backend:", user.name)}
             <h2 className="text-2xl font-semibold">{user.name}</h2>
             <div className="flex justify-center md:justify-start items-center gap-2 text-gray-500">
               <FaUserShield />

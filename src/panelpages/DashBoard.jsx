@@ -1,6 +1,46 @@
 import { PanelCard } from "../panel-components/layout/PanelCard";
+import { PanelCardSkeleton } from "../panel-components/layout/PanelCardSkeleton";
+import { useState, useEffect } from "react";
+import { userService } from "../data/userService";
 
 export default function DashBoard() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const loadProfile = async () => {
+    try {
+      setLoading(true);
+      setError(false);
+
+      const data = await userService.getProfile();
+
+      const mappedUser = {
+        name: data.name,
+      };
+      setUser(mappedUser);
+    } catch (err) {
+      setError("Error al cargar la información: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="grid lg:grid-cols-2 gap-6">
+          <PanelCardSkeleton type="stats" />
+          <PanelCardSkeleton type="list" />
+          <PanelCardSkeleton type="actions" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       {/*Contenedor principal*/}
@@ -8,7 +48,7 @@ export default function DashBoard() {
         <div className="grid lg:grid-cols-2 gap-6">
           {/**Informacion Personal */}
           <PanelCard>
-            <h1 className="text-4xl mb-4 font-bold">Bienvenido Juan Perez</h1>
+            <h1 className="text-4xl mb-4 font-bold">Bienvenido {user?.name}</h1>
             <h2 className="text-xl text-center font-semibold">
               Total Publicaciones
             </h2>

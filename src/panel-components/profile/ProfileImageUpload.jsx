@@ -14,35 +14,36 @@ export default function ProfileImageUpload({
   isOpen,
   onClose,
 }) {
-  const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
-  // Manejar selección de archivo
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
+
+    // Si no hay archivo (canceló el diálogo)
     if (!file) return;
 
-    // Validar tipo
-    if (!file.type.startsWith("image/")) {
-      alert("Por favor selecciona un archivo de imagen válido");
+    if (!(file instanceof File)) {
+      alert("Archivo inválido");
       return;
     }
 
-    // Validar tamaño (5MB)
+    if (!file.type || !file.type.startsWith("image/")) {
+      alert("Por favor selecciona una imagen válida");
+      return;
+    }
+
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      alert("La imagen es muy grande. El tamaño máximo es 5MB");
+      alert("La imagen es muy grande. Máximo 5MB");
       return;
     }
 
-    // Guardar archivo y crear preview
     setSelectedFile(file);
 
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-    };
+    reader.onloadend = () => setPreview(reader.result);
     reader.readAsDataURL(file);
   };
 

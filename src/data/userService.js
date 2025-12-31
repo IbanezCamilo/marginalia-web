@@ -104,48 +104,55 @@ const realService = {
   localStorage.setItem("token", data.token);
   return data;
   },
+getProfile: async () => {
+  const token = getToken();
+  if (!token) {
+    throw new Error('No hay sesión activa. Por favor inicia sesión.');
+  }
 
-  getProfile: async () => {
-    const token = getToken();
-    if (!token) {
-      throw new Error('No hay sesión activa. Por favor inicia sesión.');
+  const response = await fetch(`${API_URL}/user/profile`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error('Sesión expirada. Por favor inicia sesión nuevamente.');
     }
+    throw new Error('Error al obtener el perfil');
+  }
 
-    const response = await fetch(`${API_URL}/user/profile`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+  const data = await response.json();
 
-    if (!response.ok) {
-      if (response.status === 401) {
-        throw new Error('Sesión expirada. Por favor inicia sesión nuevamente.');
-      }
-      throw new Error('Error al obtener el perfil');
-    }
+  console.log('📥 Perfil recibido:', data);
 
-    const data = await response.json();
-    
-    // Mapear respuesta del backend a formato frontend
-    return {
-      userId: data.id,
-      name: data.name,
-      email: data.email,
-      description: data.description || "",
-      image: data.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
-      role: data.role,
-    };
-  },
+  //Convertir URL relativa a absoluta
+  let imageUrl = data.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
+  
+  if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = `http://localhost:8080${imageUrl}`;
+  }
+
+  console.log('🖼️ URL de imagen procesada:', imageUrl);
+
+  return {
+    userId: data.id,
+    name: data.name,
+    email: data.email,
+    description: data.description || "",
+    image: imageUrl, // URL absoluta
+    role: data.role,
+  };
+},
 
   updateProfile: async (userData) => {
     const token = getToken();
     if (!token) {
       throw new Error('No hay sesión activa');
     }
-
-    console.log("Datos que llegan desde el frontend: "+ "nombre"+ userData.name + " descripcion: "+ userData.description);
 
     const response = await fetch(`${API_URL}/user/profile`, {
       method: 'PUT',
@@ -182,9 +189,9 @@ const realService = {
     }
 
     const formData = new FormData();
-    formData.append('imagen', imageFile);
-
-    const response = await fetch(`${API_URL}/user/profile/image`, {
+    formData.append('image', imageFile);
+    console.log("Subiendo imagen al servidor:", imageFile.name);
+    const response = await fetch(`${API_URL}/user/profile/upload-image`, {
       method: 'POST',
       headers: { 
         'Authorization': `Bearer ${token}`,
@@ -201,12 +208,7 @@ const realService = {
     
     // Mapear respuesta
     return {
-      userId: data.id || data.idUsuario,
-      name: data.name,
-      email: data.email,
-      description: data.description || "",
-      image: data.image,
-      role: data.rol,
+      imageUrl: data.imageUrl,
     };
   },
 
