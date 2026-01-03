@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:8080/api';
-const USE_MOCK = false; // ← Cambia a false cuando quieras usar la API real
+const USE_MOCK = true; // ← Cambia a false cuando quieras usar la API real
 
 const getToken = () => localStorage.getItem('token');
 

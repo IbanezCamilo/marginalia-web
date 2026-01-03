@@ -49,13 +49,13 @@ export default function SideBar() {
           </a>
         </li>
         <li className="w-full">
-          <a
-            href="#"
+          <Link
+            to="/user/categories"
             className="flex items-center w-full p-2 gap-3 rounded hover:bg-gray-200"
           >
             <BiCategoryAlt size={20} />
             <span>Categorias</span>
-          </a>
+          </Link>
         </li>
         <li className="w-full">
           <a

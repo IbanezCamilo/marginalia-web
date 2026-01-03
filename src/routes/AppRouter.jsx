@@ -6,6 +6,7 @@ import DashBoard from "../panelpages/DashBoard.jsx";
 import AdminLayout from "../panel-components/layout/AdminLayout.jsx";
 import PostPage from "../pages/PostPage.jsx";
 import ProfilePage from "../panelpages/ProfilePage.jsx";
+import Categories from "@/panelpages/Categories.jsx";
 
 export const router = createBrowserRouter([
   //Pagina principal
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
       { path: "dashboard", element: <DashBoard /> },
       { path: "create-post", element: <CreatePost /> },
       { path: "profile", element: <ProfilePage /> },
+      { path: "categories", element: <Categories /> },
     ],
   },
 ]);

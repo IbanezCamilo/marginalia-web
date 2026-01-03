@@ -1,23 +1,27 @@
 import { useState, useEffect } from "react";
 import { ComboBox } from "@/components/ui/comboBox";
 import { Button } from "@/components/ui/button";
-import { categoriesDemo } from "../../data/categoriesDemo";
 
-export default function PostSettingsPanel({ post, onChange, categories = [] }) {
-  //const [categories, setCategories] = useState([]);
-  //const [authors, setAuthors] = useState([]);
+export default function PostSettingsPanel({
+  post,
+  onChange,
+  categories = [],
+  onSubmit,
+  submitting = false,
+}) {
+  /**
+   * Manage the click on "Save Draft"
+   */
+  const handleDraft = () => {
+    onSubmit(null, "DRAFT");
+  };
 
-  /*
-  useEffect(() => {
-    fetch("http://localhost:8080/api/categories")
-      .then((res) => res.json())
-      .then(setCategories);
-    
-    fetch("http://localhost:8080/api/authors")
-      .then((res) => res.json())
-      .then(setAuthors);
-  }, []);
-  */
+  /**
+   * Manage the click on "Publish"
+   */
+  const handlePublish = () => {
+    onSubmit(null, "PUBLISHED");
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -25,10 +29,8 @@ export default function PostSettingsPanel({ post, onChange, categories = [] }) {
       <div>
         <ComboBox
           label="Categoría"
-          items={categories.map((c) => ({
-            id: c.id,
-            name: c.name,
-          }))}
+          items={categories}
+          itemToString={(item) => (item ? item.name : "")}
           value={post.idCategory}
           onChange={(newValue) => onChange("idCategory", newValue)}
           placeholder="Seleccion una categoría"
@@ -74,18 +76,27 @@ export default function PostSettingsPanel({ post, onChange, categories = [] }) {
           variant="secondary"
           type="button"
           className="flex-1 bg-gray-100 py-2 rounded-md cursor-pointer"
-          onClick={() => onChange("estado", "BORRADOR")}
+          onClick={handleDraft}
+          disabled={submitting}
         >
-          Guardar borrador
+          {submitting ? "Guardando..." : "Guardar Borrador"}
         </Button>
         <Button
           variant="destructive"
           type="button"
           className="flex-1 bg-red-500 text-white py-2 rounded-md cursor-pointer"
-          onClick={() => onChange("estado", "PUBLICADO")}
+          onClick={handlePublish}
+          disabled={submitting}
         >
-          Publicar
+          {submitting ? "Publicando..." : "Publicar"}
         </Button>
+      </div>
+      {/* ===== INFORMACIÓN ADICIONAL ===== */}
+      <div className="mt-4 p-3 bg-gray-50 rounded-md border border-gray-200">
+        <p className="text-xs text-gray-600">
+          💡 <strong>Tip:</strong> Puedes guardar tu post como borrador y
+          publicarlo más tarde.
+        </p>
       </div>
     </div>
   );
