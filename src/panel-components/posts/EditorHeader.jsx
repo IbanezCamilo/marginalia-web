@@ -23,14 +23,13 @@ export default function EditorHeader({
           </button>
 
           {/**Changes not saved indicator */}
-          {hasChanges &&
-            !submitting(
-              <span className="text-xs text-amber-600 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse">
-                  Sin guardar
-                </span>
+          {hasChanges && !submitting && (
+            <span className="text-xs text-amber-600 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse">
+                Sin guardar
               </span>
-            )}
+            </span>
+          )}
 
           {/* Saved indicator*/}
           {submitting && (
