@@ -4,7 +4,10 @@ import PostEditor from "../panel-components/posts/PostEditor";
 import LateralPanel from "../panel-components/posts/LateralPanel";
 import PostSettingsPanel from "../panel-components/posts/PostSettingsPanel";
 import { postService } from "../data/postService";
+import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "../data/categoryService";
+import EditorHeader from "@/panel-components/posts/EditorHeader";
+import SideBarSettings from "@/panel-components/posts/SideBarSettings";
 
 export default function CreatePost() {
   const [post, setPost] = useState({
@@ -53,12 +56,12 @@ export default function CreatePost() {
   };
 
   //Uploading Post
-  const handleOnSubmit = async (e, estado) => {
+  const handleOnSubmit = async (e, initialStatus) => {
     //Prevent default form submit
     e?.preventDefault?.();
 
     //Form Validation
-    const validation = validateForm();
+    const validation = validatePost(post, initialStatus);
 
     if (!validation.isValid) {
       validation.errors.forEach((err) => console.error("  -", err));
@@ -75,7 +78,7 @@ export default function CreatePost() {
       title: post.title.trim(),
       content: post.content,
       idCategory: post.idCategory,
-      status: post.status, //Draft or Published
+      status: initialStatus, //Draft or Published
     };
 
     //Sending to Service
@@ -87,7 +90,7 @@ export default function CreatePost() {
 
       alert(
         `Post ${
-          this.status === "PUBLICADO" ? "publicado" : "guardado como borrador"
+          this.status === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
         } exitosamente!`
       );
 
@@ -143,33 +146,39 @@ export default function CreatePost() {
   }
 
   return (
-    <form
-      className="grid grid-cols-1 md:grid-cols-[3fr_1fr] gap-8 w-full max-w-6xl p-4 mx-auto"
-      onSubmit={(e) => e.preventDefault()}
-    >
-      {/* Columna izquierda: Editor */}
-      <div>
-        <PostEditor post={post} onChange={handleChange} />
-        {/* Mensaje de error si existe */}
-        {submitError && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-600 text-sm whitespace-pre-line">
-              {submitError}
-            </p>
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      {/**Fixed Header */}
+      <EditorHeader
+        onSaveDraft={(e) => handleOnSubmit(e, "DRAFT")}
+        onPublish={(e) => handleOnSubmit(e, "PUBLISHED")}
+        submitting={submitting}
+        hasChanges={post.title || post.content}
+      />
+      {/**Main Layout: Editor + SideBar */}
+      <div className="flex pt-8">
+        {/**"Main container */}
+        <main className="flex-1 max-w-4xl mx-auto px-8 py-8">
+          <PostEditor post={post} onChange={handleChange} />
 
-      {/* Columna derecha: Panel lateral */}
-      <LateralPanel>
-        <PostSettingsPanel
-          post={post}
-          categories={categories}
-          onChange={handleChange}
-          onSubmit={handleOnSubmit}
-          submitting={submitting}
-        />
-      </LateralPanel>
-    </form>
+          {/* Error message if exist */}
+          {submitError && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-sm whitespace-pre-line">
+                {submitError}
+              </p>
+            </div>
+          )}
+        </main>
+
+        {/* Fixed Right Sidebar */}
+        <aside className="w-80 border-l border-gray-200 bg-shite sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+          <SideBarSettings
+            categories={categories}
+            post={post}
+            onChange={handleChange}
+          />
+        </aside>
+      </div>
+    </div>
   );
 }

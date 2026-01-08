@@ -49,7 +49,10 @@ export default function Categories() {
             </p>
           </div>
           {/**Create Category Button */}
-          <Button variant="destructive" className="cursor-pointer font-bold">
+          <Button
+            variant="destructive"
+            className="cursor-pointer font-semibold [word-spacing:0.2rem]"
+          >
             + Nueva Categoría
           </Button>
         </div>

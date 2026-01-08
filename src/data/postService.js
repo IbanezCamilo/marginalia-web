@@ -14,29 +14,7 @@ const mockPosts = [
     categoryId: "disertacion",
     excerpt: "Un texto sobre la fuerza del amor a través del tiempo...",
     slug: "el-amor-en-tiempos-del-colera",
-    content: "Contenido completo del artículo..."
-  },
-  {
-    id: "2",
-    title: "Título 2",
-    date: "2025-01-02",
-    author: "Autor 2",
-    cover: "https://picsum.photos/seed/p2/800/600",
-    categoryId: "resena",
-    excerpt: "Resumen corto del segundo post...",
-    slug: "titulo-2",
-    content: "Contenido completo del artículo..."
-  },
-  {
-    id: "3",
-    title: "Título 3",
-    date: "2025-01-03",
-    author: "Autor 3",
-    cover: "https://picsum.photos/seed/p3/800/600",
-    categoryId: "ensayo",
-    excerpt: "Pequeña introducción al post 3...",
-    slug: "titulo-3",
-    content: "Contenido completo del artículo..."
+    content: "Contenido completo del artículo...",
   }
 ];
 
