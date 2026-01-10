@@ -17,7 +17,7 @@ export default function TitleInput({ value, onChange }) {
       ref={textareaRef}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Título sin límites..."
+      placeholder="Escribe el título aquí..."
       className="w-full mb-2 px-0 py-2
                  text-5xl font-bold leading-tight
                  placeholder:text-gray-300 placeholder:font-normal

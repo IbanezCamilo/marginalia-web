@@ -33,6 +33,9 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange }) {
     inputFileRef.current?.click();
   };
 
+  {
+    /**Placeholder: No Images */
+  }
   if (!previewUrl && !imageSrc) {
     return (
       <div className="mb-8">
@@ -103,6 +106,7 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange }) {
           </button>
         </div>
       </div>
+
       <input
         ref={inputFileRef}
         type="file"

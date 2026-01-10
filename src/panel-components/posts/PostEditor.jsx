@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
-import { PiUploadSimpleFill } from "react-icons/pi";
 import CoverImageUpload from "./CoverImageUpload";
 import TitleInput from "./TitleInput";
 import TipTapEditor from "./TipTapEditor";
 
 export default function PostEditor({ post, onChange }) {
+  const inputFileRef = useRef(null);
+
   return (
-    <div>
-      {/* IMAGEN DESTACADA (preview + overlay para subir) */}
+    <div className="space-y-6">
       <CoverImageUpload
         previewUrl={post.previewUrl}
         imageSrc={post.image}

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { PiUploadSimpleFill } from "react-icons/pi";
 import PostEditor from "../panel-components/posts/PostEditor";
-import LateralPanel from "../panel-components/posts/LateralPanel";
 import PostSettingsPanel from "../panel-components/posts/PostSettingsPanel";
 import { postService } from "../data/postService";
 import { validatePost } from "@/utils/postValidation";
@@ -56,7 +54,7 @@ export default function CreatePost() {
   };
 
   //Uploading Post
-  const handleOnSubmit = async (e, initialStatus) => {
+  const handleOnSubmit = async (initialStatus) => {
     //Prevent default form submit
     e?.preventDefault?.();
 
@@ -98,6 +96,7 @@ export default function CreatePost() {
         title: "",
         content: "",
         idCategory: "",
+        status: "DRAFT",
         image: "",
         previewUrl: "",
       });
@@ -109,20 +108,22 @@ export default function CreatePost() {
     } finally {
       setSubmitting(false);
     }
-
-    // if (file) {
-    //   // if the image is up
-    //   formData.append("image", file);
-    // }
   };
 
-  // Estado de carga de categorías
   if (loadingCategories) {
     return (
-      <div className="max-w-6xl mx-auto p-4">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-          <div className="h-64 bg-gray-200 rounded mb-4"></div>
+      <div className="min-h-screen bg-gray-50 animate-pulse">
+        <div className="h-16 bg-white border-b border-gray-200" />
+        <div className="flex pt-16">
+          <div className="flex-1 max-w-4xl mx-auto px-8 py-8">
+            <div className="h-96 bg-gray-200 rounded-lg mb-8" />
+            <div className="h-12 bg-gray-200 rounded mb-4" />
+            <div className="h-64 bg-gray-200 rounded" />
+          </div>
+          <div className="w-80 border-l border-gray-200 bg-white p-6 space-y-4">
+            <div className="h-8 bg-gray-200 rounded" />
+            <div className="h-32 bg-gray-200 rounded" />
+          </div>
         </div>
       </div>
     );

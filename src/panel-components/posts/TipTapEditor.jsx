@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import UnderlineEditor from "@tiptap/extension-underline";
+import Link from "@tiptap/extension-link";
 import CharacterCount from "@tiptap/extension-character-count";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
@@ -43,14 +45,13 @@ export default function TiptapEditor({ content, onChange }) {
         heading: {
           levels: [1, 2, 3],
         },
-        link: {
-          openOnClick: true,
-          autoLink: true,
-          defaultProtocol: "https",
-          HTMLAttributes: {
-            target: "_blank",
-            rel: "noopener noreferrer",
-          },
+      }),
+      UnderlineEditor,
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class:
+            "text-rose-600 underline hover:text-rose-700 transition-colors",
         },
       }),
       Placeholder.configure({
@@ -68,8 +69,7 @@ export default function TiptapEditor({ content, onChange }) {
     },
     editorProps: {
       attributes: {
-        class: "editor-content focus:outline-none min-h-[200px] p-4",
-        style: "white-space: pre-wrap;",
+        class: "prose prose-lg max-w-none focus:outline-none min-h-[500px] p-2",
       },
     },
   });
