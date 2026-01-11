@@ -1,7 +1,28 @@
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
+import {
+  LayoutDashboard,
+  PenSquare,
+  List,
+  Folder,
+  Tag,
+  Users,
+  ChevronLeft,
+} from "lucide-react";
+import { Item } from "@radix-ui/react-dropdown-menu";
 
 export default function SidebarCollapsible({ isCollapsed, onToggle }) {
+  const location = useLocation();
+
+  const menuItems = [
+    { path: "/user/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { path: "/user/create-post", icon: PenSquare, label: "Crear Post" },
+    { path: "/user/posts", icon: List, label: "Ver Posts" },
+    { path: "/user/categories", icon: Folder, label: "Categorías" },
+    { path: "/user/tags", icon: Tag, label: "Etiquetas" },
+    { path: "/user/tags", icon: Tag, label: "Usuarios" },
+  ];
+
   return (
     <aside
       className={`fixed top-0 left-0 h-screen bg-white border-r border-gray-200 transition-all duration-300 z-50 hidden md:block ${
@@ -22,16 +43,41 @@ export default function SidebarCollapsible({ isCollapsed, onToggle }) {
         <button
           onClick={onToggle}
           className={`p-1.5 rounded-lg hover:bg-gray-100 transition-colors
-                       ${isCollapsed ? "mx-auto" : ""}`}
+            ${isCollapsed ? "mx-auto" : ""}`}
         >
           <ChevronLeft
             size={20}
             className={`text-gray-600 transition-transform duration-300 
-                         ${isCollapsed ? "rotate-180" : ""}`}
+              ${isCollapsed ? "rotate-180" : ""}`}
           />
         </button>
-        <nav></nav>
       </div>
+      <nav className="p-3 space-y-1">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = location.pathname === item.path;
+
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors
+                ${
+                  isActive
+                    ? "bg-rose-50 text-rose-600"
+                    : "text-gray-700 hover:bg-gray-100"
+                }
+                ${isCollapsed ? "justify-center" : ""}`}
+              title={isCollapsed ? item.label : ""}
+            >
+              <Icon size={20} className="flex shrink-0" />
+              {!isCollapsed && (
+                <span className="text-sm font-medium">{item.label}</span>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
     </aside>
   );
 }
