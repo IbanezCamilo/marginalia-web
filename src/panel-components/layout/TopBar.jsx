@@ -5,8 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { userService } from "../../data/userService";
+import { Menu } from "lucide-react";
 
-export default function TopBar() {
+export default function TopBar({ onMenuClick }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,7 +66,15 @@ export default function TopBar() {
   }
 
   return (
-    <nav className="flex justify-end items-center bg-white shadow-sm mb-2 p-2">
+    <nav className="flex justify-between items-center bg-white shadow-sm mb-2 p-2 h-16 border-b border-gray-200">
+      <Button
+        variant="secondary"
+        onClick={onMenuClick}
+        className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+      >
+        <Menu size={20} className="text-gray-600" />
+      </Button>
+      <div className="flex-1 md:flex-none" />
       <div className="relative group cursor-pointer">
         {/*User y avatar*/}
         <div className="flex items-center gap-3 hover:bg-gray-100 px-3 py-1 rounded-xl transition">
