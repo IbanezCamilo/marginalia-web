@@ -19,7 +19,7 @@ export default function EditorHeader({
             className="flex items-center gap-2 tex-gray-600 hover:text-gray-800 transition-colors"
           >
             <ChevronLeft size={16} />
-            <span className="text-sm font-medium">Volver</span>
+            <span className="text-sm font-medium cursor-pointer">Volver</span>
           </button>
 
           {/**Changes not saved indicator */}
