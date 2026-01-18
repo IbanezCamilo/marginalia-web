@@ -156,9 +156,9 @@ export default function CreatePost() {
         hasChanges={post.title || post.content}
       />
       {/**Main Layout: Editor + SideBar */}
-      <div className="flex pt-8">
+      <div className="flex flex-col md:flex-row pt-16 gap-8">
         {/**"Main container */}
-        <main className="flex-1 max-w-4xl mx-auto px-8 py-8">
+        <main className="flex-1 max-w-4x mx-auto px-8 py-6  bg-white p-6 rounded-sm shadow-sm">
           <PostEditor post={post} onChange={handleChange} />
 
           {/* Error message if exist */}
@@ -172,7 +172,10 @@ export default function CreatePost() {
         </main>
 
         {/* Fixed Right Sidebar */}
-        <aside className="w-80 border-l border-gray-200 bg-shite sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        <aside
+          className="
+        md:w-80 bg-white border-t md:border-t-0 md:border-l border-gray-200 rounded-sm sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto"
+        >
           <SideBarSettings
             categories={categories}
             post={post}

@@ -18,8 +18,10 @@ export default function TitleInput({ value, onChange }) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Escribe el título aquí..."
+      minLength={15}
+      maxLength={70}
       className="w-full mb-2 px-0 py-2
-                 text-5xl font-bold leading-tight
+                 text-4xl font-bold leading-tight
                  placeholder:text-gray-300 placeholder:font-normal
                  border-none focus:outline-none focus:ring-0
                  bg-transparent resize-none overflow-hidden"
