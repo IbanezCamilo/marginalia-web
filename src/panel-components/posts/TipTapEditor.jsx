@@ -69,7 +69,8 @@ export default function TiptapEditor({ content, onChange }) {
     },
     editorProps: {
       attributes: {
-        class: "prose prose-lg max-w-none focus:outline-none min-h-[500px] p-2",
+        class:
+          "prose prose-lg max-w-none break-words focus:outline-none overflow-x-hidden min-h-[300px] p-2",
       },
     },
   });
@@ -216,7 +217,7 @@ function LinkModal({ editor, open, onOpenChange }) {
             >
               Cancelar
             </Button>
-            <Button type="button" onClick={handleInsert}>
+            <Button type="button" variant="destructive" onClick={handleInsert}>
               {editor.getAttributes("link").href ? "Actualizar" : "Insertar"}
             </Button>
           </div>

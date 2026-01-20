@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ChevronLeft, Save } from "lucide-react";
+import { BiWindows } from "react-icons/bi";
 
 export default function EditorHeader({
   onSaveDraft,
@@ -9,6 +11,7 @@ export default function EditorHeader({
   hasChanges,
 }) {
   const navigate = useNavigate();
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 mb-2">
       <div className="h-16 px-6 gap-4 flex items-center justify-between">
@@ -26,8 +29,11 @@ export default function EditorHeader({
           {hasChanges && !submitting && (
             <div className="flex items-center gap-2 text-xs text-semibold">
               <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
-              <span className=" text-amber-400 animate-pulse whitespace-nowrap">
+              <span className="hidden md:inline text-amber-400 animate-pulse whitespace-nowrap">
                 Aún no se han guardado los cambios
+              </span>
+              <span className="md:hidden text-amber-400 animate-pulse whitespace-nowrap">
+                Sin guardar
               </span>
             </div>
           )}
