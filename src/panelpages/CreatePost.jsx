@@ -10,7 +10,7 @@ export default function CreatePost() {
   const [post, setPost] = useState({
     title: "",
     content: "",
-    categoryId: "",
+    idCategory: "",
     image: "", //Server url (when exist)
     previewUrl: "", //temp dataUrl for preview
   });
@@ -89,14 +89,14 @@ export default function CreatePost() {
 
       alert(
         `Post ${
-          this.status === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
+          initialStatus === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
         } exitosamente!`,
       );
 
       setPost({
         title: "",
         content: "",
-        categoryId: "",
+        idCategory: "",
         status: "DRAFT",
         image: "",
         previewUrl: "",

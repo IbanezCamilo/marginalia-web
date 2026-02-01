@@ -26,6 +26,15 @@ const realService = {
     if(!token){
       throw new Error('No hay sesion activa');
     }
+
+        // Verificar datos antes de enviar
+    console.log('📤 Datos a enviar:', {
+      title: postData.title,
+      content: postData.content?.substring(0, 50) + '...',
+      categoryId: postData.categoryId,
+      status: postData.status,
+      hasImage: !!imageFile
+    });
     
     //Prepare formData
     const formData = new FormData();
@@ -34,7 +43,7 @@ const realService = {
       new Blob([JSON.stringify({
         title: postData.title,
         content: postData.content,
-        idCategory: postData.idCategory,
+        categoryId: postData.categoryId,
         status: postData.status,
       })], {type: 'application/json'})  
     );
