@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import PostEditor from "../panel-components/posts/PostEditor";
-import PostSettingsPanel from "../panel-components/posts/PostSettingsPanel";
 import { postService } from "../data/postService";
 import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "../data/categoryService";
@@ -11,7 +10,7 @@ export default function CreatePost() {
   const [post, setPost] = useState({
     title: "",
     content: "",
-    idCategory: "",
+    categoryId: "",
     image: "", //Server url (when exist)
     previewUrl: "", //temp dataUrl for preview
   });
@@ -21,6 +20,7 @@ export default function CreatePost() {
   const [categoriesError, setCategoriesError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [error, setError] = useState(null);
 
   //Categories load
   useEffect(() => {
@@ -36,6 +36,7 @@ export default function CreatePost() {
 
       const categoriesMapped = categoriesData.map((cat) => {
         return { id: cat.id, name: cat.name };
+        console.log(cat.id + " " + cat.name);
       });
       setCategories(categoriesMapped);
     } catch (err) {
@@ -54,7 +55,7 @@ export default function CreatePost() {
   };
 
   //Uploading Post
-  const handleOnSubmit = async (initialStatus) => {
+  const handleOnSubmit = async (e, initialStatus) => {
     //Prevent default form submit
     e?.preventDefault?.();
 
@@ -66,7 +67,7 @@ export default function CreatePost() {
 
       alert(
         "Por favor completa todos los campos:\n\n" +
-          validation.errors.join("\n")
+          validation.errors.join("\n"),
       );
       return;
     }
@@ -75,7 +76,7 @@ export default function CreatePost() {
     const postData = {
       title: post.title.trim(),
       content: post.content,
-      idCategory: post.idCategory,
+      categoryId: post.idCategory,
       status: initialStatus, //Draft or Published
     };
 
@@ -89,13 +90,13 @@ export default function CreatePost() {
       alert(
         `Post ${
           this.status === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
-        } exitosamente!`
+        } exitosamente!`,
       );
 
       setPost({
         title: "",
         content: "",
-        idCategory: "",
+        categoryId: "",
         status: "DRAFT",
         image: "",
         previewUrl: "",

@@ -81,6 +81,7 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
               name="name"
               value={editedData.name}
               onChange={handleChange}
+              className="selection:bg-rose-500 selection:text-gray-900"
               placeholder="Tu nombre completo"
               disabled={saving}
             />

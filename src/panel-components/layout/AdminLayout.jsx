@@ -34,8 +34,8 @@ export default function AdminLayout() {
 
       {/**Contenido Principal */}
       <div
-        className={`transition-all duration-300 ${
-          !isCreatePostPage && (isCollapsed ? "md: ml-16" : "md:ml-60")
+        className={`transition-all duration-300 m-0 ${
+          !isCreatePostPage && (isCollapsed ? "md:ml-16" : "md:ml-60")
         }`}
       >
         {!isCreatePostPage && (

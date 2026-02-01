@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:8080/api';
-const USE_MOCK = true; // ← Cambia a false cuando quieras usar la API real
+const USE_MOCK = false; // ← Cambia a false cuando quieras usar la API real
 
 const getToken = () => localStorage.getItem('token');
 
@@ -130,7 +130,7 @@ getProfile: async () => {
   console.log('📥 Perfil recibido:', data);
 
   //Convertir URL relativa a absoluta
-  let imageUrl = data.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
+  let imageUrl = data.profilePicture || "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
   
   if (imageUrl && !imageUrl.startsWith('http')) {
     imageUrl = `http://localhost:8080${imageUrl}`;

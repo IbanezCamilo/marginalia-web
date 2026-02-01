@@ -21,8 +21,10 @@ export default function EditorHeader({
             onClick={() => navigate("/user/dashboard")}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
           >
-            <ChevronLeft size={16} />
-            <span className="text-sm font-medium cursor-pointer">Volver</span>
+            <span className="flex items-center justify-between gap-2 text-sm font-medium cursor-pointer">
+              <ChevronLeft size={16} />
+              Volver
+            </span>
           </button>
 
           {/**Changes not saved indicator */}
