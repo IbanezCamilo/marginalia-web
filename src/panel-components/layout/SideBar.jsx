@@ -40,13 +40,13 @@ export default function SideBar() {
           </Link>
         </li>
         <li className="w-full">
-          <a
-            href="#"
+          <Link
+            to="/user/posts"
             className="flex items-center w-full p-2 gap-3 rounded hover:bg-gray-200"
           >
             <RiListView size={20} />
             <span>Ver Posts</span>
-          </a>
+          </Link>
         </li>
         <li className="w-full">
           <Link
