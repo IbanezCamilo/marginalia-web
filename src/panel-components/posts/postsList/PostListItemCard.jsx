@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import PostRowActions from "./PostRowActions";
 
-export default function HorizontalPostCard({ imageUrl, author, title, meta }) {
+export default function PostListItemCard({ imageUrl, author, title, meta }) {
   imageUrl =
     "https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png";
   return (
@@ -20,7 +20,7 @@ export default function HorizontalPostCard({ imageUrl, author, title, meta }) {
       {/**Card Image*/}
       <div className="w-full md:w-52 shrink-0 overflow-hidden rounded-2xl">
         <img
-          src={imageUrl}
+          src={imageUrl || "https://via.placeholder.com/400x300?text=No+Image"}
           alt=""
           className="w-full h-full object-cover aspect-video"
         />
@@ -33,7 +33,7 @@ export default function HorizontalPostCard({ imageUrl, author, title, meta }) {
 
         {/**Title */}
         <CardTitle className="text-lg md:text-xl font-semibold line-clamp-2">
-          How to Design a Dark Literary Blog{" "}
+          {title}
         </CardTitle>
 
         {/* *Author

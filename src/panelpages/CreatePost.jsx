@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import PostEditor from "../panel-components/posts/PostEditor";
-import { postService } from "../data/postService";
+import { MyPostService } from "../data/myPostService";
 import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "../data/categoryService";
 import EditorHeader from "@/panel-components/posts/EditorHeader";
 import SideBarSettings from "@/panel-components/posts/SideBarSettings";
 
+const INITIAL_POST = {
+  title: "",
+  content: "",
+  categoryId: "",
+  image: "",
+  previewUrl: "",
+};
+
 export default function CreatePost() {
-  const [post, setPost] = useState({
-    title: "",
-    content: "",
-    idCategory: "",
-    image: "", //Server url (when exist)
-    previewUrl: "", //temp dataUrl for preview
-  });
+  const [post, setPost] = useState(INITIAL_POST);
   const [image, setImage] = useState(null); // image to upload
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -35,12 +37,12 @@ export default function CreatePost() {
       const categoriesData = await categoryService.getAllCategories();
 
       const categoriesMapped = categoriesData.map((cat) => {
-        return { id: cat.id, name: cat.name };
         console.log(cat.id + " " + cat.name);
+        return { id: cat.id, name: cat.name };
       });
       setCategories(categoriesMapped);
     } catch (err) {
-      setError("Error al cargar las categorías: " + err.message);
+      setCategoriesError("Error al cargar las categorías: " + err.message);
     } finally {
       setLoadingCategories(false);
     }
@@ -65,6 +67,7 @@ export default function CreatePost() {
     if (!validation.isValid) {
       validation.errors.forEach((err) => console.error("  -", err));
 
+      console.log("Validation failed:", validation);
       alert(
         "Por favor completa todos los campos:\n\n" +
           validation.errors.join("\n"),
@@ -76,16 +79,15 @@ export default function CreatePost() {
     const postData = {
       title: post.title.trim(),
       content: post.content,
-      categoryId: post.idCategory,
-      status: initialStatus, //Draft or Published
+      categoryId: post.categoryId,
     };
 
     //Sending to Service
     try {
       setSubmitting(true);
-      setSubmitError(false);
+      setSubmitError(null);
 
-      const createdPost = await postService.createPost(postData, image);
+      const createdPost = await MyPostService.createPost(postData, image);
 
       alert(
         `Post ${
@@ -93,14 +95,8 @@ export default function CreatePost() {
         } exitosamente!`,
       );
 
-      setPost({
-        title: "",
-        content: "",
-        idCategory: "",
-        status: "DRAFT",
-        image: "",
-        previewUrl: "",
-      });
+      //Form reset
+      setPost(INITIAL_POST);
 
       setImage(null);
     } catch (error) {

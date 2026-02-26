@@ -13,7 +13,7 @@ export const validatePost = (post, initialStatus) => {
       errors.push("El contenido es obligatorio para publicar");
     }
 
-    if (!post.idCategory) {
+    if (!post.categoryId) {
       errors.push("Debes seleccionar una categoría");
     }
     

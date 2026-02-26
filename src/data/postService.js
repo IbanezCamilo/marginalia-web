@@ -76,6 +76,26 @@ const realService = {
     return await response.json();
   },
 
+  getAllPosts: async () => {
+    
+    const res = await fetch(`${API_URL}/posts`, {
+      method: "GET",
+      headers: {
+        "Content-Type" : "application/json",
+      },
+    });
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Error del servidor:", errorText);
+      throw new Error(`Error al obtener las publicaciones: ${res.status} - ${errorText}`);
+    }
+
+    console.log("Status:", res.status);
+    console.log("Headers:", [...res.headers.entries()]);
+    
+    const data = await res.json();
+    return data;
+  },
 };
 // ===== SELECTOR DE SERVICIO =====
 const service = USE_MOCK ? mockService : realService;
@@ -83,4 +103,5 @@ const service = USE_MOCK ? mockService : realService;
 // ===== EXPORTACIÓN =====
 export const postService = {
   createPost: (postData, imageFile) => service.createPost(postData, imageFile),
+  getAllPosts: () => service.getAllPosts(),
 };

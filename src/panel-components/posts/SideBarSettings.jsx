@@ -21,13 +21,13 @@ export default function SideBarSettings({ categories, post, onChange }) {
 
         <ComboBox
           items={categories}
-          value={post.idCategory}
-          onChange={(value) => onChange("idCategory", value)}
+          value={post.categoryId}
+          onChange={(value) => onChange("categoryId", value)}
           displayKey="name"
           valueKey="id"
           placeholder="Selecciona una categoría"
         />
-        {!post.idCategory && (
+        {!post.categoryId && (
           <p className="text-xs text-gray-500 leading-relaxed">
             Ayuda a clasificar tu contenido y mejora el descubrimiento
           </p>
