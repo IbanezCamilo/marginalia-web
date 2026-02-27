@@ -63,8 +63,36 @@ const myPostService = {
     }
     return createdPost;
   },
+
+  getAllMyPosts: async (page = 0, size = 10) => {
+    const token = getToken();
+
+    if(!token){
+      throw new Error('No hay sesion activa');
+    }
+
+    //Send request
+    const response = await fetch(`${API_URL}?page=${page}&size=${size}&sort=createdAt,desc`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    
+    if (!response.ok) {
+      if (response.status === 401)throw new Error("Sesión expirada");
+      const errorText = await response.text();
+      throw new Error(`Error al obtener los posts: ${response.status} -- ${errorText}`);
+    }
+
+    return await response.json();
+  }
+  
 };
 
 export const MyPostService = {
   createPost: (postData, imageFile) => myPostService.createPost(postData, imageFile),
+  getAllMyPosts: (page, size) => myPostService.getAllMyPosts(page, size),
+
 };
