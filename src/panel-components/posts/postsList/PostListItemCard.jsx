@@ -13,14 +13,16 @@ import {
 import PostRowActions from "./PostRowActions";
 
 export default function PostListItemCard({ imageUrl, author, title, meta }) {
-  imageUrl =
-    "https://r-charts.com/es/miscelanea/procesamiento-imagenes-magick_files/figure-html/importar-imagen-r.png";
+  console.log("imageUrl recibido:", imageUrl);
+  const resolvedImage = imageUrl
+    ? `http://localhost:8080/api/images/${imageUrl}`
+    : "https://placehold.co/400x300?text=Sin+imagen";
   return (
     <Card className="group flex flex-col md:flex-row gap-x-2 w-full max-w-4xl min-h-[140px] rounded-xl border shadow-sm transition-shadow hover:shadow-md">
       {/**Card Image*/}
       <div className="w-full md:w-52 shrink-0 overflow-hidden rounded-2xl">
         <img
-          src={imageUrl || "https://via.placeholder.com/400x300?text=No+Image"}
+          src={resolvedImage}
           alt=""
           className="w-full h-full object-cover aspect-video"
         />
@@ -28,7 +30,7 @@ export default function PostListItemCard({ imageUrl, author, title, meta }) {
       <CardContent className="flex flex-1 flex-col gap-3 p-5">
         {/**Metadata */}
         <p className="text-sm uppercase tracking-wide text-muted-foreground">
-          Writing • Published • Jan 2{" "}
+          {meta}
         </p>
 
         {/**Title */}
@@ -36,10 +38,10 @@ export default function PostListItemCard({ imageUrl, author, title, meta }) {
           {title}
         </CardTitle>
 
-        {/* *Author
+        {/**Author */}
         <CardDescription>
-          by <Link to="">Camilo Ibañez</Link>
-        </CardDescription> */}
+          by <Link to="">{author}</Link>
+        </CardDescription>
       </CardContent>
       {/**Action buttons */}
       <div className="px-2 md:px-2 flex items-start">
