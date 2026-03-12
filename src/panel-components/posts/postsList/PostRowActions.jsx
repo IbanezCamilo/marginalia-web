@@ -9,7 +9,15 @@ import { Button } from "@/components/ui/button";
 import { SlOptions } from "react-icons/sl";
 import { MdDeleteForever } from "react-icons/md";
 
-export default function PostRowActions() {
+export default function PostRowActions({ postId, onDelete }) {
+  const handleDelete = (e) => {
+    e.stopPropagation(); // Avoid triggering parent click events
+    console.log("Delete action triggered");
+    if (window.confirm("¿Estás seguro de que deseas eliminar este post?")) {
+      onDelete(postId);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -20,7 +28,8 @@ export default function PostRowActions() {
       <DropdownMenuContent className="min-w-0 w-fit p-1">
         <DropdownMenuItem
           variant="destructive"
-          className="flex items-center justify-between"
+          className="flex items-center justify-between cursor-pointer"
+          onClick={handleDelete}
         >
           <MdDeleteForever size={16} />
           Eliminar

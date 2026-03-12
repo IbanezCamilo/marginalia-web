@@ -3,85 +3,8 @@ const USE_MOCK = false; // ← Cambia a false cuando quieras usar la API real
 
 const getToken = () => localStorage.getItem('token');
 
-// ===== DATOS MOCK (simulan respuesta del backend) =====
-const mockUser = {
-  userId: 1,
-  name: "Camilo Ibáñez",
-  email: "camilo@example.com",
-  description: "Apasionado por la escritura y la tecnología. Me gusta crear contenido que inspire y eduque.",
-  image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
-  role: "Autor"
-};
 
-// ===== FUNCIONES MOCK =====
-const mockService = {
-    login: async (credentials) => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    console.log("[MOCK] Login simulado:", credentials.email);
-    
-    // Simula validación (en el mock siempre es exitosa)
-    if (!credentials.email || !credentials.password) {
-      throw new Error('Email y contraseña son requeridos');
-    }
-
-    // Genera un token falso
-    const fakeToken = `mock-token-${Date.now()}-${Math.random()}`;
-    console.log("[MOCK] Token generado:", fakeToken);
-    
-    // Guarda el token automáticamente
-    localStorage.setItem('token', fakeToken);
-    
-    return { token: fakeToken };
-  },
-  
-  getProfile: async () => {
-    // Simula delay de red
-    await new Promise(resolve => setTimeout(resolve, 500));
-    console.log("[MOCK] Obteniendo perfil...");
-    console.log("[MOCK] Datos:", mockUser);
-    return mockUser; // ← Devuelve el objeto completo
-  },
-
-  updateProfile: async (userData) => {
-    await new Promise(resolve => setTimeout(resolve, 800));
-    console.log("[MOCK] Actualizando perfil:", userData);
-    
-    // Actualiza el mock local
-    mockUser.name = userData.name;
-    mockUser.description = userData.description;
-    
-    console.log("[MOCK] Usuario actualizado:", mockUser);
-    return mockUser;
-  },
-
-  uploadProfileImage: async (imageFile) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log("[MOCK] Subiendo imagen:", imageFile.name);
-    
-    // Simula que devuelve una URL
-    const fakeUrl = URL.createObjectURL(imageFile);
-    mockUser.image = fakeUrl; // ← IMPORTANTE: usar "image", no "profilePicture"
-    
-    console.log("[MOCK] Nueva imagen:", mockUser.image);
-    return mockUser;
-  },
-
-  isAuthenticated: () => {
-    const token = localStorage.getItem('token');
-    const isAuth = !!token;
-    console.log("[MOCK] ¿Autenticado?", isAuth, "| Token:", token?.substring(0, 20) + "...");
-    return isAuth;
-  },
-
-  logout: () => {
-    console.log("[MOCK] Cerrando sesión...");
-    localStorage.removeItem('token');
-  },
-  
-};
-
-// ===== SERVICIO REAL =====
-const realService = {
+const userService = {
 
   login: async (credentials) => {
     const res = await fetch(`${API_URL}/auth/login`,{
@@ -223,4 +146,4 @@ getProfile: async () => {
 };
 
 // ===== EXPORTA EL SERVICIO SEGÚN LA CONFIGURACIÓN =====
-export const userService = USE_MOCK ? mockService : realService;
+export { userService };

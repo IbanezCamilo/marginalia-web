@@ -12,13 +12,20 @@ import {
 } from "@/components/ui/card";
 import PostRowActions from "./PostRowActions";
 
-export default function PostListItemCard({ imageUrl, author, title, meta }) {
+export default function PostListItemCard({
+  postId,
+  onDelete,
+  imageUrl,
+  author,
+  title,
+  meta,
+}) {
   console.log("imageUrl recibido:", imageUrl);
   const resolvedImage = imageUrl
     ? `http://localhost:8080/api/images/${imageUrl}`
     : "https://placehold.co/400x300?text=Sin+imagen";
   return (
-    <Card className="group flex flex-col md:flex-row gap-x-2 w-full max-w-4xl min-h-[140px] rounded-xl border shadow-sm transition-shadow hover:shadow-md">
+    <Card className="group flex flex-col md:flex-row p-4 gap-x-2 w-full max-w-4xl min-h-[140px] rounded-xl border shadow-sm transition-shadow hover:shadow-md">
       {/**Card Image*/}
       <div className="w-full md:w-52 shrink-0 overflow-hidden rounded-2xl">
         <img
@@ -45,7 +52,7 @@ export default function PostListItemCard({ imageUrl, author, title, meta }) {
       </CardContent>
       {/**Action buttons */}
       <div className="px-2 md:px-2 flex items-start">
-        <PostRowActions />
+        <PostRowActions postId={postId} onDelete={onDelete} />
       </div>
     </Card>
   );

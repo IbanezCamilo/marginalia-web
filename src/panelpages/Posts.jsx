@@ -35,6 +35,20 @@ export default function Posts() {
     }
   };
 
+  const handleDeletePost = async (postId) => {
+    try {
+      //Call service to delete
+      await MyPostService.deletePost(postId);
+
+      //Remove local state - this will update the UI immediately without refetching
+      setPosts((prev) => prev.filter((post) => post.id !== postId));
+
+      setTotalElements((prev) => prev - 1); // Update total elements count
+    } catch (err) {
+      setError("Error al eliminar el post: " + err.message);
+    }
+  };
+
   if (loading) return <p>Cargando Posts</p>;
 
   if (error)
@@ -73,6 +87,7 @@ export default function Posts() {
           </p>
         ) : (
           <div className="flex flex-col gap-4">
+            {console.log("Imagen en el post", posts.coverImage)}
             {posts.map((post) => (
               <PostListItemCard
                 key={post.id}
@@ -80,6 +95,7 @@ export default function Posts() {
                 author={post.authorName}
                 title={post.title}
                 meta={`${post.categoryName} • ${post.status}`}
+                onDelete={() => handleDeletePost(post.id)}
               />
             ))}
           </div>
