@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import CreatePost from "../panelpages/createPost.jsx";
+import EditPost from "../panelpages/EditPost.jsx";
 import DashBoard from "../panelpages/DashBoard.jsx";
 import AdminLayout from "../panel-components/layout/AdminLayout.jsx";
 import PostPage from "../pages/PostPage.jsx";
@@ -10,28 +11,29 @@ import Categories from "@/panelpages/Categories.jsx";
 import Posts from "@/panelpages/Posts.jsx";
 
 export const router = createBrowserRouter([
-  //Pagina principal
+  //Public home route
   { path: "/", element: <App /> },
 
-  //Rutas Públicas
+  //Public routes
   {
     path: "/auth",
     children: [{ path: "login", element: <LoginPage /> }],
   },
 
-  //Pagina del post
+  //Public post page
   {
     path: "/post/:id",
     element: <PostPage />,
   },
 
-  //Rutas Privadas
+  //Private routes
   {
     path: "/user",
     element: <AdminLayout />,
     children: [
       { path: "dashboard", element: <DashBoard /> },
       { path: "create-post", element: <CreatePost /> },
+      { path: "edit-post/:id", element: <EditPost /> },
       { path: "profile", element: <ProfilePage /> },
       { path: "categories", element: <Categories /> },
       { path: "posts", element: <Posts /> },

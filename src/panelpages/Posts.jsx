@@ -8,7 +8,7 @@ export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(0); //pagination start at 0
+  const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
 
@@ -18,13 +18,9 @@ export default function Posts() {
 
   const loadPosts = async (page) => {
     try {
-      //cleaning before fetching
       setLoading(true);
       setError(null);
-
-      //calling the service
       const data = await MyPostService.getAllMyPosts(page, 10);
-
       setPosts(data.content);
       setTotalPages(data.totalPages);
       setTotalElements(data.totalElements);
@@ -37,19 +33,52 @@ export default function Posts() {
 
   const handleDeletePost = async (postId) => {
     try {
-      //Call service to delete
       await MyPostService.deletePost(postId);
-
-      //Remove local state - this will update the UI immediately without refetching
+      // We update the local state without refetch — faster for the user
       setPosts((prev) => prev.filter((post) => post.id !== postId));
-
-      setTotalElements((prev) => prev - 1); // Update total elements count
+      setTotalElements((prev) => prev - 1);
     } catch (err) {
       setError("Error al eliminar el post: " + err.message);
     }
   };
 
-  if (loading) return <p>Cargando Posts</p>;
+  /**
+   * Changes the status of a post locally and in the backend.
+   *
+   * "Optimistic Update" Pattern:
+   * First we update the local state (UI responds immediately),
+   * then we call the backend. If the backend fails, we revert.
+   * This improves the perceived user experience.
+   */
+  const handleToggleStatus = async (postId, currentStatus) => {
+    // Determine the new state according to the valid transition
+    const newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
+    const actionLabel =
+      newStatus === "PUBLISHED" ? "publicar" : "convertir a borrador";
+
+    if (!window.confirm(`¿Quieres ${actionLabel} este post?`)) return;
+
+    // Save previous state to revert if it fails
+    const previousPosts = posts;
+
+    // Optimistic update: update UI before the server responds
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === postId ? { ...post, status: newStatus } : post,
+      ),
+    );
+
+    try {
+      await MyPostService.updateStatus(postId, newStatus);
+      // If the server confirms, the optimistic state is already correct. We do nothing.
+    } catch (err) {
+      // If it fails, we revert to the previous state
+      setPosts(previousPosts);
+      setError("Error al cambiar el estado: " + err.message);
+    }
+  };
+
+  if (loading) return <p className="p-6 text-gray-500">Cargando posts...</p>;
 
   if (error)
     return (
@@ -87,15 +116,17 @@ export default function Posts() {
           </p>
         ) : (
           <div className="flex flex-col gap-4">
-            {console.log("Imagen en el post", posts.coverImage)}
             {posts.map((post) => (
               <PostListItemCard
                 key={post.id}
+                postId={post.id}
                 imageUrl={post.coverImage}
                 author={post.authorName}
                 title={post.title}
-                meta={`${post.categoryName} • ${post.status}`}
+                status={post.status}
+                categoryName={post.categoryName}
                 onDelete={() => handleDeletePost(post.id)}
+                onToggleStatus={() => handleToggleStatus(post.id, post.status)}
               />
             ))}
           </div>

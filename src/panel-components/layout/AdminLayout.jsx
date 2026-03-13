@@ -17,7 +17,10 @@ export default function AdminLayout() {
     localStorage.setItem("sidebarCollapsed", JSON.stringify(isCollapsed));
   }, [isCollapsed]);
 
-  const isCreatePostPage = location.pathname === "/user/create-post";
+  // const isCreatePostPage = location.pathname === "/user/create-post";
+  const isCreatePostPage =
+    location.pathname === "/user/create-post" ||
+    location.pathname.startsWith("/user/edit-post/");
 
   return (
     <div className="min-h-screen bg-gray-50">

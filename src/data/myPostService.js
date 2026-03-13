@@ -166,6 +166,30 @@ const myPostService = {
     return updatedPost;
   },
 
+  /// Update Post Status
+  updateStatus: async (postId, newStatus) => {
+    const token = getToken();
+
+    if (!token) throw new Error("No hay sesión activa");
+
+    const response = await fetch(`${API_URL}/${postId}/status`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: newStatus }),
+    });
+
+    if (!response.ok){
+      if(response.status === 401) throw new Error("Sesión expirada");
+      const errorText = await response.text();
+      throw new Error(`Error al actualizar el estado del post: ${response.status} -- ${errorText}`);
+    }
+
+    return await response.json();
+  },
+
     // Delete Posts
   deletePost: async (postId) => {
     const token = getToken();
@@ -193,5 +217,6 @@ export const MyPostService = {
   getAllMyPosts: (page, size) => myPostService.getAllMyPosts(page, size),
   getPostById: (postId) => myPostService.getPostById(postId),
   updatePost: (postId, postData, imageFile) => myPostService.updatePost(postId, postData, imageFile),
+  updateStatus: (postId, newStatus) => myPostService.updateStatus(postId, newStatus),
   deletePost: (postId) => myPostService.deletePost(postId),
 };
