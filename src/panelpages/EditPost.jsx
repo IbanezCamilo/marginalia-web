@@ -11,31 +11,30 @@ export default function EditPost() {
   const { id } = useParams(); // Extrae el :id de la URL → "/user/edit-post/42"
   const navigate = useNavigate();
 
-  // ── Estado idéntico a CreatePost ──────────────────────────────────
-  const [post, setPost] = useState(null); // null mientras carga (diferencia vs CreatePost)
+  const [post, setPost] = useState(null); // null while loading
   const [image, setImage] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [categoriesError, setCategoriesError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, serLoadError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  // ── Carga de datos ────────────────────────────────────────────────
-  // Diferencia clave vs CreatePost: también cargamos el post existente.
-  // Promise.all ejecuta ambas peticiones en paralelo (más rápido que en serie).
+  // To detect changes and show "Unsaved changes" indicator in header
+  const [originalPost, setOriginalPost] = useState(null);
+
   useEffect(() => {
     const loadData = async () => {
       try {
-        setLoadingCategories(true);
-        setCategoriesError(null);
+        setLoading(true);
+        serLoadError(null);
 
         const [postData, categoriesData] = await Promise.all([
           MyPostService.getPostById(Number(id)),
           categoryService.getAllCategories(),
         ]);
 
-        // Pre-poblar con los datos del post existente
-        setPost({
+        // Post mapping to match the expected structure in the editor
+        const mappedPost = {
           title: postData.title,
           content: postData.content,
           categoryId: postData.categoryId,
@@ -44,22 +43,35 @@ export default function EditPost() {
           previewUrl: postData.coverImage
             ? `http://localhost:8080/api/images/${postData.coverImage}`
             : "",
+          updatedAt: postData.updatedAt,
+          createdAt: postData.createdAt,
+        };
+
+        console.log("Fecha de actualizacion es: " + postData.updatedAt);
+
+        // If has image and previewUrl is empty, set it to the image URL
+        setPost(mappedPost);
+
+        // on Load
+        setOriginalPost({
+          title: postData.title,
+          content: postData.content,
+          categoryId: postData.categoryId,
         });
 
         setCategories(
           categoriesData.map((cat) => ({ id: cat.id, name: cat.name })),
         );
       } catch (err) {
-        setCategoriesError("Error al cargar el post: " + err.message);
+        serLoadError("Error al cargar el post: " + err.message);
       } finally {
-        setLoadingCategories(false);
+        setLoading(false);
       }
     };
 
     loadData();
   }, [id]);
 
-  // ── Handlers idénticos a CreatePost ──────────────────────────────
   const handleChange = (field, value) => {
     if (field === "image") {
       setImage(value);
@@ -93,7 +105,6 @@ export default function EditPost() {
       setSubmitting(true);
       setSubmitError(null);
 
-      // Diferencia vs CreatePost: llamamos updatePost en lugar de createPost
       await MyPostService.updatePost(Number(id), postData, image);
 
       alert(
@@ -109,8 +120,7 @@ export default function EditPost() {
     }
   };
 
-  // ── Estados de carga y error (mismos que CreatePost) ─────────────
-  if (loadingCategories) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 animate-pulse">
         <div className="h-16 bg-white border-b border-gray-200" />
@@ -129,11 +139,19 @@ export default function EditPost() {
     );
   }
 
-  if (categoriesError) {
+  // Detect changes for "Unsaved changes" indicator in header
+  const hasChanges =
+    originalPost !== null &&
+    (post?.title !== originalPost.title ||
+      post?.content !== originalPost.content ||
+      post?.categoryId !== originalPost.categoryId ||
+      image !== null);
+
+  if (loadError) {
     return (
       <div className="max-w-6xl mx-auto p-4">
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">{categoriesError}</p>
+          <p className="text-red-600">{loadError}</p>
           <button
             onClick={() => window.location.reload()}
             className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -145,29 +163,21 @@ export default function EditPost() {
     );
   }
 
-  // ── JSX idéntico a CreatePost ─────────────────────────────────────
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
+
       <EditorHeader
         onSaveDraft={(e) => handleOnSubmit(e, "DRAFT")}
         onPublish={(e) => handleOnSubmit(e, "PUBLISHED")}
         submitting={submitting}
-        hasChanges={post?.title || post?.content}
+        hasChanges={hasChanges}
       />
 
       {/* Main Layout: Editor + SideBar */}
       <div className="flex flex-col md:flex-row pt-16 gap-8">
         {/* Main container */}
-        <main className="flex-1 max-w-4x mx-auto px-8 py-6 bg-white p-6 rounded-sm shadow-sm">
-          {/*
-            key={id} es CRÍTICO para TipTap.
-            TipTap inicializa su contenido una sola vez al montarse.
-            Sin key, React reutiliza la instancia existente y TipTap
-            ignora el contenido cargado del servidor.
-            Con key={id}, React destruye y re-monta el componente,
-            forzando a TipTap a inicializar con los datos correctos.
-          */}
+        <main className="flex-1 max-w-4xl mx-auto px-8 py-6 bg-white p-6 rounded-sm shadow-sm">
           <PostEditor key={id} post={post} onChange={handleChange} />
 
           {/* Error de submit */}
