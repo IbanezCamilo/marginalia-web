@@ -11,7 +11,6 @@ export default function EditorHeader({
   hasChanges,
 }) {
   const navigate = useNavigate();
-
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 mb-2">
       <div className="h-16 px-6 gap-4 flex items-center justify-between">
@@ -19,7 +18,7 @@ export default function EditorHeader({
         <div className="flex items-center gap-3 w-1/6">
           <button
             onClick={() => navigate("/user/dashboard")}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
+            className="flex items-center gap-2 cxtext-gray-600 hover:text-gray-800 transition-colors"
           >
             <span className="flex items-center justify-between gap-2 text-sm font-medium cursor-pointer">
               <ChevronLeft size={16} />
