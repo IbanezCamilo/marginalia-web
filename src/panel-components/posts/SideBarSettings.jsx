@@ -10,7 +10,6 @@ export default function SideBarSettings({ categories, post, onChange }) {
           Configuracion
         </h3>
       </div>
-
       {/**Categories */}
       <div className="space-y-3">
         <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
@@ -33,7 +32,6 @@ export default function SideBarSettings({ categories, post, onChange }) {
           </p>
         )}
       </div>
-
       {/* Divisor */}
       <div className="border-t border-gray-200" />
       {/**Post State */}
@@ -67,11 +65,22 @@ export default function SideBarSettings({ categories, post, onChange }) {
       </div>
 
       {/* Last update */}
-      <div className="pt-4 border-t border-gray-200">
+      <div className="pt-4 border-t border-gray-200 space-y-1">
         <div className="flex items-center gap-2 text-xs text-gray-500">
-          {/*<Calendar size={14} />*/}
-          <span>Última edición: Hoy</span>
+          <span>
+            {post.createdAt
+              ? `Creado: ${new Date(post.createdAt).toLocaleDateString("es-ES")}`
+              : "Sin guardar"}
+          </span>
         </div>
+        {post.updatedAt && post.updatedAt !== post.createdAt && (
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <span>
+              Última edición:{" "}
+              {new Date(post.updatedAt).toLocaleDateString("es-ES")}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );
