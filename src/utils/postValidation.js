@@ -7,15 +7,16 @@ export const validatePost = (post, initialStatus) => {
         if(!post.title?.trim()){
             errors.push("El titulo es obligatorio para publicar");
         }
-    }
 
         if (!post.content?.trim()) {
-      errors.push("El contenido es obligatorio para publicar");
+            errors.push("El contenido es obligatorio para publicar");
+        }
+    
+        if (!post.categoryId) {
+            errors.push("Debes seleccionar una categoría");
+        }
     }
 
-    if (!post.categoryId) {
-      errors.push("Debes seleccionar una categoría");
-    }
     
     // Para DRAFT solo validamos lo mínimo
     if (initialStatus === "DRAFT") {
