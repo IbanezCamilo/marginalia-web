@@ -1,31 +1,13 @@
-const API_URL = 'http://localhost:8080/api';
+import { apiClient } from './apiClient';
 
-const getToken = () => localStorage.getItem('token');
+export const categoryService = {
+    getAllCategories: () => apiClient.get('/categories'),
 
-const categoryService = {
+    getCategoryById: (id) => apiClient.get(`/categories/${id}`),
 
-  getAllCategories: async () => {
-    const res = await fetch(`${API_URL}/categories`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    createCategory: (dto) => apiClient.post('/categories', dto),
 
-if (!res.ok) {
-      const errorText = await res.text();
-      console.error("❌ Error del servidor:", errorText);
-      throw new Error(`Error al obtener las categorías: ${res.status} - ${errorText}`);
-    }
+    updateCategory: (id, dto) => apiClient.put(`/categories/${id}`, dto),
 
-    console.log("📊 Status:", res.status);
-    console.log("📋 Headers:", [...res.headers.entries()]);
-    
-    const data = await res.json();
-    return data;
-  },
-
+    deleteCategory: (id) => apiClient.delete(`/categories/${id}`),
 };
-
-// ===== EXPORTACIÓN =====
-export {categoryService};
