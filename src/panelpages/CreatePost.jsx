@@ -18,11 +18,10 @@ export default function CreatePost() {
   const [post, setPost] = useState(INITIAL_POST);
   const [image, setImage] = useState(null); // image to upload
   const [categories, setCategories] = useState([]);
-  const [loadingCategories, setLoadingCategories] = useState(true);
-  const [categoriesError, setCategoriesError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
-  const [error, setError] = useState(null);
 
   //Categories load
   useEffect(() => {
@@ -31,8 +30,8 @@ export default function CreatePost() {
 
   const loadCategories = async () => {
     try {
-      setLoadingCategories(true);
-      setCategoriesError(null);
+      setLoading(true);
+      setLoadError(null);
 
       const categoriesData = await categoryService.getAllCategories();
 
@@ -42,9 +41,9 @@ export default function CreatePost() {
       });
       setCategories(categoriesMapped);
     } catch (err) {
-      setCategoriesError("Error al cargar las categorías: " + err.message);
+      setLoadError("Error al cargar las categorías: " + err.message);
     } finally {
-      setLoadingCategories(false);
+      setLoading(false);
     }
   };
 
@@ -80,6 +79,7 @@ export default function CreatePost() {
       title: post.title.trim(),
       content: post.content,
       categoryId: post.categoryId,
+      status: initialStatus,
     };
 
     //Sending to Service
@@ -107,7 +107,7 @@ export default function CreatePost() {
     }
   };
 
-  if (loadingCategories) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 animate-pulse">
         <div className="h-16 bg-white border-b border-gray-200" />
@@ -127,11 +127,11 @@ export default function CreatePost() {
   }
 
   // Error al cargar categorías
-  if (categoriesError) {
+  if (loadError) {
     return (
       <div className="max-w-6xl mx-auto p-4">
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">{categoriesError}</p>
+          <p className="text-red-600">{loadError}</p>
           <button
             onClick={loadCategories}
             className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
@@ -155,7 +155,7 @@ export default function CreatePost() {
       {/**Main Layout: Editor + SideBar */}
       <div className="flex flex-col md:flex-row pt-16 gap-8">
         {/**"Main container */}
-        <main className="flex-1 max-w-4x mx-auto px-8 py-6  bg-white p-6 rounded-sm shadow-sm">
+        <main className="flex-1 max-w-4xl mx-auto px-8 py-6  bg-white p-6 rounded-sm shadow-sm">
           <PostEditor post={post} onChange={handleChange} />
 
           {/* Error message if exist */}

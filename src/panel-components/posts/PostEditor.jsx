@@ -15,12 +15,12 @@ export default function PostEditor({ post, onChange }) {
       />
       {/* Title */}
       <TitleInput
-        title={post.title}
+        value={post.title}
         onChange={(value) => onChange("title", value)}
       />
 
       {/* EDITOR (TipTap) */}
-      {/*TipTapEditor recibe contenido y onChange */}
+      {/*TipTapEditor gets the content as prop and onChange returns the new HTML content*/}
       <TipTapEditor
         content={post.content}
         onChange={(html) => onChange("content", html)}
