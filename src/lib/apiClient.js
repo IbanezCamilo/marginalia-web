@@ -1,6 +1,6 @@
 import { API_URL, API_BASE_URL } from "./config";
 
-export { API_BASE_URL };
+export { API_BASE_URL as BASE_URL};
 
 const getToken = () => localStorage.getItem('token');
 
@@ -18,7 +18,7 @@ async function request(endpoint, options = {}){
     }
 
     
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
 });

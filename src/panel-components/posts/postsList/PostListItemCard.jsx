@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { MdDeleteForever } from "react-icons/md";
+import { BASE_URL } from "@/lib/apiClient";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Card,
@@ -25,7 +24,7 @@ export default function PostListItemCard({
   const navigate = useNavigate();
 
   const resolvedImage = imageUrl
-    ? `http://localhost:8080/api/images/${imageUrl}`
+    ? `${BASE_URL}/images/${imageUrl}`
     : "https://placehold.co/400x300?text=Sin+imagen";
 
   /**
