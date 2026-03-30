@@ -1,4 +1,3 @@
-// src/utils/imageUtils.js
 import { BASE_URL } from '../data/apiClient';
 
 /**
@@ -6,5 +5,5 @@ import { BASE_URL } from '../data/apiClient';
 */
 export const toAbsoluteUrl = (url, fallback = '') => {
     if (!url) return fallback;
-    return url.startsWith('http') ? url : `${BASE_URL}${url}`;
+    return url;
 };

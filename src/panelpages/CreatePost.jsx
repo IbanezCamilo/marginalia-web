@@ -36,7 +36,6 @@ export default function CreatePost() {
       const categoriesData = await categoryService.getAllCategories();
 
       const categoriesMapped = categoriesData.map((cat) => {
-        console.log(cat.id + " " + cat.name);
         return { id: cat.id, name: cat.name };
       });
       setCategories(categoriesMapped);
@@ -65,8 +64,6 @@ export default function CreatePost() {
 
     if (!validation.isValid) {
       validation.errors.forEach((err) => console.error("  -", err));
-
-      console.log("Validation failed:", validation);
       alert(
         "Por favor completa todos los campos:\n\n" +
           validation.errors.join("\n"),

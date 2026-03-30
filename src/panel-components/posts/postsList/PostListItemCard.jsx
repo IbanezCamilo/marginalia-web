@@ -94,7 +94,6 @@ export default function PostListItemCard({
       {/* Actions */}
       <div className="px-2 md:px-2 flex items-start">
         <PostRowActions
-          postId={postId}
           status={status}
           onDelete={onDelete}
           onToggleStatus={onToggleStatus}

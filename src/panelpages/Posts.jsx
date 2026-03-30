@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MyPostService } from "@/data/myPostService";
 import PostListItemCard from "@/panel-components/posts/postsList/PostListItemCard.jsx";
 import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -11,6 +12,14 @@ export default function Posts() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
+
+  //Confirm dialog State
+  const [confirmState, setConfirmState] = useState({
+    open: false,
+    postId: null,
+    type: null, //delete OR toggleStatus
+    currentStatus: null,
+  });
 
   useEffect(() => {
     loadPosts(currentPage);
@@ -31,52 +40,80 @@ export default function Posts() {
     }
   };
 
-  const handleDeletePost = async (postId) => {
-    try {
-      await MyPostService.deletePost(postId);
-      // We update the local state without refetch — faster for the user
-      setPosts((prev) => prev.filter((post) => post.id !== postId));
-      setTotalElements((prev) => prev - 1);
-    } catch (err) {
-      setError("Error al eliminar el post: " + err.message);
-    }
+  const requestDeletePost = (postId) => {
+    setConfirmState({
+      open: true,
+      postId,
+      type: "delete",
+      currentStatus: null,
+    });
   };
 
-  /**
-   * Changes the status of a post locally and in the backend.
-   *
-   * "Optimistic Update" Pattern:
-   * First we update the local state (UI responds immediately),
-   * then we call the backend. If the backend fails, we revert.
-   * This improves the perceived user experience.
-   */
-  const handleToggleStatus = async (postId, currentStatus) => {
-    // Determine the new state according to the valid transition
-    const newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
-    const actionLabel =
-      newStatus === "PUBLISHED" ? "publicar" : "convertir a borrador";
+  const requestToggleStatus = (postId, currentStatus) => {
+    setConfirmState({
+      open: true,
+      postId,
+      type: "toggleStatus",
+      currentStatus: currentStatus,
+    });
+  };
 
-    if (!window.confirm(`¿Quieres ${actionLabel} este post?`)) return;
+  const handleConfirm = async () => {
+    const { postId, type, currentStatus } = confirmState;
+    setConfirmState((prev) => ({ ...prev, open: false }));
 
-    // Save previous state to revert if it fails
-    const previousPosts = posts;
+    if (type == "delete") {
+      try {
+        await MyPostService.deletePost(postId);
+        setPosts((prev) => prev.filter((p) => p.id != postId));
+        setTotalElements((prev = prev - 1));
+        toast.success("Post eliminado correctamente");
+      } catch (error) {
+        toast.error("Error al eliminar el post");
+      }
+    }
 
-    // Optimistic update: update UI before the server responds
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId ? { ...post, status: newStatus } : post,
-      ),
-    );
+    if (type == "toggleStatus") {
+      const newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
+      const previusPosts = posts;
+
+      prev.map((p) => (p.id === postId ? { ...p, status: newStatus } : p));
+    }
 
     try {
       await MyPostService.updateStatus(postId, newStatus);
-      // If the server confirms, the optimistic state is already correct. We do nothing.
+      toast.success(
+        newStatus === "PUBLISHED"
+          ? "Post publicado"
+          : "Post guardado como borrador",
+      );
     } catch (err) {
-      // If it fails, we revert to the previous state
       setPosts(previousPosts);
-      setError("Error al cambiar el estado: " + err.message);
+      toast.error("Error al cambiar el estado");
     }
   };
+
+  const confirmDialogProps = {
+    delete: {
+      title: "¿Eliminar este post?",
+      description: "Esta acción es permanente y no se puede deshacer.",
+      confirmLabel: "Sí, eliminar",
+    },
+    toggleStatus: {
+      title:
+        confirmState.currentStatus === "PUBLISHED"
+          ? "¿Convertir a borrador?"
+          : "¿Publicar este post?",
+      description:
+        confirmState.currentStatus === "PUBLISHED"
+          ? "El post dejará de ser visible al público."
+          : "El post será visible para todos los lectores.",
+      confirmLabel:
+        confirmState.currentStatus === "PUBLISHED" ? "Convertir" : "Publicar",
+    },
+  };
+
+  const currentDialogProps = confirmDialogProps[confirmState.type] ?? {};
 
   if (loading) return <p className="p-6 text-gray-500">Cargando posts...</p>;
 
@@ -95,6 +132,12 @@ export default function Posts() {
 
   return (
     <div className="min-h-screen p-6 bg-gray-50">
+      <ConfirmDialog
+        open={confirmState.open}
+        onOpenChange={(open) => setConfirmState((prev) => ({ ...prev, open }))}
+        onConfirm={handleConfirm}
+        {...currentDialogProps}
+      />
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
@@ -125,8 +168,8 @@ export default function Posts() {
                 title={post.title}
                 status={post.status}
                 categoryName={post.categoryName}
-                onDelete={() => handleDeletePost(post.id)}
-                onToggleStatus={() => handleToggleStatus(post.id, post.status)}
+                onDelete={() => requestDeletePost(post.id)}
+                onToggleStatus={() => requestToggleStatus(post.id, post.status)}
               />
             ))}
           </div>

@@ -26,6 +26,14 @@ export default function Categories() {
   }, []);
 
   const CategoryRow = ({ category }) => {
+    const formattedDate = category.createdAt
+      ? new Date(category.createdAt).toLocaleDateString("es-ES", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
+      : "—";
+
     return (
       <TableRow>
         <TableCell>{category.name}</TableCell>
@@ -77,7 +85,6 @@ export default function Categories() {
             {/**Table Body */}
             <TableBody className="divide-y divide-gray-200">
               {categories.map((cat) => {
-                // console.log("Se cargo la categoria: " + cat.name);
                 return <CategoryRow key={cat.id} category={cat} />;
               })}
             </TableBody>

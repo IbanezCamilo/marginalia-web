@@ -63,14 +63,6 @@ export default function ProfilePage() {
   // Manejar actualización de datos
   const handleDataUpdate = async (updatedData) => {
     try {
-      console.log(
-        "Datos recibidos en ProfilePage: " +
-          "nombre: " +
-          updatedData.name +
-          " descripcion: " +
-          updatedData.description
-      );
-
       const updatedUser = await userService.updateProfile(updatedData);
 
       setUser((prev) => ({
@@ -123,7 +115,6 @@ export default function ProfilePage() {
             className="relative group cursor-pointer"
             onClick={() => setImageModalOpen(true)}
           >
-            {console.log("Imagen recibida del Backend:", user.image)}
             <img
               src={user.image}
               alt="Foto de perfil"
@@ -136,7 +127,6 @@ export default function ProfilePage() {
 
           {/* Información del perfil */}
           <div className="flex-1 space-y-3 text-center md:text-left">
-            {console.log("Nombre recibida del Backend:", user.name)}
             <h2 className="text-2xl font-semibold">{user.name}</h2>
             <div className="flex justify-center md:justify-start items-center gap-2 text-gray-500">
               <FaUserShield />

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Navigate, useNavigate } from "react-router-dom";
 import { ChevronLeft, Save } from "lucide-react";
-import { BiWindows } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 export default function EditorHeader({
   onSaveDraft,

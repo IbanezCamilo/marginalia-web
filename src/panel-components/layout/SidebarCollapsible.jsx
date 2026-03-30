@@ -10,7 +10,6 @@ import {
   ChevronLeft,
   X,
 } from "lucide-react";
-import { Item } from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/components/ui/button";
 
 export default function SidebarCollapsible({

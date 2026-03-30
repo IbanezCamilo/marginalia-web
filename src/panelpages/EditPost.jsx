@@ -8,7 +8,7 @@ import EditorHeader from "@/panel-components/posts/EditorHeader";
 import SideBarSettings from "@/panel-components/posts/SideBarSettings";
 
 export default function EditPost() {
-  const { id } = useParams(); // Extrae el :id de la URL → "/user/edit-post/42"
+  const { id } = useParams(); //Extract the :id from URL
   const navigate = useNavigate();
 
   const [post, setPost] = useState(null); // null while loading
@@ -46,8 +46,6 @@ export default function EditPost() {
           updatedAt: postData.updatedAt,
           createdAt: postData.createdAt,
         };
-
-        console.log("Fecha de actualizacion es: " + postData.updatedAt);
 
         // If has image and previewUrl is empty, set it to the image URL
         setPost(mappedPost);
