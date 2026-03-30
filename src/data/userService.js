@@ -16,7 +16,7 @@ const userService = {
   },
 
     getProfile: async () => {
-        const data = await apiClient.get('/user/profile/v2');
+        const data = await apiClient.get('/me/profile');
         return {
             userId:      data.id,
             name:        data.name,
@@ -28,7 +28,7 @@ const userService = {
     },
 
     updateProfile: async (userData) => {
-        const data = await apiClient.put('/user/profile/v2', {
+        const data = await apiClient.put('/me/profile', {
             name:        userData.name,
             description: userData.description || '',
         });
@@ -41,7 +41,7 @@ const userService = {
     uploadProfileImage: async (imageFile) => {
         const formData = new FormData();
         formData.append('image', imageFile);
-        return apiClient.postForm('/user/profile/v2/upload-image', formData);
+        return apiClient.postForm('/me/profile/upload-image', formData);
     },
 
   isAuthenticated: () => {
