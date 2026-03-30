@@ -1,7 +1,7 @@
-import { BASE_URL } from '../lib/apiClient';
+import { API_BASE_URL } from '../lib/apiClient';
 
 /**
-*Convert relative URL to absolute URL using BASE_URL, with optional fallback if url is falsy 
+*Convert relative URL to absolute URL using API_BASE_URL, with optional fallback if url is falsy 
 */
 export const toAbsoluteUrl = (url, fallback = '') => {
     if (!url) return fallback;
