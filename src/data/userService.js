@@ -1,6 +1,5 @@
 import { toAbsoluteUrl } from "@/utils/imageUtils";
 import { apiClient } from "./apiClient";
-const API_URL = 'http://localhost:8080/api';
 
 const DEFAULT_AVATAR = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
 
