@@ -1,5 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
-export const BASE_URL = import.meta.env.VITE_BASE_URL;
+import { API_BASE_URL } from "./config";
 
 const getToken = () => localStorage.getItem('token');
 
@@ -17,7 +16,7 @@ async function request(endpoint, options = {}){
     }
 
     
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers,
 });
