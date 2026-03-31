@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PostEditor from "../panel-components/posts/PostEditor";
-import { MyPostService } from "../data/myPostService";
+import { postService } from "@/data/myPostService";
 import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "../data/categoryService";
 import EditorHeader from "@/panel-components/posts/EditorHeader";
@@ -33,7 +33,7 @@ export default function CreatePost() {
       setLoading(true);
       setLoadError(null);
 
-      const categoriesData = await categoryService.getAllCategories();
+      const categoriesData = await categoryService.getAll();
 
       const categoriesMapped = categoriesData.map((cat) => {
         return { id: cat.id, name: cat.name };
@@ -84,7 +84,7 @@ export default function CreatePost() {
       setSubmitting(true);
       setSubmitError(null);
 
-      const createdPost = await MyPostService.createPost(postData, image);
+      const createdPost = await postService.createPost(postData, image);
 
       alert(
         `Post ${

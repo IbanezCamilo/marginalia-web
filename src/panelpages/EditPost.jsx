@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PostEditor from "../panel-components/posts/PostEditor";
-import { MyPostService } from "../data/myPostService";
+import { postService } from "@/data/myPostService";
 import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "../data/categoryService";
 import EditorHeader from "@/panel-components/posts/EditorHeader";
@@ -29,8 +29,8 @@ export default function EditPost() {
         serLoadError(null);
 
         const [postData, categoriesData] = await Promise.all([
-          MyPostService.getPostById(Number(id)),
-          categoryService.getAllCategories(),
+          postService.getPostById(Number(id)),
+          categoryService.getAll(),
         ]);
 
         // Post mapping to match the expected structure in the editor
@@ -103,7 +103,7 @@ export default function EditPost() {
       setSubmitting(true);
       setSubmitError(null);
 
-      await MyPostService.updatePost(Number(id), postData, image);
+      await postService.updatePost(Number(id), postData, image);
 
       alert(
         `Post ${statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"} exitosamente!`,

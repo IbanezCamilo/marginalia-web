@@ -1,7 +1,7 @@
 import CategoryBox from "../components/CategoryBox";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import PostCard from "../components/PostCard";
+import PostCard from "@/features/posts/components/PostCard";
 import { Link } from "react-router-dom";
 
 export default function Homepage() {
