@@ -2,14 +2,19 @@ import { apiClient } from "../lib/apiClient";
 
 const BASE_ENDPOINT = "/me/posts";
 
-const myPostService = {
+export const postService = {
+    getAll: async (page = 0, size = 10) =>
+    apiClient.get(`${BASE_ENDPOINT}?page=${page}&size=${size}&sort=createdAt,desc`),
     
-    createPost: async (postData, imageFile) => {
-      const createdPost = await apiClient.post(BASE_ENDPOINT, {
-        title: postData.title,
-        content: postData.content,
-        categoryId: postData.categoryId,
-        status: postData.status,
+    getById: (id) =>
+      apiClient.get(`${BASE_ENDPOINT}/${id}`),
+    
+    create: async (data, imageFile) => {
+      const created = await apiClient.post(BASE_ENDPOINT, {
+        title: data.title,
+        content: data.content,
+        categoryId: data.categoryId,
+        status: data.status,
       });
 
     //Image exist
@@ -18,46 +23,34 @@ const myPostService = {
       formData.append("image", imageFile);
 
       //Use apiClient to handle auth and content-type automatically
-      return apiClient.postForm(`${BASE_ENDPOINT}/${createdPost.id}/cover-image`, formData);
+      return apiClient.postForm(`${BASE_ENDPOINT}/${created.id}/cover-image`, formData);
     }
-    return createdPost;
+    return created;
   },
 
-  getAllMyPosts: async (page = 0, size = 10) =>
-    apiClient.get(`${BASE_ENDPOINT}?page=${page}&size=${size}&sort=createdAt,desc`),
 
-  getPostById: (postId) =>
-    apiClient.get(`${BASE_ENDPOINT}/${postId}`),
-
-  updatePost: async (postId, postData, imageFile) => {
-      const updatedPost = await apiClient.put(`${BASE_ENDPOINT}/${postId}`, {
-          title:      postData.title,
-          content:    postData.content,
-          categoryId: postData.categoryId,
-          status:     postData.status,
+  
+  update: async (id, data, imageFile) => {
+      const updated = await apiClient.put(`${BASE_ENDPOINT}/${id}`, {
+          title:      data.title,
+          content:    data.content,
+          categoryId: data.categoryId,
+          status:     data.status,
       });
 
       if (imageFile) {
           const formData = new FormData();
           formData.append('image', imageFile);
-          return apiClient.postForm(`${BASE_ENDPOINT}/${postId}/cover-image`, formData);
+          return apiClient.postForm(`${BASE_ENDPOINT}/${id}/cover-image`, formData);
       }
 
-      return updatedPost;
+      return updated;
   },
 
-  updateStatus: (postId, newStatus) =>
-      apiClient.patch(`${BASE_ENDPOINT}/${postId}/status`, { status: newStatus }),
+  updateStatus: (id, newStatus) =>
+      apiClient.patch(`${BASE_ENDPOINT}/${id}/status`, { status: newStatus }),
 
-  deletePost: (postId) =>
-      apiClient.delete(`${BASE_ENDPOINT}/${postId}`),
+  delete: (id) =>
+      apiClient.delete(`${BASE_ENDPOINT}/${id}`),
 
-};
-export const MyPostService = {
-  createPost: (postData, imageFile) => myPostService.createPost(postData, imageFile),
-  getAllMyPosts: (page, size) => myPostService.getAllMyPosts(page, size),
-  getPostById: (postId) => myPostService.getPostById(postId),
-  updatePost: (postId, postData, imageFile) => myPostService.updatePost(postId, postData, imageFile),
-  updateStatus: (postId, newStatus) => myPostService.updateStatus(postId, newStatus),
-  deletePost: (postId) => myPostService.deletePost(postId),
 };

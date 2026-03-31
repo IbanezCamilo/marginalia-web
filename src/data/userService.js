@@ -3,7 +3,9 @@ import { apiClient } from "../lib/apiClient";
 
 const DEFAULT_AVATAR = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
 
-const userService = {
+const BASE_ENDPOINT = '/me/profile';
+
+export const userService = {
 
     login: async (credentials) => {
         const data = await apiClient.post('/auth/login', {
@@ -12,10 +14,19 @@ const userService = {
         });
         localStorage.setItem('token', data.token);
         return data;
-  },
+    },
+    
+    isAuthenticated: () => {
+        const token = localStorage.getItem('token');
+        return !!token;
+    },
+
+    logout: () => {
+      localStorage.removeItem('token');
+    },
 
     getProfile: async () => {
-        const data = await apiClient.get('/me/profile');
+        const data = await apiClient.get(`${BASE_ENDPOINT}`);
         return {
             userId:      data.id,
             name:        data.name,
@@ -27,7 +38,7 @@ const userService = {
     },
 
     updateProfile: async (userData) => {
-        const data = await apiClient.put('/me/profile', {
+        const data = await apiClient.put(`${BASE_ENDPOINT}`, {
             name:        userData.name,
             description: userData.description || '',
         });
@@ -40,17 +51,8 @@ const userService = {
     uploadProfileImage: async (imageFile) => {
         const formData = new FormData();
         formData.append('image', imageFile);
-        return apiClient.postForm('/me/profile/upload-image', formData);
+        return apiClient.postForm(`${BASE_ENDPOINT}/upload-image`, formData);
     },
 
-  isAuthenticated: () => {
-    const token = localStorage.getItem('token');
-    return !!token;
-  },
 
-  logout: () => {
-    localStorage.removeItem('token');
-  },
 };
-
-export { userService };
