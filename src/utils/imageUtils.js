@@ -1,5 +1,3 @@
-import { API_BASE_URL } from '../lib/apiClient';
-
 /**
 *Convert relative URL to absolute URL using API_BASE_URL, with optional fallback if url is falsy 
 */
