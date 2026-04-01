@@ -6,7 +6,7 @@ import EditPost from "../panelpages/EditPost.jsx";
 import DashBoard from "../panelpages/Dashboard.jsx";
 import AdminLayout from "../panel-components/layout/AdminLayout.jsx";
 import PostPage from "../pages/PostPage.jsx";
-import ProfilePage from "../panelpages/ProfilePage.jsx";
+import ProfilePage from "../features/profile/pages/ProfilePage.jsx";
 import Categories from "@/panelpages/Categories.jsx";
 import Posts from "@/features/posts/pages/Posts.jsx";
 

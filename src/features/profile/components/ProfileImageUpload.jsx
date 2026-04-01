@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useUploadImage } from "../hooks/useUploadImage";
 import { FaCamera, FaTimes } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,64 +15,14 @@ export default function ProfileImageUpload({
   isOpen,
   onClose,
 }) {
-  const [preview, setPreview] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-
-  const handleFileSelect = (e) => {
-    const file = e.target.files?.[0];
-
-    // Si no hay archivo (canceló el diálogo)
-    if (!file) return;
-
-    if (!(file instanceof File)) {
-      alert("Archivo inválido");
-      return;
-    }
-
-    if (!file.type || !file.type.startsWith("image/")) {
-      alert("Por favor selecciona una imagen válida");
-      return;
-    }
-
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) {
-      alert("La imagen es muy grande. Máximo 5MB");
-      return;
-    }
-
-    setSelectedFile(file);
-
-    const reader = new FileReader();
-    reader.onloadend = () => setPreview(reader.result);
-    reader.readAsDataURL(file);
-  };
-
-  // Subir imagen al servidor
-  const handleUpload = async () => {
-    if (!selectedFile) return;
-
-    try {
-      setUploading(true);
-      await onImageUpdated(selectedFile);
-
-      // Limpiar y cerrar
-      setPreview(null);
-      setSelectedFile(null);
-      onClose();
-    } catch (err) {
-      alert("Error al subir la imagen: " + err.message);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  // Cancelar y limpiar
-  const handleCancel = () => {
-    setPreview(null);
-    setSelectedFile(null);
-    onClose();
-  };
+  const {
+    preview,
+    selectedFile,
+    uploading,
+    handleFileSelect,
+    handleUpload,
+    handleCancel,
+  } = useUploadImage(onImageUpdated, onClose);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCancel}>

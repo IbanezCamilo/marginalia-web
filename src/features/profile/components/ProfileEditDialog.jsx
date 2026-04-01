@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useEditProfile } from "../hooks/useEditProfile";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,59 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
-  const [editedData, setEditedData] = useState({
-    name: user.name,
-    description: user.description,
-  });
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    if (isOpen && user) {
-      setEditedData({
-        name: user.name || "",
-        description: user.description || "",
-      });
-    }
-  }, [isOpen, user]);
-
-  // Manejar cambios en inputs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Guardar cambios
-  const handleSave = async () => {
-    if (!editedData.name.trim()) {
-      alert("El nombre no puede estar vacío");
-      return;
-    }
-
-    try {
-      setSaving(true);
-      await onSave({
-        name: editedData.name.trim(),
-        description: editedData.description.trim(),
-      });
-      onClose();
-    } catch (err) {
-      alert("Error al guardar: " + err.message);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  // Cancelar
-  const handleCancel = () => {
-    setEditedData({
-      name: user.name,
-      description: user.description,
-    });
-    onClose();
-  };
+  const { editedData, saving, handleChange, handleSave, handleCancel } =
+    useEditProfile(user, onSave, isOpen, onClose);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

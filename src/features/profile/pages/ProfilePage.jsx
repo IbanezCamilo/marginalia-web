@@ -1,82 +1,23 @@
-// src/panel-components/profile/ProfilePage.jsx
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaUserEdit, FaEnvelope, FaUserShield, FaCamera } from "react-icons/fa";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import ProfileImageUpload from "../panel-components/profile/ProfileImageUpload";
-import ProfileEditDialog from "../panel-components/profile/ProfileEditDialog";
-import { userService } from "../data/userService";
+import ProfileImageUpload from "../components/ProfileImageUpload";
+import ProfileEditDialog from "../components/ProfileEditDialog";
+import { useMyProfile } from "../hooks/useMyProfile";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Estados de modals
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const {
+    user,
+    loading,
+    error,
+    loadProfile,
+    handleImageUpdate,
+    handleDataUpdate,
+  } = useMyProfile();
 
-  // Cargar perfil al inicio
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
-  const loadProfile = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Usa el servicio (mock o real )
-      const data = await userService.getProfile();
-
-      // Mapear respuesta del backend a nuestro formato
-      const mappedUser = {
-        id: data.userId,
-        name: data.name,
-        role: data.role,
-        email: data.email,
-        description: data.description || "",
-        image:
-          data.image ||
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
-      };
-      setUser(mappedUser);
-    } catch (err) {
-      setError("Error al cargar el perfil: " + err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Manejar subida de imagen
-  const handleImageUpdate = async (imageFile) => {
-    const response = await userService.uploadProfileImage(imageFile);
-    const imageUrl = response.imageUrl.startsWith("http")
-      ? response.imageUrl
-      : `http://localhost:8080${response.imageUrl}`;
-
-    setUser((prev) => ({ ...prev, image: imageUrl }));
-    alert("Imagen actualizada correctamente ✓");
-  };
-
-  // Manejar actualización de datos
-  const handleDataUpdate = async (updatedData) => {
-    try {
-      const updatedUser = await userService.updateProfile(updatedData);
-
-      setUser((prev) => ({
-        ...prev,
-        name: updatedUser.name,
-        description: updatedUser.description || "",
-      }));
-      alert("Perfil actualizado correctamente");
-    } catch (error) {
-      setError("Error al editar usuario");
-    }
-  };
-
-  // Estados de carga
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto p-6 text-center">
@@ -153,7 +94,7 @@ export default function ProfilePage() {
         </CardContent>
       </Card>
 
-      {/* Modal para cambiar imagen */}
+      {/* Change image modal */}
       <ProfileImageUpload
         currentImage={user.image}
         onImageUpdated={handleImageUpdate}
@@ -161,7 +102,7 @@ export default function ProfilePage() {
         onClose={() => setImageModalOpen(false)}
       />
 
-      {/* Modal para editar datos */}
+      {/* Edit data modal */}
       <ProfileEditDialog
         user={user}
         onSave={handleDataUpdate}

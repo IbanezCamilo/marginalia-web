@@ -1,0 +1,81 @@
+import { useState, useEffect } from "react";
+
+export function useUploadImage(
+    onImageUpdated,
+    onClose,
+    isOpen,
+){
+  const [preview, setPreview] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  
+  //clean state when dialog opens
+  useEffect(() => {
+    setPreview(null);
+    setSelectedFile(null);
+  }, [isOpen]);
+  
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+
+    // If there is no file (cancel)
+    if (!file) return;
+
+    if (!(file instanceof File)) {
+      alert("Archivo inválido");
+      return;
+    }
+
+    if (!file.type || !file.type.startsWith("image/")) {
+      alert("Por favor selecciona una imagen válida");
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert("La imagen es muy grande. Máximo 5MB");
+      return;
+    }
+
+    setSelectedFile(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => setPreview(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  // Upload Image to server
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+
+    try {
+      setUploading(true);
+      await onImageUpdated(selectedFile);
+
+      // Clean and close
+      setPreview(null);
+      setSelectedFile(null);
+      onClose();
+    } catch (err) {
+      alert("Error al subir la imagen: " + err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  //    Clean and cancel
+  const handleCancel = () => {
+    setPreview(null);
+    setSelectedFile(null);
+    onClose();
+  };
+
+  return {
+    preview,
+    selectedFile,
+    uploading,
+    handleFileSelect,
+    handleUpload,
+    handleCancel
+   }
+}
