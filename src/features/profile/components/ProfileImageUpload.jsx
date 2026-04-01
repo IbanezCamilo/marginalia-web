@@ -22,7 +22,7 @@ export default function ProfileImageUpload({
     handleFileSelect,
     handleUpload,
     handleCancel,
-  } = useUploadImage(onImageUpdated, onClose);
+  } = useUploadImage(onImageUpdated, onClose, isOpen);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCancel}>

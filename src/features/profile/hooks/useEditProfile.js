@@ -47,7 +47,7 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
     }
   };
 
-  // Cance
+  // Cancel
   const handleCancel = () => {
     setEditedData({
       name: user.name,
@@ -63,5 +63,5 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
     handleSave,
     handleCancel,
   }
-  
+
 }
