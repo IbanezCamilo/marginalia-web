@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { categoryService } from "@/data/categoryService";
+import { useCategories } from "../hooks/useCategories";
 import {
   Table,
   TableBody,
@@ -12,36 +12,7 @@ import {
 } from "@/components/ui/table";
 
 export default function Categories() {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadCategories = async () => {
-      const data = await categoryService.getAll();
-      setCategories(data);
-      setLoading(false);
-    };
-
-    loadCategories();
-  }, []);
-
-  const CategoryRow = ({ category }) => {
-    const formattedDate = category.createdAt
-      ? new Date(category.createdAt).toLocaleDateString("es-ES", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        })
-      : "—";
-
-    return (
-      <TableRow>
-        <TableCell>{category.name}</TableCell>
-        <TableCell>{category.slug}</TableCell>
-        <TableCell>{category.createdAt}</TableCell>
-      </TableRow>
-    );
-  };
+  const { categories, loading } = useCategories();
 
   if (loading) return <p>Cargando...</p>;
 

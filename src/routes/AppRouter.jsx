@@ -7,7 +7,7 @@ import DashBoard from "../panelpages/Dashboard.jsx";
 import AdminLayout from "../panel-components/layout/AdminLayout.jsx";
 import PostPage from "../pages/PostPage.jsx";
 import ProfilePage from "../features/profile/pages/ProfilePage.jsx";
-import Categories from "@/panelpages/Categories.jsx";
+import Categories from "@/features/categories/pages/Categories.jsx";
 import Posts from "@/features/posts/pages/Posts.jsx";
 
 export const router = createBrowserRouter([
