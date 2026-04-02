@@ -1,3 +1,5 @@
+import { TableCell, TableRow } from "@/components/ui/table";
+
 export default function CategoryRow({ category }) {
   const formattedDate = category.createdAt
     ? new Date(category.createdAt).toLocaleDateString("es-ES", {

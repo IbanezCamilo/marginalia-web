@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useCategories } from "../hooks/useCategories";
+import CategoryRow from "../components/CategoryRow";
 import {
   Table,
   TableBody,
