@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App.jsx";
 import LoginPage from "@/features/auth/pages/LoginPage.jsx";
-import CreatePost from "../panelpages/createPost.jsx";
-import EditPost from "../panelpages/EditPost.jsx";
+import CreatePost from "../features/posts/pages/CreatePost.jsx";
+import EditPost from "../features/posts/pages/EditPost.jsx";
 import DashBoard from "../panelpages/Dashboard.jsx";
 import AdminLayout from "../panel-components/layout/AdminLayout.jsx";
 import PostPage from "../pages/PostPage.jsx";
