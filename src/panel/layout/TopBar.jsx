@@ -4,7 +4,7 @@ import { CiLogout } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { userService } from "../../data/userService";
+import { userService } from "../../features/profile/services/userService";
 import { Menu } from "lucide-react";
 
 export default function TopBar({ onMenuClick }) {
