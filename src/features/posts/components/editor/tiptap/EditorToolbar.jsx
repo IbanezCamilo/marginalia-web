@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useEditorState } from "@/features/posts/hooks/useEditorState";
+import { useEditorState } from "@/features/posts/hooks/editor/useEditorState";
 
 import InlineControls from "./controls/InlineControls";
 import BlockControls from "./controls/BlockControls";

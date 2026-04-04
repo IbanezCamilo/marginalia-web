@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { postService } from "@/data/myPostService";
 import PostListItemCard from "@/features/posts/components/PostListItemCard.jsx";
 import { Button } from "@/components/ui/button";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { useMyPosts } from "@/features/posts/hooks/useMyPosts";
 
 export default function Posts() {

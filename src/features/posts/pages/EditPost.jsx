@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PostEditor from "../components/editor/PostEditor";
 import EditorHeader from "@/features/posts/components/editor/EditorTopBar";
@@ -8,10 +7,10 @@ import { useEditPost } from "@/features/posts/hooks/useEditPost";
 export default function EditPost() {
   const { id } = useParams(); //Extract the :id from URL
   const navigate = useNavigate();
-  const [image, setImage] = useState(null);
   const {
     post,
     categories,
+    image,
     loading,
     loadError,
     submitting,

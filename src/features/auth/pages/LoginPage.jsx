@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userService } from "@/data/userService";
+import { userService } from "@/features/profile/services/userService";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

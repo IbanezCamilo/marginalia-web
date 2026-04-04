@@ -1,6 +1,6 @@
-import CategoryBox from "../components/CategoryBox";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import CategoryBox from "../features/categories/components/CategoryBox";
+import Navbar from "../shared/components/Navbar";
+import Footer from "../shared/components/Footer";
 import PostCard from "@/features/posts/components/PostCard";
 import { Link } from "react-router-dom";
 

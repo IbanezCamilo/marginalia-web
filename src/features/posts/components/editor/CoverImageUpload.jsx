@@ -1,4 +1,4 @@
-import { useCoverImageUpload } from "../../hooks/useCoverImageUpload";
+import { useCoverImageUpload } from "../../hooks/editor/useCoverImageUpload";
 import { Upload, X, ImageIcon } from "lucide-react";
 
 export default function CoverImageUpload({ previewUrl, imageSrc, onChange }) {

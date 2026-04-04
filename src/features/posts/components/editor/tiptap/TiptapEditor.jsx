@@ -1,5 +1,5 @@
 import { EditorContent } from "@tiptap/react";
-import { useTiptapEditor } from "@/features/posts/hooks/useTiptapEditor";
+import { useTiptapEditor } from "@/features/posts/hooks/editor/useTiptapEditor";
 import EditorToolbar from "./EditorToolbar";
 import WordCount from "./WordCount";
 import "./TiptapEditor.css"; // Import custom CSS styles|
