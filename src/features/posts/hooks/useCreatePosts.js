@@ -1,0 +1,107 @@
+import { useState, useEffect } from "react";
+import { postService } from "@/data/myPostService";
+import { validatePost } from "@/utils/postValidation";
+import { categoryService } from "@/data/categoryService";
+
+const INITIAL_POST = {
+  title: "",
+  content: "",
+  categoryId: "",
+  image: "",
+  previewUrl: "",
+};
+
+export function useCreatePost() {
+  const [post, setPost] = useState(INITIAL_POST);
+  const [image, setImage] = useState(null); // image to upload
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
+  //Categories load
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      setLoading(true);
+      setLoadError(null);
+
+      const categoriesData = await categoryService.getAll();
+
+      const categoriesMapped = categoriesData.map((cat) => {
+        return { id: cat.id, name: cat.name };
+      });
+      setCategories(categoriesMapped);
+    } catch (err) {
+      setLoadError("Error al cargar las categorías: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (field, value) => {
+    if (field === "image") {
+      setImage(value);
+      return;
+    }
+    setPost((prev) => ({ ...prev, [field]: value }));
+  };
+
+  //Uploading Post
+  const handleOnSubmit = async (e, initialStatus) => {
+    //Prevent default form submit
+    e?.preventDefault?.();
+
+    //Form Validation
+    const validation = validatePost(post, initialStatus);
+
+    if (!validation.isValid) {
+      validation.errors.forEach((err) => console.error("  -", err));
+      alert(
+        "Por favor completa todos los campos:\n\n" +
+          validation.errors.join("\n"),
+      );
+      return;
+    }
+
+    //Data Preparing
+    const postData = {
+      title: post.title.trim(),
+      content: post.content,
+      categoryId: post.categoryId,
+      status: initialStatus,
+    };
+
+    //Sending to Service
+    try {
+      setSubmitting(true);
+      setSubmitError(null);
+
+      const createdPost = await postService.create(postData, image);
+
+      alert(
+        `Post ${
+          initialStatus === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
+        } exitosamente!`,
+      );
+
+      //Form reset
+      setPost(INITIAL_POST);
+
+      setImage(null);
+    } catch (error) {
+      setSubmitError(error.message);
+      alert("Error al crear el post:\n\n" + error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return {
+    post, categories, loading, loadError, submitting, submitError, loadCategories, handleChange, handleOnSubmit
+  }
+}

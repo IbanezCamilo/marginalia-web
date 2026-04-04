@@ -127,6 +127,7 @@ export function useMyPosts(currentPage) {
     requestDeletePost,
     requestToggleStatus,
     confirmDialogProps,
+    handleConfirm,
   };
   
 }
