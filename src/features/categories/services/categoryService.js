@@ -1,4 +1,4 @@
-import { apiClient } from '../lib/apiClient';
+import { apiClient } from '@/lib/apiClient';
 
 export const categoryService = {
     //public endpoints

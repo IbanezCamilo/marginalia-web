@@ -1,5 +1,5 @@
 import { toAbsoluteUrl } from "@/utils/imageUtils";
-import { apiClient } from "../lib/apiClient";
+import { apiClient } from "@/lib/apiClient";
 
 const DEFAULT_AVATAR = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
 
@@ -53,6 +53,5 @@ export const userService = {
         formData.append('image', imageFile);
         return apiClient.postForm(`${BASE_ENDPOINT}/upload-image`, formData);
     },
-
 
 };

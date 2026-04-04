@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { postService } from "@/data/myPostService";
-import { categoryService } from "@/data/categoryService";
+import { postService } from "../services/myPostService";
+import { categoryService } from "@/features/categories/services/categoryService";
 import { validatePost } from "@/utils/postValidation";
 
 export function useEditPost(id, navigate) {

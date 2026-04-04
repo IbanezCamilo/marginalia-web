@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { userService } from "@/data/userService";
+import { userService } from "@/features/profile/services/userService";
 
 export function useMyProfile(){
     const [user, setUser] = useState(null);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { postService } from "@/data/myPostService";
+import { postService } from "../services/myPostService";
 import { validatePost } from "@/utils/postValidation";
-import { categoryService } from "@/data/categoryService";
+import { categoryService } from "@/features/categories/services/categoryService";
 
 const INITIAL_POST = {
   title: "",

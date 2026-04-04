@@ -1,4 +1,4 @@
-import { categoryService } from "@/data/categoryService";
+import { categoryService } from "../services/categoryService";
 import { useState, useEffect } from "react";
 
 export function useCategories(){
