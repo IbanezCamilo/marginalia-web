@@ -1,7 +1,7 @@
-import { PanelCard } from "../panel-components/layout/PanelCard";
-import { PanelCardSkeleton } from "../panel-components/layout/PanelCardSkeleton";
+import { PanelCard } from "../components/PanelCard";
+import { PanelCardSkeleton } from "../components/PanelCardSkeleton";
 import { useState, useEffect } from "react";
-import { userService } from "../data/userService";
+import { userService } from "../../profile/services/userService";
 
 export default function DashBoard() {
   const [user, setUser] = useState(null);
