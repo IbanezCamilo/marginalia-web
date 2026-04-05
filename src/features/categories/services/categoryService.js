@@ -7,9 +7,9 @@ export const categoryService = {
     getById: (id) => apiClient.get(`/public/categories/${id}`),
 
     //Only admin endpoints
-    create: (dto) => apiClient.post('/admin/categories', {name}),
+    create: (dto) => apiClient.post('/admin/categories', {name: dto.name}),
 
-    update: (id, dto) => apiClient.put(`/admin/categories/${id}`, {name}),
+    update: (id, dto) => apiClient.put(`/admin/categories/${id}`, {name: dto.name}),
 
     delete: (id) => apiClient.delete(`/admin/categories/${id}`),
 };

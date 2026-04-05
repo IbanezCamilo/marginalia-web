@@ -14,6 +14,7 @@ export default function Posts() {
     totalPages,
     totalElements,
     confirmState,
+    setConfirmState,
     currentDialogProps,
     requestDeletePost,
     requestToggleStatus,

@@ -25,8 +25,8 @@ export default function SidebarCollapsible({
     { path: "/user/create-post", icon: PenSquare, label: "Crear Post" },
     { path: "/user/posts", icon: List, label: "Ver Posts" },
     { path: "/user/categories", icon: Folder, label: "Categorías" },
+    { path: "/user/users", icon: Users, label: "Usuarios" },
     { path: "/user/tags", icon: Tag, label: "Etiquetas" },
-    { path: "/user/tags", icon: Tag, label: "Usuarios" },
   ];
 
   return (

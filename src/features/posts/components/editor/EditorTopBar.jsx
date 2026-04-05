@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export default function EditorMenuBar({
+export default function EditorTopbar({
   onSaveDraft,
   onPublish,
   submitting,

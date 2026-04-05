@@ -13,7 +13,7 @@ export default function CategoryRow({ category }) {
     <TableRow>
       <TableCell>{category.name}</TableCell>
       <TableCell>{category.slug}</TableCell>
-      <TableCell>{category.createdAt}</TableCell>
+      <TableCell>{formattedDate}</TableCell>
     </TableRow>
   );
 }

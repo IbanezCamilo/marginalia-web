@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { postService } from "../services/myPostService";
 import { categoryService } from "@/features/categories/services/categoryService";
 import { validatePost } from "@/utils/postValidation";
+import { BASE_URL } from "@/lib/config";
 
 export function useEditPost(id, navigate) {
   const [post, setPost] = useState(null); // null while loading
@@ -34,7 +35,7 @@ export function useEditPost(id, navigate) {
           status: postData.status,
           image: postData.coverImage ?? "",
           previewUrl: postData.coverImage
-            ? `http://localhost:8080/api/images/${postData.coverImage}`
+            ? `${BASE_URL}/api/images/${postData.coverImage}`
             : "",
           updatedAt: postData.updatedAt,
           createdAt: postData.createdAt,

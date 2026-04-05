@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { userService } from "@/features/profile/services/userService";
+import { BASE_URL } from "@/lib/config";
 
 export function useMyProfile(){
     const [user, setUser] = useState(null);
@@ -43,7 +44,7 @@ export function useMyProfile(){
     const response = await userService.uploadProfileImage(imageFile);
     const imageUrl = response.imageUrl.startsWith("http")
       ? response.imageUrl
-      : `http://localhost:8080${response.imageUrl}`;
+      : `${BASE_URL}${response.imageUrl}`;
 
     setUser((prev) => ({ ...prev, image: imageUrl }));
     alert("Imagen actualizada correctamente ✓");

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { postService } from "../services/myPostService";
+import { toast } from "sonner";
 
 export function useMyPosts(currentPage) {
     const [posts, setPosts] = useState([]);
@@ -67,6 +68,7 @@ export function useMyPosts(currentPage) {
       } catch (error) {
         toast.error("Error al eliminar el post");
       }
+      return; // If it's a delete action, we don't need to continue to toggle status logic
     }
 
     //initialize variables
@@ -75,9 +77,10 @@ export function useMyPosts(currentPage) {
 
     if (type == "toggleStatus") {
 
-       newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
-       previusPosts = posts;
+       const newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
+       const previousPosts = posts;
 
+      // Optimistic UI update
       setPosts(prev => prev.map((p) => (p.id === postId ? { ...p, status: newStatus } : p)));
     }
 
@@ -89,7 +92,7 @@ export function useMyPosts(currentPage) {
           : "Post guardado como borrador",
       );
     } catch (err) {
-      setPosts(previousPosts);
+      setPosts(previousPosts); //Revert to previous state
       toast.error("Error al cambiar el estado");
     }
   };
@@ -123,6 +126,7 @@ export function useMyPosts(currentPage) {
     totalPages,
     totalElements,
     confirmState,
+    setConfirmState,
     currentDialogProps,
     requestDeletePost,
     requestToggleStatus,

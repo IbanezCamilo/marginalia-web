@@ -1,7 +1,7 @@
 import PostEditor from "../components/editor/PostEditor";
-import EditorHeader from "@/features/posts/components/editor/EditorTopBar";
+import EditorTopbar from "@/features/posts/components/editor/EditorTopBar";
 import SideBarSettings from "@/features/posts/components/editor/SideBarSettings";
-import { useCreatePost } from "../hooks/useCreatePosts";
+import { useCreatePost } from "../hooks/useCreatePost";
 
 export default function CreatePost() {
   const {
@@ -55,7 +55,7 @@ export default function CreatePost() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/**Fixed Header */}
-      <EditorHeader
+      <EditorTopbar
         onSaveDraft={(e) => handleOnSubmit(e, "DRAFT")}
         onPublish={(e) => handleOnSubmit(e, "PUBLISHED")}
         submitting={submitting}

@@ -1,10 +1,5 @@
-import { useState } from "react";
 import Home from "./pages/Homepage";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return <Home />;
 }
-
-export default App;
