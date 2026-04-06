@@ -3,6 +3,7 @@ import { postService } from "../services/myPostService";
 import { categoryService } from "@/features/categories/services/categoryService";
 import { validatePost } from "@/utils/postValidation";
 import { BASE_URL } from "@/lib/config";
+import { toast } from "sonner";
 
 export function useEditPost(id, navigate) {
   const [post, setPost] = useState(null); // null while loading
@@ -71,10 +72,13 @@ export function useEditPost(id, navigate) {
 
     if (!validation.isValid) {
       validation.errors.forEach((err) => console.error("  -", err));
-      alert(
-        "Por favor completa todos los campos:\n\n" +
-          validation.errors.join("\n"),
-      );
+      toast.warning("Por favor completa todos los campos:", {
+        description: validation.errors.map(e => `• ${e}`).join("\n"),
+        classNames: {
+          description: "whitespace-pre-line"
+        }
+      });
+
       return;
     }
 
@@ -91,14 +95,16 @@ export function useEditPost(id, navigate) {
 
       await postService.update(Number(id), postData, image);
 
-      alert(
-        `Post ${statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"} exitosamente!`,
-      );
+        toast.success(`Post ${
+        statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
+        } exitosamente!`,)
 
       navigate("/user/posts"); // Volver a la lista tras guardar
     } catch (error) {
       setSubmitError(error.message);
-      alert("Error al actualizar el post:\n\n" + error.message);
+      toast.error("Error al actualizar el post:", {
+        description: error.message
+      });
     } finally {
       setSubmitting(false);
     }

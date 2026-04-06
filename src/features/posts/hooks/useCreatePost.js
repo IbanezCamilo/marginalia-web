@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { postService } from "../services/myPostService";
 import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "@/features/categories/services/categoryService";
+import { toast } from "sonner";
 
 const INITIAL_POST = {
   title: "",
@@ -61,10 +62,12 @@ export function useCreatePost() {
 
     if (!validation.isValid) {
       validation.errors.forEach((err) => console.error("  -", err));
-      alert(
-        "Por favor completa todos los campos:\n\n" +
-          validation.errors.join("\n"),
-      );
+      toast.warning("Por favor completa todos los campos:", {
+        description: validation.errors.map(e => `• ${e}`).join("\n"),
+        classNames: {
+          description: "whitespace-pre-line"
+        }
+      });
       return;
     }
 
@@ -83,11 +86,9 @@ export function useCreatePost() {
 
       const createdPost = await postService.create(postData, image);
 
-      alert(
-        `Post ${
+      toast.success(`Post ${
           initialStatus === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
-        } exitosamente!`,
-      );
+        } exitosamente!`,)
 
       //Form reset
       setPost(INITIAL_POST);
@@ -95,7 +96,9 @@ export function useCreatePost() {
       setImage(null);
     } catch (error) {
       setSubmitError(error.message);
-      alert("Error al crear el post:\n\n" + error.message);
+      toast.error("Error al crear el post:", {
+        description: error.message
+      });
     } finally {
       setSubmitting(false);
     }
