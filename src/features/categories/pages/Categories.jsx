@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCategories } from "../hooks/useCategories";
+import CreateCategoryDialog from "../components/CreateCategory";
 import CategoryRow from "../components/CategoryRow";
 import {
   Table,
@@ -12,7 +14,8 @@ import {
 } from "@/components/ui/table";
 
 export default function Categories() {
-  const { categories, loading } = useCategories();
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const { categories, addCategory, loading } = useCategories();
 
   if (loading) return <p>Cargando...</p>;
 
@@ -29,8 +32,9 @@ export default function Categories() {
           </div>
           {/**Create Category Button */}
           <Button
-            variant="destructive"
+            onClick={() => setCreateModalOpen(true)}
             className="cursor-pointer font-semibold [word-spacing:0.2rem]"
+            variant="destructive"
           >
             + Nueva Categoría
           </Button>
@@ -61,6 +65,12 @@ export default function Categories() {
             </TableBody>
           </Table>
         </div>
+
+        <CreateCategoryDialog
+          isOpen={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+          onSave={addCategory}
+        />
       </div>
     </div>
   );

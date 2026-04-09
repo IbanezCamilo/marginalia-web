@@ -15,5 +15,11 @@ export function useCategories(){
     loadCategories();
   }, []);
 
-  return{categories, loading}
+
+  const addCategory = async (category) => {
+    const newCategory = await categoryService.create(category);
+    setCategories((prev) => [...prev, newCategory]);
+  }
+
+  return{categories, addCategory, loading}
 }
