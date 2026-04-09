@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { userService } from "@/features/profile/services/userService";
 import { BASE_URL } from "@/lib/config";
+import { toast } from "sonner";
 
 export function useMyProfile(){
     const [user, setUser] = useState(null);
@@ -34,6 +35,7 @@ export function useMyProfile(){
       setUser(mappedUser);
     } catch (err) {
       setError("Error al cargar el perfil: " + err.message);
+      throw err; // Re-throw to allow further handling if needed
     } finally {
       setLoading(false);
     }
@@ -47,7 +49,7 @@ export function useMyProfile(){
       : `${BASE_URL}${response.imageUrl}`;
 
     setUser((prev) => ({ ...prev, image: imageUrl }));
-    alert("Imagen actualizada correctamente ✓");
+    toast.success("Imagen actualizada correctamente");
   };
 
   // Handle data update
@@ -60,9 +62,10 @@ export function useMyProfile(){
         name: updatedUser.name,
         description: updatedUser.description || "",
       }));
-      alert("Perfil actualizado correctamente");
+      toast.success("Perfil actualizado correctamente");
     } catch (error) {
       setError("Error al editar usuario");
+      throw error; // Re-throw to allow further handling if needed
     }
   };
 

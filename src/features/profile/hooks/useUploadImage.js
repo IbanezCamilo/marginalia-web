@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export function useUploadImage(
     onImageUpdated,
@@ -22,18 +23,18 @@ export function useUploadImage(
     if (!file) return;
 
     if (!(file instanceof File)) {
-      alert("Archivo inválido");
+      toast.error("Archivo inválido");
       return;
     }
 
     if (!file.type || !file.type.startsWith("image/")) {
-      alert("Por favor selecciona una imagen válida");
+      toast.error("Por favor selecciona una imagen válida.");
       return;
     }
 
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      alert("La imagen es muy grande. Máximo 5MB");
+      toast.warning("La imagen es muy grande. Máximo 5MB");
       return;
     }
 
@@ -57,7 +58,7 @@ export function useUploadImage(
       setSelectedFile(null);
       onClose();
     } catch (err) {
-      alert("Error al subir la imagen: " + err.message);
+      toast.error("Error al subir la imagen: " + err.message);
     } finally {
       setUploading(false);
     }

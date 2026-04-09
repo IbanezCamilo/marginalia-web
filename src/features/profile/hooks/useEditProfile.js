@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export function useEditProfile( user, onSave, isOpen, onClose ){
     
@@ -29,7 +30,7 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
   // Save changes
   const handleSave = async () => {
     if (!editedData.name.trim()) {
-      alert("El nombre no puede estar vacío");
+      toast.error("El nombre no puede estar vacío.");
       return;
     }
 
@@ -37,11 +38,11 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
       setSaving(true);
       await onSave({
         name: editedData.name.trim(),
-        description: editedData.description.trim(),
+        description: (editedData.description || "").trim(),
       });
       onClose();
     } catch (err) {
-      alert("Error al guardar: " + err.message);
+      toast.error("Error al guardar: " + err.message);
     } finally {
       setSaving(false);
     }

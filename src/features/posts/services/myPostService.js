@@ -27,8 +27,6 @@ export const postService = {
     }
     return created;
   },
-
-
   
   update: async (id, data, imageFile) => {
       const updated = await apiClient.put(`${BASE_ENDPOINT}/${id}`, {
