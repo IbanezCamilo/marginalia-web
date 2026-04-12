@@ -73,12 +73,12 @@ export function useMyPosts(currentPage) {
 
     //initialize variables
     let newStatus = null;
-    let previusPosts = null;
+    let previousPosts = null;
 
     if (type == "toggleStatus") {
 
-       const newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
-       const previousPosts = posts;
+      newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
+      previousPosts = posts;
 
       // Optimistic UI update
       setPosts(prev => prev.map((p) => (p.id === postId ? { ...p, status: newStatus } : p)));
