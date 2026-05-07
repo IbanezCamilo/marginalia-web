@@ -1,20 +1,71 @@
+import { Link } from "react-router-dom";
+import { BookOpen } from "lucide-react";
+import { BASE_URL } from "@/lib/apiClient";
 
+const stripHtml = (html = "") =>
+  html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-export default function PostCard({ category, title, date, author, image }) {
-    return (
-        <div className="w-full h-full rounded-2xl flex flex-col justify-center gap-4 p-6 shadow-sm hover:shadow-lg overflow-hidden transition-shadow duration-300 ">
-            <div className="w-full h-full overflow-hidden">
-                <img src="https://cdn.pixabay.com/photo/2020/05/25/17/21/link-5219567_1280.jpg"
-                    className="rounded object-cover hover:scale-105 transition-transform duration-500"></img>
+const getExcerpt = (content, maxLength = 140) => {
+  const text = stripHtml(content);
+  if (!text) return "Una lectura nueva del archivo literario.";
+  return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
+};
+
+const formatDate = (date) => {
+  if (!date) return "";
+
+  return new Intl.DateTimeFormat("es-CO", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(date));
+};
+
+export default function PostCard({ post }) {
+  const author = post.authorName ?? post.AuthorName ?? "Autor";
+  const category = post.categoryName ?? post.CategoryName ?? "Lectura";
+  const coverImage = post.coverImage;
+  const imageSrc = coverImage ? `${BASE_URL}/images/${coverImage}` : null;
+
+  return (
+    <article className="group h-full border-t border-stone-200 pt-5">
+      <Link to={`/post/${post.slug}`} className="grid h-full gap-4">
+        <div className="aspect-[4/3] overflow-hidden rounded-md bg-stone-100">
+          {imageSrc ? (
+            <img
+              src={imageSrc}
+              alt={post.title}
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-stone-400">
+              <BookOpen size={32} strokeWidth={1.5} />
             </div>
-            <div className="flex flex-col items-start">
-                <p className="text-sm text-gray-500 justify-self-start">{date}</p>
-                <h2 className="text-lg font-semibold">{title}</h2>
-            </div>
-            <div className="flex flex-row justify-between items-center">
-                <p className="text-xs text-gray-600">Por {author}</p>
-                <span className="text-sm text-gray-800">{category}</span>
-            </div>
+          )}
         </div>
-    )
+
+        <div className="flex h-full flex-col">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-[0.14em] text-rose-700">
+            <span>{category}</span>
+            <span className="text-stone-300">/</span>
+            <time className="text-stone-500">{formatDate(post.createdAt)}</time>
+          </div>
+
+          <h2 className="mt-3 font-serif text-2xl leading-tight text-stone-950 transition-colors group-hover:text-rose-800">
+            {post.title}
+          </h2>
+
+          <p className="mt-3 text-sm leading-6 text-stone-600">
+            {getExcerpt(post.content)}
+          </p>
+
+          <p className="mt-5 text-sm font-medium text-stone-900">Por {author}</p>
+        </div>
+      </Link>
+    </article>
+  );
 }

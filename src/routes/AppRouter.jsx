@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
 
   //Public post page
   {
-    path: "/post/:id",
+    path: "/post/:slug",
     element: <PostPage />,
   },
 

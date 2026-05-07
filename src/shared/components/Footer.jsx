@@ -1,15 +1,36 @@
+import { Link } from "react-router-dom";
 
+export default function Footer() {
+  return (
+    <footer className="border-t border-stone-200 bg-stone-950 text-stone-300">
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-10 sm:px-8 md:grid-cols-[1.3fr_0.7fr]">
+        <div>
+          <Link to="/" className="font-serif text-2xl text-white">
+            Blog Literario
+          </Link>
+          <p className="mt-4 max-w-xl text-sm leading-6 text-stone-400">
+            Un archivo editorial para publicar, leer y descubrir textos con una experiencia tranquila.
+          </p>
+        </div>
 
-export default function Footer(){
-    return(
-        <footer className="bg-gray-100 text-gray-700 py-8 mt-12">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <p className="text-sm">&copy; 2025 Blog_Literario. Todos los derechos Reservados.</p>
-                <div className="text-sm mt-4 flex justify-center space-x-4">
-                    <a href="#" className="hover:underline underline-offset-2">Inicio</a>
-                    <a href="#" className="hover:underline underline-offset-2">Acerca de</a>
-                </div>
-            </div>
-        </footer>
-    )
+        <nav className="flex flex-wrap gap-5 text-sm md:justify-end">
+          <Link to="/" className="transition hover:text-white">
+            Inicio
+          </Link>
+          <Link to="/#categorias" className="transition hover:text-white">
+            Categorias
+          </Link>
+          <Link to="/auth/login" className="transition hover:text-white">
+            Iniciar sesion
+          </Link>
+        </nav>
+      </div>
+      <div className="border-t border-white/10">
+        <div className="mx-auto flex max-w-7xl justify-between px-5 py-5 text-xs text-stone-500 sm:px-8">
+          <p>Copyright 2026 Blog Literario.</p>
+          <p>Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+  );
 }
