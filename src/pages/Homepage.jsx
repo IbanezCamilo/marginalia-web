@@ -4,7 +4,7 @@ import { BASE_URL } from "@/lib/apiClient";
 import PostCard from "@/features/posts/components/PostCard";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import CategoryBox from "../features/categories/components/CategoryBox";
-import { usePublicCategories } from "../features/categories/hooks/usePublicCategories";
+import { usePublicCategories } from "@/features/categories/hooks/usePublicCategories";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
 
