@@ -53,7 +53,7 @@ function AuthorCard({ post }) {
   return (
     <div className="mt-14 flex items-start gap-5 border-t border-stone-200 pt-10">
       {/* Avatar */}
-      <Link to={`/autor/${post.authorId}`} className="shrink-0">
+      <Link to={`/author/${post.authorId}`} className="shrink-0">
         {avatarSrc ? (
           <img
             src={avatarSrc}
@@ -73,7 +73,7 @@ function AuthorCard({ post }) {
           Escrito por
         </p>
         <Link
-          to={`/autor/${post.authorId}`}
+          to={`/author/${post.authorId}`}
           className="mt-1 block font-serif text-xl text-stone-950 transition hover:text-rose-800"
         >
           {post.authorName}
@@ -84,7 +84,7 @@ function AuthorCard({ post }) {
           </p>
         )}
         <Link
-          to={`/autor/${post.authorId}`}
+          to={`/author/${post.authorId}`}
           className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-stone-500 transition hover:text-rose-700"
         >
           Ver más publicaciones →
@@ -186,7 +186,7 @@ export default function PostPage() {
               <p className="mt-6 text-sm font-medium text-stone-600">
                 Escrito por{" "}
                 <Link
-                  to={`/autor/${post.authorId}`}
+                  to={`/author/${post.authorId}`}
                   className="text-stone-950 transition hover:text-rose-800"
                 >
                   {author}

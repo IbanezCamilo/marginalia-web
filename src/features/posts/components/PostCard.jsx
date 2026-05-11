@@ -24,7 +24,7 @@ const formatDate = (date) => {
   }).format(new Date(date));
 };
 
-export default function PostCard({ post }) {
+export default function PostCard({ post, hideAuthor = false }) {
   const author = post.authorName ?? post.AuthorName ?? "Autor";
   const category = post.categoryName ?? post.CategoryName ?? "Lectura";
   const coverImage = post.coverImage;
@@ -62,8 +62,7 @@ export default function PostCard({ post }) {
           <p className="mt-3 text-sm leading-6 text-stone-600">
             {getExcerpt(post.content)}
           </p>
-
-          <p className="mt-5 text-sm font-medium text-stone-900">Por {author}</p>
+          {!hideAuthor && (<p className="mt-5 text-sm font-medium text-stone-900">Por {author}</p>)}
         </div>
       </Link>
     </article>

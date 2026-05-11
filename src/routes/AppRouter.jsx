@@ -8,9 +8,9 @@ import AdminLayout from "../panel/layout/AdminLayout.jsx";
 import Categories from "@/features/categories/pages/Categories.jsx";
 import Posts from "@/features/posts/pages/Posts.jsx";
 import ProfilePage from "../features/profile/pages/ProfilePage.jsx";
-import PostPage from "../pages/PostPage.jsx"; 
-import CategoryPage from "../pages/CategoryPage.jsx"; 
-// import AuthorPage from "@/pages/AuthorPage.jsx";
+import PostPage from "@/pages/PostPage.jsx"; 
+import CategoryPage from "@/pages/CategoryPage.jsx"; 
+import AuthorPage from "@/pages/AuthorPage.jsx";
 
 export const router = createBrowserRouter([
   //Public home route
@@ -28,11 +28,11 @@ export const router = createBrowserRouter([
     element: <PostPage />,
   },
 
-  // //Public author page
-  // {
-  //   path: "/author/:authorId",
-  //   element: <AuthorPage/>,
-  // },
+  //Public author page
+  {
+    path: "/author/:authorId",
+    element: <AuthorPage/>,
+  },
 
   // Public category page
   {
