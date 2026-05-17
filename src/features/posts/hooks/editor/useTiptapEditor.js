@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import UnderlineEditor from "@tiptap/extension-underline";  // ← faltaba
@@ -43,6 +44,13 @@ export function useTiptapEditor({content = "", onChange}){
       },
     }
   });
+
+  // Update editor content when the content prop changes
+  useEffect(() => {
+    if (editor && content !== undefined) {
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
 
   return editor;    
 }

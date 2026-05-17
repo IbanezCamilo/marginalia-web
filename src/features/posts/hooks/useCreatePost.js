@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { postService } from "../services/myPostService";
 import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "@/features/categories/services/categoryService";
@@ -13,6 +14,7 @@ const INITIAL_POST = {
 };
 
 export function useCreatePost() {
+  const navigate = useNavigate();
   const [post, setPost] = useState(INITIAL_POST);
   const [image, setImage] = useState(null); // image to upload
   const [categories, setCategories] = useState([]);
@@ -92,8 +94,12 @@ export function useCreatePost() {
 
       //Form reset
       setPost(INITIAL_POST);
-
       setImage(null);
+
+      // Redirect to posts page after a short delay
+      setTimeout(() => {
+        navigate("/user/posts");
+      }, 800);
     } catch (error) {
       setSubmitError(error.message);
       toast.error("Error al crear el post:", {

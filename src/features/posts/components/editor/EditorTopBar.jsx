@@ -16,7 +16,7 @@ export default function EditorTopbar({
         {/**Navegation */}
         <div className="flex items-center gap-3 w-1/6">
           <button
-            onClick={() => navigate("/user/dashboard")}
+            onClick={() => navigate("/user/posts")}
             className="flex items-center gap-2 cxtext-gray-600 hover:text-gray-800 transition-colors"
           >
             <span className="flex items-center justify-between gap-2 text-sm font-medium cursor-pointer">
