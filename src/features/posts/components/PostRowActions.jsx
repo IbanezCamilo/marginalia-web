@@ -1,4 +1,3 @@
-import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,23 +5,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { SlOptions } from "react-icons/sl";
-import { MdDeleteForever } from "react-icons/md";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, MoreHorizontal, Trash2 } from "lucide-react";
 
 export default function PostRowActions({ onDelete, onToggleStatus, status }) {
   const isPublished = status === "PUBLISHED";
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="size-8 p-0">
-          <SlOptions size={18} />
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="rounded-md text-stone-500 hover:bg-stone-100 hover:text-stone-950"
+        >
+          <MoreHorizontal size={18} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-0 w-fit p-1">
+      <DropdownMenuContent className="w-44 rounded-md border-stone-200 p-1">
         {isPublished ? (
           <DropdownMenuItem
-            className="flex items-center justify-stretch gap-2 cursor-pointer"
+            className="flex cursor-pointer items-center gap-2 text-stone-700"
             onClick={onToggleStatus}
           >
             <EyeOff size={16} />
@@ -30,27 +32,19 @@ export default function PostRowActions({ onDelete, onToggleStatus, status }) {
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem
-            className="group flex items-center justify-stretch gap-2 cursor-pointer
-            text-gray-700
-            hover:bg-green-100 hover:text-green-700
-            focus:bg-green-100 focus:text-green-700
-            data-[highlighted]:bg-green-100 data-[highlighted]:text-green-700
-            "
+            className="flex cursor-pointer items-center gap-2 text-stone-700 data-[highlighted]:bg-emerald-50 data-[highlighted]:text-emerald-700"
             onClick={onToggleStatus}
           >
-            <Eye
-              size={16}
-              className="group-hover:text-green-700 group-focus:text-green-700"
-            />
+            <Eye size={16} />
             Publicar
           </DropdownMenuItem>
         )}
         <DropdownMenuItem
           variant="destructive"
-          className="flex items-center justify-stretch cursor-pointer"
+          className="flex cursor-pointer items-center gap-2"
           onClick={onDelete}
         >
-          <MdDeleteForever size={16} />
+          <Trash2 size={16} />
           Eliminar
         </DropdownMenuItem>
       </DropdownMenuContent>
