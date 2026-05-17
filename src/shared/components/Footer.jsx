@@ -9,7 +9,7 @@ export default function Footer() {
             Blog Literario
           </Link>
           <p className="mt-4 max-w-xl text-sm leading-6 text-stone-400">
-            Un archivo editorial para publicar, leer y descubrir textos con una experiencia tranquila.
+            Un espacio dedicado al rescate de la lectura.
           </p>
         </div>
 

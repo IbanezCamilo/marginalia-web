@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { LogIn, PenLine } from "lucide-react";
+import Logo from  "./logo";
 
 export default function Navbar() {
   return (
@@ -8,10 +9,11 @@ export default function Navbar() {
         <div className="flex items-center gap-8">
           <Link to="/" className="group flex items-center gap-3">
             <span className="grid size-9 place-items-center rounded-md border border-stone-300 bg-stone-950 text-white">
-              <PenLine size={18} strokeWidth={1.8} />
+              {/* <PenLine size={18} strokeWidth={1.8} /> */}
+              <Logo size={30} />
             </span>
             <span className="font-serif text-xl text-stone-950 transition-colors group-hover:text-rose-800">
-              Blog Literario
+              Marginalia
             </span>
           </Link>
 

@@ -11,6 +11,7 @@ import ProfilePage from "../features/profile/pages/ProfilePage.jsx";
 import PostPage from "@/pages/PostPage.jsx"; 
 import CategoryPage from "@/pages/CategoryPage.jsx"; 
 import AuthorPage from "@/pages/AuthorPage.jsx";
+import NotFoundPage from "@/shared/pages/NotFoundPage.jsx";
 
 export const router = createBrowserRouter([
   //Public home route
@@ -52,5 +53,11 @@ export const router = createBrowserRouter([
       { path: "categories", element: <Categories /> },
       { path: "posts", element: <Posts /> },
     ],
+  },
+
+  // Catch-all 404
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);

@@ -108,12 +108,12 @@ export default function Homepage() {
           <section className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:py-16">
             <div className="border-b border-stone-200 pb-10">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-rose-700">
-                Blog Literario
+                Marginalia
               </p>
               <div className="mt-5 grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-end">
                 <div>
                   <h1 className="max-w-4xl font-serif text-5xl leading-none text-stone-950 sm:text-6xl lg:text-7xl">
-                    Lecturas, autores y ensayos para volver a mirar la palabra.
+                    Ideas que demandan tiempo en un mundo que corre.
                   </h1>
                   <p className="mt-6 max-w-2xl text-base leading-8 text-stone-600 sm:text-lg">
                     Una seleccion de publicaciones recientes, organizada para leer con calma y descubrir nuevas voces.
@@ -125,7 +125,7 @@ export default function Homepage() {
                     {totalElements} publicaciones disponibles
                   </p>
                   <p className="mt-2">
-                    El archivo se actualiza con los textos publicados por los autores del blog.
+                    Un catálogo vivo que crece al ritmo de la buena escritura.
                   </p>
                 </div>
               </div>
