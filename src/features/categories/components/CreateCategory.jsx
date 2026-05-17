@@ -15,9 +15,11 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md rounded-md border-stone-200">
         <DialogHeader>
-          <DialogTitle>Crear Categoria</DialogTitle>
+          <DialogTitle className="font-serif text-2xl">
+            Crear Categoria
+          </DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
@@ -27,7 +29,7 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
               name="name"
               value={newCategory.name}
               onChange={handleChange}
-              placeholder="Ej: Tecnología, Moda, etc."
+              placeholder="Ej: Ensayo, Poesia, Resenas"
               disabled={saving}
             />
           </div>
@@ -35,9 +37,8 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
           <div className="flex gap-3 pt-4">
             <Button
               onClick={handleSave}
-              className="flex-1 cursor-pointer"
+              className="flex-1 cursor-pointer bg-stone-950 hover:bg-rose-900"
               disabled={saving}
-              variant="destructive"
             >
               {saving ? "Creando..." : "Crear"}
             </Button>

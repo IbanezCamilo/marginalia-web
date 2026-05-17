@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Folder, Plus, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { useCategories } from "../hooks/useCategories";
@@ -17,73 +18,112 @@ export default function Categories() {
   const {
     categories,
     loading,
+    error,
     confirmState,
     setConfirmState,
     addCategory,
     requestDeleteCategory,
     handleConfirmDelete,
+    loadCategories,
   } = useCategories();
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-6xl">
+        <div className="h-80 animate-pulse rounded-md border border-stone-200 bg-white" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
+        <Folder size={40} strokeWidth={1.5} className="text-rose-700" />
+        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+          No pudimos cargar las categorias
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <Button onClick={loadCategories} className="mt-6 bg-stone-950">
+          <RefreshCw size={16} />
+          Reintentar
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="mx-auto max-w-6xl">
       <ConfirmDialog
         open={confirmState.open}
         onOpenChange={(open) => setConfirmState((prev) => ({ ...prev, open }))}
         onConfirm={handleConfirmDelete}
-        title="¿Eliminar esta categoría?"
-        description="Esta acción es permanente. Los posts asociados quedarán sin categoría."
-        confirmLabel="Sí, eliminar"
+        title="Eliminar esta categoria?"
+        description="Esta accion es permanente. Los posts asociados quedaran sin categoria."
+        confirmLabel="Si, eliminar"
       />
 
-      {/**Max Width Container */}
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
+      <div className="mb-6 rounded-md border border-stone-200 bg-[#fbf8f3] p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Categorías
-              <span
-                className="ml-2 inline-flex items-center bg-gray-100 border border-gray-200
-                   rounded-full px-2 py-0.5 text-xs font-normal text-gray-500"
-              >
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+              Taxonomia
+            </p>
+            <h1 className="mt-2 font-serif text-4xl text-stone-950">
+              Categorias
+              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-500">
                 {categories.length}
               </span>
             </h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Gestiona las categorias de tu blog
+            <p className="mt-2 text-sm text-stone-600">
+              Gestiona los temas que ordenan el archivo publico del blog.
             </p>
           </div>
-          {/**Create Category Button */}
+
           <Button
             onClick={() => setCreateModalOpen(true)}
-            className="cursor-pointer font-semibold [word-spacing:0.2rem]"
-            variant="destructive"
+            className="bg-stone-950 hover:bg-rose-900"
           >
-            + Nueva Categoría
+            <Plus size={16} />
+            Nueva Categoria
           </Button>
         </div>
+      </div>
 
-        {/**Categories Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      {categories.length === 0 ? (
+        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-stone-300 bg-white p-8 text-center">
+          <Folder size={42} strokeWidth={1.5} className="text-stone-400" />
+          <h2 className="mt-5 font-serif text-3xl text-stone-950">
+            Aun no hay categorias
+          </h2>
+          <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
+            Crea una primera categoria para que las publicaciones se puedan
+            explorar por tema.
+          </p>
+          <Button
+            onClick={() => setCreateModalOpen(true)}
+            className="mt-6 bg-stone-950 hover:bg-rose-900"
+          >
+            Crear categoria
+          </Button>
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-md border border-stone-200 bg-white shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
           <Table className="w-full">
-            {/**Table Headers */}
-            <TableHeader className="bg-gray-50 border-b border-gray-200">
+            <TableHeader className="border-b border-stone-200 bg-stone-50">
               <TableRow>
-                <TableHead className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
                   Nombre
                 </TableHead>
-                <TableHead className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
                   Slug
                 </TableHead>
-                <TableHead className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
                   Creado
                 </TableHead>
-                <TableHead className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"></TableHead>
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500"></TableHead>
               </TableRow>
             </TableHeader>
-            {/**Table Body */}
-            <TableBody className="divide-y divide-gray-200">
+            <TableBody className="divide-y divide-stone-200">
               {categories.map((cat) => (
                 <CategoryRow
                   key={cat.id}
@@ -94,13 +134,13 @@ export default function Categories() {
             </TableBody>
           </Table>
         </div>
+      )}
 
-        <CreateCategoryDialog
-          isOpen={createModalOpen}
-          onClose={() => setCreateModalOpen(false)}
-          onSave={addCategory}
-        />
-      </div>
+      <CreateCategoryDialog
+        isOpen={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+        onSave={addCategory}
+      />
     </div>
   );
 }

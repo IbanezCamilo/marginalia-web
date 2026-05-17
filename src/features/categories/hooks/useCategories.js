@@ -5,6 +5,7 @@ import { toast } from "sonner";
 export function useCategories(){
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [confirmState, setConfirmState] = useState({
       open: false,
       categoryId: null,
@@ -15,9 +16,16 @@ export function useCategories(){
   }, []);
   
   const loadCategories = async () => {
-    const data = await categoryService.getAll();
-    setCategories(data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await categoryService.getAll();
+      setCategories(data);
+    } catch (err) {
+      setError("Error al cargar las categorias: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addCategory = async (category) => {
@@ -30,17 +38,17 @@ export function useCategories(){
   }
 
   const handleConfirmDelete = async () => {
-    const { id } = confirmState;
+    const { categoryId } = confirmState;
     setConfirmState((prev) => ({ ...prev, open: false }));
 
       try {
-        await categoryService.delete(id);
-        setCategories((prev) => prev.filter((c) => c.id != id));
+        await categoryService.delete(categoryId);
+        setCategories((prev) => prev.filter((c) => c.id != categoryId));
         toast.success("Categoria eliminada correctamente");
-      } catch (error) {
+      } catch {
         toast.error("Error al eliminar la categoria");
       }
       return; // If it's a delete action, we don't need to continue to toggle status logic
   }
-  return{categories, loading, confirmState, setConfirmState, addCategory, requestDeleteCategory, handleConfirmDelete}
+  return{categories, loading, error, confirmState, setConfirmState, addCategory, requestDeleteCategory, handleConfirmDelete, loadCategories}
 }

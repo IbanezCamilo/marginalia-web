@@ -2,11 +2,11 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import CategoryRowActions from "./CategoryRowActions";
 
 const INITIAL_COLORS = [
-  "bg-rose-100 text-rose-800",
-  "bg-blue-100 text-blue-800",
-  "bg-green-100 text-green-800",
-  "bg-amber-100 text-amber-800",
-  "bg-purple-100 text-purple-800",
+  "bg-rose-50 text-rose-800 border-rose-100",
+  "bg-sky-50 text-sky-800 border-sky-100",
+  "bg-emerald-50 text-emerald-800 border-emerald-100",
+  "bg-amber-50 text-amber-800 border-amber-100",
+  "bg-violet-50 text-violet-800 border-violet-100",
 ];
 
 export default function CategoryRow({ category, onDelete }) {
@@ -16,38 +16,36 @@ export default function CategoryRow({ category, onDelete }) {
         month: "short",
         year: "numeric",
       })
-    : "—";
+    : "-";
 
   const colorClass =
     INITIAL_COLORS[category.name.charCodeAt(0) % INITIAL_COLORS.length];
 
   return (
-    <TableRow className="hover:bg-gray-50 transition-colors">
-      <TableCell>
+    <TableRow className="transition-colors hover:bg-[#fbf8f3]">
+      <TableCell className="px-6 py-4">
         <div className="flex items-center gap-3">
           <span
-            className={`w-8 h-8 rounded-lg flex items-center justify-center
-                           text-xs font-medium flex-shrink-0 ${colorClass}`}
+            className={`flex size-9 shrink-0 items-center justify-center rounded-md border text-xs font-semibold ${colorClass}`}
           >
             {category.name.charAt(0).toUpperCase()}
           </span>
-          <span className="font-medium text-gray-900">{category.name}</span>
+          <span className="font-medium text-stone-900">{category.name}</span>
         </div>
       </TableCell>
 
-      <TableCell>
-        <span
-          className="inline-flex items-center gap-1 bg-gray-100 border border-gray-200
-                         rounded-md px-2 py-0.5 font-mono text-xs text-gray-500"
-        >
-          <span className="text-gray-400">/</span>
+      <TableCell className="px-6 py-4">
+        <span className="inline-flex items-center gap-1 rounded-md border border-stone-200 bg-stone-50 px-2 py-0.5 font-mono text-xs text-stone-500">
+          <span className="text-stone-400">/</span>
           {category.slug}
         </span>
       </TableCell>
 
-      <TableCell className="text-sm text-gray-400">{formattedDate}</TableCell>
+      <TableCell className="px-6 py-4 text-sm text-stone-500">
+        {formattedDate}
+      </TableCell>
 
-      <TableCell>
+      <TableCell className="px-6 py-4">
         <CategoryRowActions onDelete={onDelete} />
       </TableCell>
     </TableRow>
