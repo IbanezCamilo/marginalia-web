@@ -18,7 +18,7 @@ export function usePublicPostsByCategory(slug, page = 0, size = 12) {
       setCategory(null);
 
       // 1. Find category by slug
-      const category = await apiClient.get(`/public/categories/${slug}`);
+      const category = await apiClient.get(`/public/categories/${slug}`); 
       if (!category) throw new Error("Categoría no encontrada.");
       setCategory(category);
 
