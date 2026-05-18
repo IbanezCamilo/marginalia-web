@@ -1,56 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import UnderlineEditor from "@tiptap/extension-underline";  // ← faltaba
-import Link from "@tiptap/extension-link";
-import CharacterCount from "@tiptap/extension-character-count";
-import Placeholder from "@tiptap/extension-placeholder";
-import TextAlign from "@tiptap/extension-text-align";
+import { editorExtensions } from "@/features/posts/components/editor/tiptap/editorExtensions";
+import {
+  parseEditorContent,
+  serializeEditorContent,
+} from "@/features/posts/utils/editorContent";
 
-export function useTiptapEditor({content = "", onChange}){
+export function useTiptapEditor({ content = "", onChange }) {
+  const lastSyncedContent = useRef(content);
+
   const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3],
-        },
-      }),
-      UnderlineEditor,
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class:
-            "text-rose-600 underline hover:text-rose-700 transition-colors",
-        },
-      }),
-      Placeholder.configure({
-        placeholder: "Empieza a escribir tu próxima historia...",
-      }),
-      CharacterCount,
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-        defaultAlignment: "left",
-      }),
-    ],
-
-    content: content || "",
-
+    extensions: editorExtensions,
+    content: parseEditorContent(content),
+    immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      const nextContent = serializeEditorContent(editor);
+      lastSyncedContent.current = nextContent;
+      onChange(nextContent);
     },
     editorProps: {
       attributes: {
-        class: "prose prose-lg max-w-none break-words focus:outline-none overflow-x-hidden min-h-[300px] p-2",
+        class:
+          "prose prose-stone max-w-none break-words focus:outline-none overflow-x-hidden min-h-[420px] px-6 py-5",
       },
-    }
+    },
   });
 
-  // Update editor content when the content prop changes
   useEffect(() => {
-    if (editor && content !== undefined) {
-      editor.commands.setContent(content);
+    if (!editor || content === undefined || content === lastSyncedContent.current) {
+      return;
     }
+
+    editor.commands.setContent(parseEditorContent(content), false);
+    lastSyncedContent.current = content;
   }, [content, editor]);
 
-  return editor;    
+  return editor;
 }
