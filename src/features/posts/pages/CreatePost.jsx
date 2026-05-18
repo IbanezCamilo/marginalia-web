@@ -2,6 +2,7 @@ import PostEditor from "../components/editor/PostEditor";
 import EditorTopbar from "@/features/posts/components/editor/EditorTopBar";
 import SideBarSettings from "@/features/posts/components/editor/SideBarSettings";
 import { useCreatePost } from "../hooks/useCreatePost";
+import { isEditorContentEmpty } from "@/features/posts/utils/editorContent";
 
 export default function CreatePost() {
   const {
@@ -59,7 +60,7 @@ export default function CreatePost() {
         onSaveDraft={(e) => handleOnSubmit(e, "DRAFT")}
         onPublish={(e) => handleOnSubmit(e, "PUBLISHED")}
         submitting={submitting}
-        hasChanges={post.title || post.content}
+        hasChanges={Boolean(post.title) || !isEditorContentEmpty(post.content)}
       />
       {/**Main Layout: Editor + SideBar */}
       <div className="flex flex-col md:flex-row pt-16 gap-8">
