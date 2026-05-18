@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useEditorState } from "@/features/posts/hooks/editor/useEditorState";
-
 import InlineControls from "./controls/InlineControls";
 import BlockControls from "./controls/BlockControls";
 import AlignControls from "./controls/AlignControls";
@@ -14,43 +13,23 @@ export default function EditorToolbar({ editor }) {
   if (!editor) return null;
 
   const openLinkModal = () => setShowLinkModal(true);
-  const closeLinkModal = () => setShowLinkModal(false);
-
-  const handleLinkSubmit = (url) => {
-    if (!url) {
-      editor.chain().focus().unsetLink().run();
-    } else {
-      editor.chain().focus().setLink({ href: url }).run();
-    }
-    closeLinkModal();
-  };
 
   return (
     <>
-      {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-2 p-2 border-b bg-white">
-        {/* Inline */}
+      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-2 border-b border-gray-200 bg-white/95 px-3 py-2 backdrop-blur">
+        <BlockControls editor={editor} state={state} />
         <InlineControls
           editor={editor}
           state={state}
           onLinkClick={openLinkModal}
         />
-
-        {/* Block */}
-        <BlockControls editor={editor} state={state} />
-
-        {/* Align */}
-        <AlignControls editor={editor} />
-
-        {/* History */}
+        <AlignControls editor={editor} state={state} />
         <HistoryControls editor={editor} state={state} />
       </div>
 
-      {/* Link Modal */}
       <LinkModal
         editor={editor}
         open={showLinkModal}
-        onSubmit={handleLinkSubmit}
         onOpenChange={setShowLinkModal}
       />
     </>

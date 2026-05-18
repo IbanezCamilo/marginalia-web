@@ -1,27 +1,33 @@
-export default function HistoryControls({ editor, state }) {
-  const buttonClass = (isActive, canDo) =>
-    `px-3 py-1 rounded text-sm border transition 
-    ${isActive ? "bg-rose-500 text-white" : "bg-gray-100 text-gray-700"} 
-    ${!canDo ? "opacity-60 cursor-not-allowed" : "hover:bg-rose-300"}`;
+import { Redo2, Undo2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
+export default function HistoryControls({ editor, state }) {
   return (
-    <div className="button-group flex gap-2">
-      <button
+    <div className="ml-auto flex items-center gap-1 border-l border-gray-200 pl-2">
+      <Button
         type="button"
+        variant="ghost"
+        size="icon-sm"
+        title="Deshacer"
+        aria-label="Deshacer"
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!state.canUndo}
-        className={buttonClass(false, state.canUndo)}
+        className="text-gray-600 hover:bg-stone-100 hover:text-stone-950"
       >
-        Undo
-      </button>
-      <button
+        <Undo2 size={16} />
+      </Button>
+      <Button
         type="button"
+        variant="ghost"
+        size="icon-sm"
+        title="Rehacer"
+        aria-label="Rehacer"
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!state.canRedo}
-        className={buttonClass(false, state.canRedo)}
+        className="text-gray-600 hover:bg-stone-100 hover:text-stone-950"
       >
-        Redo
-      </button>
+        <Redo2 size={16} />
+      </Button>
     </div>
   );
 }

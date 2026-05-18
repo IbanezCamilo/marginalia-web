@@ -1,11 +1,5 @@
-import {
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  AlignJustify,
-  ChevronDown,
-} from "lucide-react";
-
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Check, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,41 +7,54 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function AlignControls({ editor }) {
+export default function AlignControls({ editor, state }) {
   if (!editor) return null;
 
   const alignments = [
-    { label: "Alinear a la izquierda", Icon: AlignLeft, value: "left" },
-    { label: "Centrar", Icon: AlignCenter, value: "center" },
-    { label: "Alinear a la derecha", Icon: AlignRight, value: "right" },
-    { label: "Justificar", Icon: AlignJustify, value: "justify" },
+    { label: "Izquierda", Icon: AlignLeft, value: "left", active: state.isLeft },
+    { label: "Centro", Icon: AlignCenter, value: "center", active: state.isCenter },
+    { label: "Derecha", Icon: AlignRight, value: "right", active: state.isRight },
+    { label: "Justificado", Icon: AlignJustify, value: "justify", active: state.isJustify },
   ];
 
-  const current =
-    alignments.find((a) => editor.isActive({ textAlign: a.value })) ||
-    alignments[0];
-
+  const current = alignments.find((alignment) => alignment.active) ?? alignments[0];
   const CurrentIcon = current.Icon;
 
   return (
-    <div className="pr-4 border-r border-gray-300">
+    <div className="border-l border-gray-200 pl-2">
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100">
-          <CurrentIcon size={16} />
-          <ChevronDown size={14} />
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            title="Alineacion"
+            aria-label="Alineacion"
+            className="gap-1 text-gray-600 hover:bg-stone-100 hover:text-stone-950"
+          >
+            <CurrentIcon size={16} />
+            <ChevronDown size={12} />
+          </Button>
         </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" className="w-40">
+          {alignments.map((alignment) => {
+            const IconComponent = alignment.Icon;
 
-        <DropdownMenuContent>
-          {alignments.map(({ label, Icon, value }) => (
-            <DropdownMenuItem
-              key={value}
-              onClick={() => editor.chain().focus().setTextAlign(value).run()}
-              className={`flex items-center gap-2 ${editor.isActive({ textAlign: value }) ? "bg-rose-100" : ""}`}
-            >
-              <Icon size={16} />
-              {label}
-            </DropdownMenuItem>
-          ))}
+            return (
+              <DropdownMenuItem
+                key={alignment.value}
+                onClick={() =>
+                  editor.chain().focus().setTextAlign(alignment.value).run()
+                }
+              >
+                <IconComponent size={16} />
+                <span>{alignment.label}</span>
+                {alignment.active && (
+                  <Check size={14} className="ml-auto text-rose-700" />
+                )}
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

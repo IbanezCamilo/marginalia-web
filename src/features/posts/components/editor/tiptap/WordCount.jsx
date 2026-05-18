@@ -1,31 +1,35 @@
-/**
- * WordCount Component
- *
- * Displays real-time statistics about the editor content:
- * - Word count
- * - Character count
- * - Estimated reading time
- *
- * @param {Object} editor - The TipTap editor instance
- * @returns {JSX.Element} Statistics display component
- */
-export default function WordCount({ editor }) {
-  // CharacterCount extension automatically adds this storage to the editor
-  // It updates in real-time as the user types
+import { useEffect, useState } from "react";
 
-  const characters = editor.storage.characterCount.characters();
+const getStats = (editor) => {
   const words = editor.storage.characterCount.words();
+  const characters = editor.storage.characterCount.characters();
 
-  // Calculate estimated reading time
-  // Average reading speed is 200 words per minute
-  // Math.ceil rounds up to ensure we don't show 0 minutes for short texts
-  const readingTime = Math.ceil(words / 200);
+  return {
+    words,
+    characters,
+    readingTime: Math.max(1, Math.ceil(words / 200)),
+  };
+};
+
+export default function WordCount({ editor }) {
+  const [stats, setStats] = useState(() => getStats(editor));
+
+  useEffect(() => {
+    const updateStats = () => setStats(getStats(editor));
+
+    updateStats();
+    editor.on("update", updateStats);
+
+    return () => editor.off("update", updateStats);
+  }, [editor]);
 
   return (
-    <div className="text-sm text-gray-500 mb-2 flex justify-end gap-4">
-      <span>{words} palabras</span>
-      <span>{characters} caracteres</span>
-      <span>~{readingTime} min de lectura</span>
-    </div>
+    <footer className="flex flex-wrap items-center justify-end gap-3 border-t border-gray-200 bg-stone-50 px-4 py-2 text-xs text-gray-500">
+      <span>{stats.words} palabras</span>
+      <span className="text-gray-300">/</span>
+      <span>{stats.characters} caracteres</span>
+      <span className="text-gray-300">/</span>
+      <span>{stats.readingTime} min de lectura</span>
+    </footer>
   );
 }
