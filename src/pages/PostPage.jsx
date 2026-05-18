@@ -6,6 +6,10 @@ import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import PostCard from "@/features/posts/components/PostCard";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
+import {
+  editorContentToHtml,
+  editorContentToText,
+} from "@/features/posts/utils/editorContent";
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -16,11 +20,8 @@ const formatDate = (date) => {
   }).format(new Date(date));
 };
 
-const stripHtml = (html = "") =>
-  html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-
 const readingTime = (content = "") => {
-  const words = stripHtml(content).split(" ").filter(Boolean).length;
+  const words = editorContentToText(content).split(" ").filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 200));
 };
 
@@ -208,8 +209,10 @@ export default function PostPage() {
             {/* Article body */}
             <div className="mx-auto mt-12 max-w-3xl">
               <div
-                className="prose prose-stone max-w-none prose-headings:font-serif prose-headings:tracking-normal prose-h1:text-4xl prose-p:text-lg prose-p:leading-8 prose-a:text-rose-800 prose-blockquote:border-rose-700 prose-blockquote:bg-white prose-blockquote:px-6 prose-blockquote:py-2 prose-img:rounded-md"
-                dangerouslySetInnerHTML={{ __html: post.content ?? "" }}
+                className="prose prose-stone max-w-none"
+                dangerouslySetInnerHTML={{
+                  __html: editorContentToHtml(post.content),
+                }}
               />
 
               {/* Author bio card */}

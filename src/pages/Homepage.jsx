@@ -7,6 +7,7 @@ import CategoryBox from "../features/categories/components/CategoryBox";
 import { usePublicCategories } from "@/features/categories/hooks/usePublicCategories";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
+import { editorContentToText } from "@/features/posts/utils/editorContent";
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -18,14 +19,8 @@ const formatDate = (date) => {
   }).format(new Date(date));
 };
 
-const stripHtml = (html = "") =>
-  html
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-
 const getExcerpt = (content, maxLength = 210) => {
-  const text = stripHtml(content);
+  const text = editorContentToText(content);
   if (!text) return "Un texto para leer con calma, guardar y volver a visitar.";
   return text.length > maxLength ? `${text.slice(0, maxLength).trim()}...` : text;
 };

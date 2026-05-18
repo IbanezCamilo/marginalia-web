@@ -1,15 +1,10 @@
 import { Link } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 import { BASE_URL } from "@/lib/apiClient";
-
-const stripHtml = (html = "") =>
-  html
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+import { editorContentToText } from "@/features/posts/utils/editorContent";
 
 const getExcerpt = (content, maxLength = 140) => {
-  const text = stripHtml(content);
+  const text = editorContentToText(content);
   if (!text) return "Una lectura nueva del archivo literario.";
   return text.length > maxLength
     ? `${text.slice(0, maxLength).trim()}...`
