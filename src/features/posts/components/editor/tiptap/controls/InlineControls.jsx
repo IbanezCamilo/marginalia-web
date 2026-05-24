@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 const toolbarButtonClass = (active) =>
   cn(
-    "text-gray-600 hover:bg-stone-100 hover:text-stone-950",
+    "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
     active && "bg-rose-50 text-rose-800 hover:bg-rose-100 hover:text-rose-900"
   );
 
@@ -41,7 +41,7 @@ export default function InlineControls({ editor, state, onLinkClick }) {
   ];
 
   return (
-    <div className="flex items-center gap-1 border-l border-gray-200 pl-2">
+    <div className="flex items-center gap-1 border-l border-stone-200 pl-2">
       {controls.map((control) => {
         const IconComponent = control.Icon;
 

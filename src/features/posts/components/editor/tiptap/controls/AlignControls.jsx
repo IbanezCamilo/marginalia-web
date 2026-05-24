@@ -21,7 +21,7 @@ export default function AlignControls({ editor, state }) {
   const CurrentIcon = current.Icon;
 
   return (
-    <div className="border-l border-gray-200 pl-2">
+    <div className="border-l border-stone-200 pl-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -30,7 +30,7 @@ export default function AlignControls({ editor, state }) {
             size="icon-sm"
             title="Alineacion"
             aria-label="Alineacion"
-            className="gap-1 text-gray-600 hover:bg-stone-100 hover:text-stone-950"
+            className="gap-1 text-stone-600 hover:bg-stone-100 hover:text-stone-950"
           >
             <CurrentIcon size={16} />
             <ChevronDown size={12} />

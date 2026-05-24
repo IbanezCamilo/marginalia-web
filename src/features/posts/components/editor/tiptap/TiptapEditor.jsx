@@ -10,7 +10,7 @@ export default function TiptapEditor({ content, onChange }) {
   if (!editor) return null;
 
   return (
-    <section className="w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
+    <section className="w-full overflow-hidden rounded-md border border-stone-200 bg-white shadow-sm">
       <EditorToolbar editor={editor} />
       <div className="max-h-[640px] w-full overflow-auto bg-white">
         <EditorContent editor={editor} />
