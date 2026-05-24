@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useUploadImage } from "../hooks/useUploadImage";
-import { FaCamera, FaTimes } from "react-icons/fa";
+import { Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -38,15 +38,15 @@ export default function ProfileImageUpload({
               <img
                 src={preview || currentImage}
                 alt="Preview"
-                className="w-48 h-48 rounded-full object-cover border-4 border-gray-200 shadow-lg"
+                className="w-48 h-48 rounded-full object-cover border-4 border-stone-200 shadow-lg"
               />
 
               {/* Botón de selección superpuesto */}
               <label
                 htmlFor="image-upload-input"
-                className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-opacity-50 transition-all cursor-pointer rounded-full group"
+                className="absolute inset-0 flex items-center justify-center rounded-full transition-all cursor-pointer group hover:bg-black/40"
               >
-                <FaCamera className="text-white text-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <Camera size={28} className="text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" />
               </label>
 
               <input
@@ -60,24 +60,21 @@ export default function ProfileImageUpload({
             </div>
           </div>
 
-          {/* Instrucctions */}
           {!selectedFile ? (
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-stone-500">
               Haz clic en la imagen para seleccionar una nueva foto
             </p>
           ) : (
-            <p className="text-center text-sm text-green-600 bg-green-50 p-2 rounded">
-              ✓ Nueva imagen seleccionada
+            <p className="text-center text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 p-2 rounded-md">
+              Nueva imagen seleccionada
             </p>
           )}
 
-          {/* Botones de acción */}
           <div className="flex gap-3">
             <Button
               onClick={handleUpload}
-              className="flex-1"
+              className="flex-1 bg-rose-700 hover:bg-rose-800"
               disabled={!selectedFile || uploading}
-              variant="destructive"
             >
               {uploading ? "Subiendo..." : "Guardar foto"}
             </Button>

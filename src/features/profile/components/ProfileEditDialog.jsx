@@ -31,7 +31,7 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
               name="name"
               value={editedData.name}
               onChange={handleChange}
-              className="selection:bg-rose-500 selection:text-gray-900"
+              className="selection:bg-rose-500 selection:text-stone-900"
               placeholder="Tu nombre completo"
               disabled={saving}
             />
@@ -44,9 +44,9 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
               id="email"
               value={user.email}
               disabled
-              className="bg-gray-100"
+              className="bg-stone-100"
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-stone-500">
               El email no se puede modificar
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
               disabled={saving}
               maxLength={500}
             />
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-stone-500">
               {editedData.description.length}/500 caracteres
             </p>
           </div>
@@ -73,9 +73,8 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
           <div className="flex gap-3 pt-4">
             <Button
               onClick={handleSave}
-              className="flex-1 cursor-pointer"
+              className="flex-1 cursor-pointer bg-rose-700 hover:bg-rose-800"
               disabled={saving}
-              variant="destructive"
             >
               {saving ? "Guardando..." : "Guardar cambios"}
             </Button>
