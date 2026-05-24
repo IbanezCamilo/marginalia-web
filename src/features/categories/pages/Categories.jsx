@@ -43,7 +43,7 @@ export default function Categories() {
           No pudimos cargar las categorias
         </h1>
         <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
-        <Button onClick={loadCategories} className="mt-6 bg-stone-950">
+        <Button onClick={loadCategories} className="mt-6 bg-rose-700 hover:bg-rose-800">
           <RefreshCw size={16} />
           Reintentar
         </Button>
@@ -81,7 +81,7 @@ export default function Categories() {
 
           <Button
             onClick={() => setCreateModalOpen(true)}
-            className="bg-stone-950 hover:bg-rose-900"
+            className="bg-rose-700 hover:bg-rose-800"
           >
             <Plus size={16} />
             Nueva Categoria
@@ -101,7 +101,7 @@ export default function Categories() {
           </p>
           <Button
             onClick={() => setCreateModalOpen(true)}
-            className="mt-6 bg-stone-950 hover:bg-rose-900"
+            className="mt-6 bg-rose-700 hover:bg-rose-800"
           >
             Crear categoria
           </Button>

@@ -30,6 +30,7 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
               value={newCategory.name}
               onChange={handleChange}
               placeholder="Ej: Ensayo, Poesia, Resenas"
+              maxLength={100}
               disabled={saving}
             />
           </div>
@@ -37,7 +38,7 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
           <div className="flex gap-3 pt-4">
             <Button
               onClick={handleSave}
-              className="flex-1 cursor-pointer bg-stone-950 hover:bg-rose-900"
+              className="flex-1 cursor-pointer bg-rose-700 hover:bg-rose-800"
               disabled={saving}
             >
               {saving ? "Creando..." : "Crear"}

@@ -27,16 +27,19 @@ export function useCreateCategory( onSave, isOpen, onClose ){
 
   // Save changes
   const handleSave = async () => {
-    if (!newCategory.name.trim()) {
+    const trimmed = newCategory.name.trim();
+    if (!trimmed) {
       toast.error("El nombre no puede estar vacío.");
+      return;
+    }
+    if (trimmed.length > 100) {
+      toast.error("El nombre no puede superar los 100 caracteres.");
       return;
     }
 
     try {
       setSaving(true);
-      await onSave({
-        name: newCategory.name.trim(),
-      });
+      await onSave({ name: trimmed });
       toast.success("Categoria creada correctamente");
       onClose();
     } catch (err) {
