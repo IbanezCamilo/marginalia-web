@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useUploadImage } from "../hooks/useUploadImage";
 import { Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";

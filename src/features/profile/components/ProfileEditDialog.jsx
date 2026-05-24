@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useEditProfile } from "../hooks/useEditProfile";
 import { Button } from "@/components/ui/button";
 import {
