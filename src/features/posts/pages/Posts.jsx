@@ -46,7 +46,7 @@ export default function Posts() {
         <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
         <Button
           onClick={() => loadPosts(currentPage)}
-          className="mt-6 bg-stone-950"
+          className="mt-6 bg-rose-700 hover:bg-rose-800"
         >
           <RefreshCw size={16} />
           Reintentar
@@ -77,7 +77,7 @@ export default function Posts() {
               {totalElements} publicaciones creadas en tu cuenta.
             </p>
           </div>
-          <Button asChild className="bg-stone-950 hover:bg-rose-900">
+          <Button asChild className="bg-rose-700 hover:bg-rose-800">
             <Link to="/user/create-post">
               <Plus size={16} />
               Nuevo Post
@@ -95,7 +95,7 @@ export default function Posts() {
           <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
             Empieza con un borrador y publicalo cuando el texto ya tenga forma.
           </p>
-          <Button asChild className="mt-6 bg-stone-950 hover:bg-rose-900">
+          <Button asChild className="mt-6 bg-rose-700 hover:bg-rose-800">
             <Link to="/user/create-post">
               Crear primer post
               <ArrowRight size={16} />
