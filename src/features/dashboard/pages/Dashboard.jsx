@@ -143,7 +143,7 @@ export default function DashBoard() {
           No pudimos abrir el panel
         </h1>
         <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
-        <Button onClick={loadDashboard} className="mt-6 bg-stone-950">
+        <Button onClick={loadDashboard} className="mt-6 bg-rose-700 hover:bg-rose-800">
           <RefreshCw size={16} />
           Reintentar
         </Button>
@@ -153,7 +153,7 @@ export default function DashBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <section className="rounded-md border border-stone-200 bg-[#fbf8f3] p-6 sm:p-8">
+      <section className="rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
         <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-700">
@@ -169,7 +169,7 @@ export default function DashBoard() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <Button asChild className="bg-stone-950 hover:bg-rose-900">
+            <Button asChild className="bg-rose-700 hover:bg-rose-800">
               <Link to="/user/create-post">
                 <PenLine size={16} />
                 Nuevo post
@@ -243,7 +243,7 @@ export default function DashBoard() {
                 Crea un borrador para comenzar a construir el archivo editorial
                 del blog.
               </p>
-              <Button asChild className="mt-5 bg-stone-950 hover:bg-rose-900">
+              <Button asChild className="mt-5 bg-rose-700 hover:bg-rose-800">
                 <Link to="/user/create-post">Crear post</Link>
               </Button>
             </div>
@@ -290,18 +290,13 @@ export default function DashBoard() {
               <span className="grid size-10 place-items-center rounded-md bg-rose-50 text-rose-800">
                 <Sparkles size={18} />
               </span>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">
-                  Accesos rapidos
-                </p>
-                <h2 className="font-serif text-2xl text-stone-950">
-                  Siguiente accion
-                </h2>
-              </div>
+              <h2 className="font-serif text-2xl text-stone-950">
+                Siguiente accion
+              </h2>
             </div>
 
             <div className="mt-5 grid gap-3">
-              <Button asChild className="justify-between bg-stone-950">
+              <Button asChild className="justify-between bg-rose-700 hover:bg-rose-800">
                 <Link to="/user/create-post">
                   Escribir nueva entrada
                   <PenLine size={16} />
