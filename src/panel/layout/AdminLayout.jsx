@@ -5,8 +5,12 @@ import SidebarCollapsible from "./SidebarCollapsible";
 
 export default function AdminLayout() {
   const [isCollapsed, setIsCollapsed] = useState(() => {
-    const saved = localStorage.getItem("sidebarCollapsed");
-    return saved ? JSON.parse(saved) : false;
+    try {
+      const saved = localStorage.getItem("sidebarCollapsed");
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      return false;
+    }
   });
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
@@ -20,7 +24,7 @@ export default function AdminLayout() {
     location.pathname.startsWith("/user/edit-post/");
 
   return (
-    <div className="min-h-screen bg-stone-50 text-stone-950">
+    <div className="admin-shell min-h-screen bg-stone-50 text-stone-950">
       {!isEditorPage && (
         <SidebarCollapsible
           isCollapsed={isCollapsed}

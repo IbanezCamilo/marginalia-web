@@ -5,13 +5,23 @@ import {
   Folder,
   Home,
   LayoutDashboard,
-  PenLine,
   PenSquare,
   UserRound,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Logo from  "@/shared/components/logo";
+import Logo from "@/shared/components/logo";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+
+const ROLE_LEVEL = { AUTHOR: 1, MODERATOR: 2, ADMIN: 3 };
+
+const ALL_MENU_ITEMS = [
+  { path: "/user/dashboard",   icon: LayoutDashboard, label: "Dashboard",  minRole: "AUTHOR" },
+  { path: "/user/create-post", icon: PenSquare,        label: "Crear Post", minRole: "AUTHOR" },
+  { path: "/user/posts",       icon: Files,            label: "Mis Posts",  minRole: "AUTHOR" },
+  { path: "/user/categories",  icon: Folder,           label: "Categorias", minRole: "ADMIN"  },
+  { path: "/user/profile",     icon: UserRound,        label: "Perfil",     minRole: "AUTHOR" },
+];
 
 export default function SidebarCollapsible({
   isCollapsed,
@@ -20,14 +30,13 @@ export default function SidebarCollapsible({
   onMobileClose,
 }) {
   const location = useLocation();
+  const { state: { user } } = useAuth();
 
-  const menuItems = [
-    { path: "/user/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-    { path: "/user/create-post", icon: PenSquare, label: "Crear Post" },
-    { path: "/user/posts", icon: Files, label: "Mis Posts" },
-    { path: "/user/categories", icon: Folder, label: "Categorias" },
-    { path: "/user/profile", icon: UserRound, label: "Perfil" },
-  ];
+  const menuItems = ALL_MENU_ITEMS.filter(
+    (item) =>
+      user?.role &&
+      (ROLE_LEVEL[user.role] ?? 0) >= ROLE_LEVEL[item.minRole]
+  );
 
   const renderMenu = (onClick) => (
     <nav className="space-y-1 p-3">
@@ -58,7 +67,7 @@ export default function SidebarCollapsible({
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 z-50 hidden h-screen border-r border-stone-200 bg-[#fbf8f3] transition-all duration-300 md:block ${
+        className={`fixed left-0 top-0 z-50 hidden h-screen border-r border-stone-200 bg-surface-warm transition-all duration-300 md:block ${
           isCollapsed ? "w-16" : "w-60"
         }`}
       >
@@ -66,7 +75,7 @@ export default function SidebarCollapsible({
           {!isCollapsed && (
             <Link to="/" className="group flex items-center gap-3 p-2">
               <span className="grid size-9 place-items-center rounded-md border border-stone-300 bg-stone-950 text-white transition-colors group-hover:bg-rose-900">
-                <Logo size={30}/>
+                <Logo size={30} />
               </span>
               <span className="font-serif text-xl text-stone-950">
                 Marginalia
@@ -108,14 +117,14 @@ export default function SidebarCollapsible({
       </aside>
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-screen w-64 border-r border-stone-200 bg-[#fbf8f3] transition-transform duration-300 md:hidden ${
+        className={`fixed left-0 top-0 z-50 h-screen w-64 border-r border-stone-200 bg-surface-warm transition-transform duration-300 md:hidden ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex h-16 items-center justify-between border-b border-stone-200 px-4">
           <Link to="/" className="flex items-center gap-2">
             <span className="grid size-9 place-items-center rounded-md border border-stone-300 bg-stone-950 text-white">
-            <Logo size={30}/>
+              <Logo size={30} />
             </span>
             <span className="font-serif text-xl text-stone-950">
               Marginalia
