@@ -38,3 +38,10 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# Skills (managed by npx impeccable skills install, lock file is committed)
+.agents/
+.claude/skills/
+
+# Local playbooks and scratch notes
+refero_playBook.txt

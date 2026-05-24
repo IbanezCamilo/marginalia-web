@@ -1,7 +1,5 @@
 import { API_URL } from "./config";
 
-export { API_URL as BASE_URL};
-
 const getToken = () => localStorage.getItem('token');
 
 //Core request handler 
