@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 const toolbarButtonClass = (active) =>
   cn(
-    "text-gray-600 hover:bg-stone-100 hover:text-stone-950",
+    "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
     active && "bg-rose-50 text-rose-800 hover:bg-rose-100 hover:text-rose-900"
   );
 
@@ -53,7 +53,7 @@ export default function BlockControls({ editor, state }) {
             type="button"
             variant="ghost"
             size="sm"
-            className="h-8 gap-2 px-2 text-gray-700 hover:bg-stone-100"
+            className="h-8 gap-2 px-2 text-stone-700 hover:bg-stone-100"
           >
             <CurrentIcon size={16} />
             <span className="hidden text-xs font-medium sm:inline">
