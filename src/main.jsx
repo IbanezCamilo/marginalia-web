@@ -4,10 +4,16 @@ import "./index.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/AppRouter.jsx";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "next-themes";
+import { AuthProvider } from "@/features/auth/context/AuthContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    <Toaster richColors position="top-right" />
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster richColors position="top-right" />
+      </AuthProvider>
+    </ThemeProvider>
   </StrictMode>,
 );
