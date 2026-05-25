@@ -65,7 +65,7 @@ export function useMyPosts(currentPage) {
         setPosts((prev) => prev.filter((p) => p.id != postId));
         setTotalElements(prev => prev - 1);
         toast.success("Post eliminado correctamente");
-      } catch (error) {
+      } catch {
         toast.error("Error al eliminar el post");
       }
       return; // If it's a delete action, we don't need to continue to toggle status logic
@@ -91,7 +91,7 @@ export function useMyPosts(currentPage) {
           ? "Post publicado"
           : "Post guardado como borrador",
       );
-    } catch (err) {
+    } catch {
       setPosts(previousPosts); //Revert to previous state
       toast.error("Error al cambiar el estado");
     }
@@ -132,6 +132,7 @@ export function useMyPosts(currentPage) {
     requestToggleStatus,
     confirmDialogProps,
     handleConfirm,
+    loadPosts,
   };
   
 }

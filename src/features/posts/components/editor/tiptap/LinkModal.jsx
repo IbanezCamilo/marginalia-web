@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,62 +10,50 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
+const normalizeUrl = (value) => {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (/^(https?:\/\/|mailto:)/i.test(trimmed)) return trimmed;
+  return `https://${trimmed}`;
+};
+
+const isValidUrl = (value) => {
+  try {
+    const url = new URL(value);
+    return ["http:", "https:", "mailto:"].includes(url.protocol);
+  } catch {
+    return false;
+  }
+};
+
 export default function LinkModal({ editor, open, onOpenChange }) {
-  /**
-   * LinkModal Component
-   *
-   * Modal dialog for adding/editing links in the editor
-   * @param {Object} editor - The TipTap editor instance
-   * @param {boolean} open - boolean that controls modal visibility(comes from showLinkModal)
-   * @param {Function} onOpenChange - callback Function to change the state(comes from setShowLinkModal)
-   * @returns {JSX.Element} Statistics display component
-   *
-   */
-  const [url, setUrl] = useState(""); //Local State to storage URL; void Inicialize
-  const [error, setError] = useState(""); // State to validation error messages
+  const [url, setUrl] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (open) {
-      const current = editor.getAttributes("link"); //the current selection has a Link?
-      setUrl(current.href || ""); //true: edit a existent link; false: create a new link
-      setError(""); // clean every prev error
-    }
+    if (!open || !editor) return;
+    setUrl(editor.getAttributes("link").href ?? "");
+    setError("");
   }, [open, editor]);
 
-  //Validation function
-  const isValidUrl = (urlString) => {
-    // recieve a Url as String
-    try {
-      const urlObj = new URL(urlString); //Javascript Function to validate the URL
-      return urlObj.protocol === "http:" || urlObj.protocol === "https:"; // Verify the protocols for security
-    } catch (e) {
-      return false;
-    }
+  const closeModal = () => {
+    setError("");
+    onOpenChange(false);
   };
 
   const handleInsert = () => {
-    setError("");
+    const finalUrl = normalizeUrl(url);
 
-    //validation to verify if the url is empty
-    if (!url.trim()) {
-      setError("URL requerida");
+    if (!finalUrl) {
+      setError("Ingresa una URL.");
       return;
     }
 
-    //Add the protocol in the url (if it's missing)
-    let finalUrl = url.trim(); // remove blank space
-    if (!finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
-      // url has a protocol?
-      finalUrl = "https://" + finalUrl; //if not concatened the protocol in the url
-    }
-
-    //Validate the complete format
     if (!isValidUrl(finalUrl)) {
-      setError("Porfavor ingresa un URL valido");
+      setError("Ingresa una URL valida.");
       return;
     }
 
-    //Apply the link in the editor
     editor
       .chain()
       .focus()
@@ -73,72 +61,60 @@ export default function LinkModal({ editor, open, onOpenChange }) {
       .setLink({ href: finalUrl })
       .run();
 
-    //Clean and close
-    setUrl("");
-    setError("");
-    onOpenChange(false);
+    closeModal();
   };
 
-  //Handle Enter Key Press
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleInsert();
-    }
+  const handleRemove = () => {
+    editor.chain().focus().extendMarkRange("link").unsetLink().run();
+    closeModal();
   };
+
+  const hasLink = Boolean(editor?.getAttributes("link").href);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {editor.getAttributes("link").href
-              ? "Editar Link"
-              : "Insertar Link"}
-          </DialogTitle>
+          <DialogTitle>{hasLink ? "Editar enlace" : "Agregar enlace"}</DialogTitle>
           <DialogDescription>
-            Ingresa la URL del enlace que desees agregar
+            Los enlaces se guardan con protocolos seguros para proteger la lectura.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div>
-            <Label htmlFor="link" className="py-2">
+            <Label htmlFor="editor-link-url" className="py-2">
               URL
             </Label>
             <Input
+              id="editor-link-url"
               type="text"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="https://example.com"
+              onChange={(event) => setUrl(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") handleInsert();
+              }}
+              placeholder="https://ejemplo.com"
               autoFocus
             />
-            {/**Error message */}
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
           </div>
-          {/**Buttons */}
+
           <div className="flex justify-end gap-2">
-            {editor.getAttributes("link").href && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  editor.chain().focus().unsetLink().run();
-                  onOpenChange(false);
-                }}
-              >
+            {hasLink && (
+              <Button type="button" variant="outline" onClick={handleRemove}>
                 Eliminar
               </Button>
             )}
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
+            <Button type="button" variant="outline" onClick={closeModal}>
               Cancelar
             </Button>
-            <Button type="button" variant="destructive" onClick={handleInsert}>
-              {editor.getAttributes("link").href ? "Actualizar" : "Insertar"}
+            <Button
+              type="button"
+              onClick={handleInsert}
+              className="bg-rose-700 text-white hover:bg-rose-800"
+            >
+              {hasLink ? "Actualizar" : "Insertar"}
             </Button>
           </div>
         </div>

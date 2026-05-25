@@ -85,7 +85,7 @@ export function useEditPost(id, navigate) {
     const postData = {
       title: post.title.trim(),
       content: post.content,
-      categoryId: post.categoryId,
+      categoryId: Number(post.categoryId),
       status: statusToSave,
     };
 

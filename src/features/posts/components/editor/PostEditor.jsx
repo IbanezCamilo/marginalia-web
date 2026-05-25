@@ -1,11 +1,8 @@
-import React, { useRef } from "react";
 import CoverImageUpload from "./CoverImageUpload";
 import TitleInput from "./TitleInput";
 import TipTapEditor from "./tiptap/TiptapEditor";
 
 export default function PostEditor({ post, onChange }) {
-  const inputFileRef = useRef(null);
-
   return (
     <div className="space-y-6">
       <CoverImageUpload
@@ -19,11 +16,9 @@ export default function PostEditor({ post, onChange }) {
         onChange={(value) => onChange("title", value)}
       />
 
-      {/* EDITOR (TipTap) */}
-      {/*TipTapEditor gets the content as prop and onChange returns the new HTML content*/}
       <TipTapEditor
         content={post.content}
-        onChange={(html) => onChange("content", html)}
+        onChange={(content) => onChange("content", content)}
       />
     </div>
   );

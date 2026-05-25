@@ -1,63 +1,57 @@
-import { CiSettings } from "react-icons/ci";
-import { CgProfile } from "react-icons/cg";
-import { CiLogout } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { userService } from "../../features/profile/services/userService";
-import { Menu } from "lucide-react";
+import { LogOut, Menu, Settings, UserRound } from "lucide-react";
 
 export default function TopBar({ onMenuClick }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const defaultAvatar =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
 
   useEffect(() => {
-    loadUserData();
-  }, []);
+    const loadUserData = async () => {
+      try {
+        if (!userService.isAuthenticated()) {
+          navigate("/auth/login");
+          return;
+        }
+        const data = await userService.getProfile();
+        setUser({
+          name: data.name,
+          image: data.image || defaultAvatar,
+        });
+      } catch (err) {
+        if (err.message.includes("sesion") || err.message.includes("401")) {
+          navigate("/auth/login");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const loadUserData = async () => {
-    try {
-      if (!userService.isAuthenticated()) {
-        navigate("/auth/login"); //Redirect to LOGIN
-        return;
-      }
-      const data = await userService.getProfile();
-      setUser({
-        name: data.name,
-        image: data.image || defaultAvatar,
-      });
-    } catch (err) {
-      setError("Error al cargar datos del usuario: " + err.message);
-      if (err.message.includes("sesion") || err.message.includes("401")) {
-        navigate("/auth/login");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    loadUserData();
+  }, [defaultAvatar, navigate]);
 
   const handleLogout = () => {
-    if (confirm("¿Seguro quieres cerrar sesion?")) {
+    if (confirm("Seguro quieres cerrar sesion?")) {
       userService.logout();
       navigate("/auth/login");
     }
   };
 
-  // Estados de carga
   if (loading) {
     return (
-      <div className="flex justify-end items-center bg-white shadow-sm">
+      <div className="sticky top-0 z-30 flex h-16 items-center justify-end border-b border-stone-200 bg-white/90 px-4 backdrop-blur">
         <div className="animate-pulse">
-          <div className="flex items-center gap-3 hover:bg-gray-100 px-3 py-1 rounded-xl transition">
-            <div className="w-12 h-12 bg-gray-200 rounded-full mx-auto mb-2"></div>
+          <div className="flex items-center gap-3 rounded-md px-3 py-1">
+            <div className="size-10 rounded-full bg-stone-200"></div>
             <div className="flex-col p-2">
-              <div className="h-4 bg-gray-200 rounded w-32 mx-auto mb-1"></div>
-              <div className="h-4 bg-gray-200 rounded w-20 mx-auto"></div>
+              <div className="mb-1 h-4 w-32 rounded bg-stone-200"></div>
+              <div className="h-4 w-20 rounded bg-stone-100"></div>
             </div>
           </div>
         </div>
@@ -66,54 +60,61 @@ export default function TopBar({ onMenuClick }) {
   }
 
   return (
-    <nav className="flex justify-between items-center bg-white shadow-sm mb-2 p-2 h-16 border-b border-gray-200">
+    <nav className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-stone-200 bg-white/90 px-4 backdrop-blur">
       <Button
-        variant="secondary"
+        variant="ghost"
+        size="icon-sm"
         onClick={onMenuClick}
-        className="md:hidden p-2 rounded-lg hover:bg-gray-100"
+        className="rounded-md text-stone-600 hover:bg-stone-100 md:hidden"
       >
-        <Menu size={20} className="text-gray-600" />
+        <Menu size={20} />
       </Button>
-      <div className="flex-1 md:flex-none" />
-      <div className="relative group cursor-pointer">
-        {/*User y avatar*/}
-        <div className="flex items-center gap-3 hover:bg-gray-100 px-3 py-1 rounded-xl transition">
+
+      <div className="hidden md:block">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+          Panel editorial
+        </p>
+        <p className="text-sm text-stone-500">
+          Administra publicaciones, categorias y perfil.
+        </p>
+      </div>
+
+      <div className="group relative cursor-pointer">
+        <div className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-stone-100">
           <img
             src={user?.image}
-            className="w-12 h-12 object-cover rounded-full"
+            className="size-10 rounded-full border border-stone-200 object-cover"
+            alt={user?.name ?? "Usuario"}
             onError={(e) => {
-              e.target.src =
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
+              e.target.src = defaultAvatar;
             }}
-          ></img>
-          <span className="font-medium">{user?.name}</span>
+          />
+          <span className="hidden text-sm font-medium text-stone-800 sm:inline">
+            {user?.name}
+          </span>
         </div>
-        {/* Menú desplegable */}
-        <div
-          className="absolute top-full right-0 w-48 py-2 bg-white border border-gray-200 rounded-lg shadow-lg 
-                                opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 
-                                pointer-events-none group-hover:pointer-events-auto transition-all duration-300 
-                                ease-in-out"
-        >
-          <ul className="w-full flex flex-col gap-1 p-1">
+
+        <div className="pointer-events-none absolute right-0 top-full w-52 translate-y-2 rounded-md border border-stone-200 bg-white py-2 opacity-0 shadow-lg transition-all duration-300 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+          <ul className="flex w-full flex-col gap-1 p-1">
             <Link
               to="profile"
-              className="flex items-center w-full p-2 gap-2 rounded hover:bg-gray-200"
+              className="flex w-full items-center gap-2 rounded-md p-2 text-sm text-stone-700 hover:bg-stone-100"
             >
-              <CgProfile size={20} />
+              <UserRound size={17} />
               <span>Perfil</span>
             </Link>
-            <li className="flex items-center w-full p-2 gap-2 rounded hover:bg-gray-200">
-              <CiSettings size={20} />
-              <span>Configuración</span>
+            <li className="flex w-full items-center gap-2 rounded-md p-2 text-sm text-stone-400">
+              <Settings size={17} />
+              <span>Configuracion</span>
             </li>
-            <li className="border-t border-gray-200 mt-1 pt-1">
+            <li className="mt-1 border-t border-stone-200 pt-1">
               <Button
+                variant="ghost"
                 onClick={handleLogout}
-                className="flex items-center w-full p-2 gap-2 rounded hover:bg-red-100 text-red-600 text-left cursor-pointer"
+                className="flex w-full justify-start gap-2 rounded-md p-2 text-left text-sm text-rose-700 hover:bg-rose-50 hover:text-rose-800"
               >
-                <CiLogout size={20} />
-                <span>Cerrar sesión</span>
+                <LogOut size={17} />
+                <span>Cerrar sesion</span>
               </Button>
             </li>
           </ul>

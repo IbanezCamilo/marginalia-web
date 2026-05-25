@@ -1,14 +1,6 @@
 import { BASE_URL } from "@/lib/apiClient";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import PostRowActions from "./PostRowActions";
 
 export default function PostListItemCard({
@@ -27,71 +19,59 @@ export default function PostListItemCard({
     ? `${BASE_URL}/images/${imageUrl}`
     : "https://placehold.co/400x300?text=Sin+imagen";
 
-  /**
-   * Visual configuration of the status badge.
-   *
-   * Lesson: centralizing visual configuration in an object
-   * is cleaner than repeating conditional classes in the JSX.
-   */
   const statusConfig = {
     PUBLISHED: {
       label: "Publicado",
-      className: "bg-green-100 text-green-700 border border-green-200",
+      className: "border-emerald-200 bg-emerald-50 text-emerald-700",
     },
     DRAFT: {
       label: "Borrador",
-      className: "bg-gray-100 text-gray-600 border border-gray-200",
+      className: "border-amber-200 bg-amber-50 text-amber-700",
     },
   };
 
-  // Fallback in case an unknown status arrives (e.g.: ARCHIVED, REJECTED)
   const badge = statusConfig[status] ?? {
     label: status,
-    className: "bg-yellow-100 text-yellow-700 border border-yellow-200",
+    className: "border-stone-200 bg-stone-100 text-stone-600",
   };
 
   return (
-    <Card className="group flex flex-col md:flex-row p-4 gap-x-2 w-full max-w-4xl min-h-[140px] rounded-xl border shadow-sm transition-shadow hover:shadow-md">
-      {/* Image */}
-      <div className="w-full md:w-52 shrink-0 overflow-hidden rounded-2xl">
+    <Card className="group flex w-full max-w-5xl flex-col gap-0 rounded-md border-stone-200 p-3 shadow-[0_1px_2px_rgba(28,25,23,0.04)] transition-colors hover:bg-[#fbf8f3] md:flex-row">
+      <div className="w-full shrink-0 overflow-hidden rounded-md bg-stone-100 md:w-52">
         <img
           src={resolvedImage}
           alt={title}
-          className="w-full h-full object-cover aspect-video"
+          className="aspect-video h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
         />
       </div>
 
-      {/* Content — clickable to go to the editor */}
       <CardContent
-        className="flex flex-1 flex-col gap-3 p-5 cursor-pointer"
+        className="flex flex-1 cursor-pointer flex-col gap-3 p-4"
         onClick={() => navigate(`/user/edit-post/${postId}`)}
         title="Clic para editar"
       >
-        {/* Category + Status Badge */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-sm uppercase tracking-wide text-muted-foreground">
-            {categoryName}
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-rose-700">
+            {categoryName ?? "Sin categoria"}
           </p>
 
-          {/*Visual status badge with semantic colors */}
           <span
-            className={`px-2 py-0.5 rounded-full text-xs font-medium ${badge.className}`}
+            className={`rounded-full border px-2.5 py-1 text-xs font-medium ${badge.className}`}
           >
             {badge.label}
           </span>
         </div>
 
-        {/* Title */}
-        <CardTitle className="text-lg md:text-xl font-semibold line-clamp-2 group-hover:text-rose-600 transition-colors">
+        <CardTitle className="line-clamp-2 font-serif text-2xl font-normal leading-tight text-stone-950 transition-colors group-hover:text-rose-800">
           {title}
         </CardTitle>
 
-        {/* Author */}
-        <CardDescription>by {author}</CardDescription>
+        <CardDescription className="text-sm text-stone-500">
+          Por {author ?? "Autor"}
+        </CardDescription>
       </CardContent>
 
-      {/* Actions */}
-      <div className="px-2 md:px-2 flex items-start">
+      <div className="flex items-start px-2 py-3">
         <PostRowActions
           status={status}
           onDelete={onDelete}

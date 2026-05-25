@@ -1,15 +1,23 @@
+import { Hash } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function CategoryBox({ nombre }) {
-    return (
-        <Link className="group flex flex-col items-center justify-center gap-2 p-6 h-min-16 rounded-xl shadow-sm
-                        bg-white hover:shadow-md transition-all duration-300 hover:scale-[1.03]">
-            {/**Contenedor de la imagen */}
-            <div className="w-20 h-20 flex items-center justify-center overflow-hidden bg-gray-100 group-hover:bg-gray-300
-                            rounded-full transition-colors duration-300">
-                <img src="" className="w-full h-full object-cover"></img>
-            </div>
-            <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 text-center">{nombre}</span>
-        </Link>
-    )
+export default function CategoryBox({ category, nombre }) {
+  const name = category?.name ?? nombre;
+  const slug = category?.slug ?? name?.toLowerCase().replace(/\s+/g, "-");
+
+  return (
+    <Link
+      to={`/categoria/${slug}`}
+      className="group flex min-h-24 flex-col justify-between rounded-md border border-stone-200 bg-white p-4 transition duration-200 hover:border-stone-950 hover:bg-stone-50 hover:shadow-sm"
+    >
+      <Hash
+        size={18}
+        strokeWidth={1.7}
+        className="text-rose-700 transition-colors group-hover:text-stone-950"
+      />
+      <span className="mt-6 text-sm font-semibold text-stone-900 transition-colors group-hover:text-rose-800">
+        {name}
+      </span>
+    </Link>
+  );
 }
