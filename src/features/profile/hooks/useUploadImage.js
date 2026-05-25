@@ -27,8 +27,9 @@ export function useUploadImage(
       return;
     }
 
-    if (!file.type || !file.type.startsWith("image/")) {
-      toast.error("Por favor selecciona una imagen válida.");
+    const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!file.type || !ALLOWED_TYPES.includes(file.type)) {
+      toast.error("Formato no permitido. Usa JPG, PNG, WEBP o GIF.");
       return;
     }
 

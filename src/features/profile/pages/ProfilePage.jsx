@@ -1,30 +1,35 @@
 import { useState } from "react";
-import { FaUserEdit, FaEnvelope, FaUserShield, FaCamera } from "react-icons/fa";
-import { Card, CardContent } from "@/components/ui/card";
+import { BookOpen, Camera, Mail, PenLine, RefreshCw, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProfileImageUpload from "../components/ProfileImageUpload";
 import ProfileEditDialog from "../components/ProfileEditDialog";
 import { useMyProfile } from "../hooks/useMyProfile";
 
+const ROLE_LABELS = {
+  ADMIN: "Administrador",
+  AUTHOR: "Autor",
+  USER: "Lector",
+};
+
 export default function ProfilePage() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const {
-    user,
-    loading,
-    error,
-    loadProfile,
-    handleImageUpdate,
-    handleDataUpdate,
-  } = useMyProfile();
+  const { user, loading, error, loadProfile, handleImageUpdate, handleDataUpdate } =
+    useMyProfile();
 
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto p-6 text-center">
-        <div className="animate-pulse">
-          <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-48 mx-auto mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-32 mx-auto"></div>
+      <div className="mx-auto max-w-4xl">
+        <div className="animate-pulse rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
+          <div className="flex flex-col gap-8 sm:flex-row sm:items-start">
+            <div className="mx-auto size-32 shrink-0 rounded-full bg-stone-200 sm:mx-0" />
+            <div className="flex-1 space-y-4">
+              <div className="mx-auto h-3 w-24 rounded bg-stone-200 sm:mx-0" />
+              <div className="mx-auto h-10 w-64 rounded bg-stone-200 sm:mx-0" />
+              <div className="mx-auto h-3 w-48 rounded bg-stone-100 sm:mx-0" />
+              <div className="mt-2 h-20 w-full rounded bg-stone-100" />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -32,77 +37,92 @@ export default function ProfilePage() {
 
   if (error) {
     return (
-      <div className="max-w-3xl mx-auto p-6">
-        <Card className="p-6 bg-red-50 border-red-200">
-          <div className="text-center">
-            <p className="text-red-600 mb-4">{error}</p>
-            <Button onClick={loadProfile} variant="destructive">
-              Reintentar
-            </Button>
-          </div>
-        </Card>
+      <div className="mx-auto flex min-h-[55vh] max-w-2xl flex-col items-center justify-center text-center">
+        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700" />
+        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+          No pudimos cargar el perfil
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <Button onClick={loadProfile} className="mt-6 bg-rose-700 hover:bg-rose-800">
+          <RefreshCw size={16} />
+          Reintentar
+        </Button>
       </div>
     );
   }
 
   if (!user) return null;
 
+  const roleLabel = ROLE_LABELS[user.role] ?? user.role;
+
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <Card className="p-6 shadow-md rounded-2xl border border-gray-200">
-        <CardContent className="flex flex-col md:flex-row items-center md:items-start gap-6">
-          {/* Foto de perfil - Click para editar */}
-          <div
-            className="relative group cursor-pointer"
+    <div className="mx-auto max-w-4xl space-y-6">
+      <section className="rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-start">
+          <button
+            type="button"
             onClick={() => setImageModalOpen(true)}
+            className="group relative mx-auto shrink-0 sm:mx-0"
+            aria-label="Cambiar foto de perfil"
           >
             <img
               src={user.image}
-              alt="Foto de perfil"
-              className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-sm object-cover transition-opacity group-hover:opacity-75 pointer-events-none"
+              alt={user.name}
+              className="size-32 rounded-full border-4 border-white object-cover shadow-md transition duration-300 group-hover:brightness-75"
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-opacity-40 rounded-full transition-all">
-              <FaCamera className="text-white text-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            </div>
-          </div>
+            <span className="absolute inset-0 flex items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100">
+              <Camera size={22} className="text-white drop-shadow-md" />
+            </span>
+          </button>
 
-          {/* Información del perfil */}
-          <div className="flex-1 space-y-3 text-center md:text-left">
-            <h2 className="text-2xl font-semibold">{user.name}</h2>
-            <div className="flex justify-center md:justify-start items-center gap-2 text-gray-500">
-              <FaUserShield />
-              <span>{user.role}</span>
-            </div>
-            <div className="flex justify-center md:justify-start items-center gap-2 text-gray-500">
-              <FaEnvelope />
-              <span>{user.email}</span>
-            </div>
-            <p className="text-gray-700 text-sm leading-relaxed italic">
-              {user.description || "Sin descripción"}
+          <div className="flex-1 text-center sm:text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+              Perfil de autor
             </p>
+            <h1 className="mt-2 font-serif text-4xl text-stone-950 sm:text-5xl">
+              {user.name}
+            </h1>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:justify-start">
+              <span className="flex items-center gap-1.5 text-sm text-stone-500">
+                <Shield size={13} strokeWidth={1.8} />
+                {roleLabel}
+              </span>
+              <span className="flex items-center gap-1.5 text-sm text-stone-500">
+                <Mail size={13} strokeWidth={1.8} />
+                {user.email}
+              </span>
+            </div>
 
-            <div className="flex justify-center md:justify-start mt-4">
+            {user.description ? (
+              <p className="mt-5 max-w-2xl text-base leading-8 text-stone-600">
+                {user.description}
+              </p>
+            ) : (
+              <p className="mt-5 text-sm italic text-stone-400">
+                Aún no has añadido una presentación como autor.
+              </p>
+            )}
+
+            <div className="mt-6 flex justify-center sm:justify-start">
               <Button
                 onClick={() => setEditModalOpen(true)}
-                className="flex items-center gap-2 cursor-pointer hover:bg-rose-500"
-                variant="destructive"
+                variant="outline"
+                className="border-stone-300 bg-transparent"
               >
-                <FaUserEdit /> Editar perfil
+                <PenLine size={15} />
+                Editar perfil
               </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      {/* Change image modal */}
       <ProfileImageUpload
         currentImage={user.image}
         onImageUpdated={handleImageUpdate}
         isOpen={imageModalOpen}
         onClose={() => setImageModalOpen(false)}
       />
-
-      {/* Edit data modal */}
       <ProfileEditDialog
         user={user}
         onSave={handleDataUpdate}
