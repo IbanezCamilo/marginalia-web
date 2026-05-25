@@ -1,4 +1,5 @@
-import { BASE_URL } from "@/lib/apiClient";
+import { BookOpen } from "lucide-react";
+import { BASE_URL } from "@/lib/config";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import PostRowActions from "./PostRowActions";
@@ -15,9 +16,7 @@ export default function PostListItemCard({
 }) {
   const navigate = useNavigate();
 
-  const resolvedImage = imageUrl
-    ? `${BASE_URL}/images/${imageUrl}`
-    : "https://placehold.co/400x300?text=Sin+imagen";
+  const resolvedImage = imageUrl ? `${BASE_URL}/images/${encodeURIComponent(imageUrl)}` : null;
 
   const statusConfig = {
     PUBLISHED: {
@@ -36,13 +35,19 @@ export default function PostListItemCard({
   };
 
   return (
-    <Card className="group flex w-full max-w-5xl flex-col gap-0 rounded-md border-stone-200 p-3 shadow-[0_1px_2px_rgba(28,25,23,0.04)] transition-colors hover:bg-[#fbf8f3] md:flex-row">
+    <Card className="group flex w-full max-w-5xl flex-col gap-0 rounded-md border-stone-200 p-3 shadow-[0_1px_2px_rgba(28,25,23,0.04)] transition-colors hover:bg-surface-warm md:flex-row">
       <div className="w-full shrink-0 overflow-hidden rounded-md bg-stone-100 md:w-52">
-        <img
-          src={resolvedImage}
-          alt={title}
-          className="aspect-video h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-        />
+        {resolvedImage ? (
+          <img
+            src={resolvedImage}
+            alt={title}
+            className="aspect-video h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div className="aspect-video flex h-full w-full items-center justify-center text-stone-300">
+            <BookOpen size={28} strokeWidth={1.4} aria-hidden="true" />
+          </div>
+        )}
       </div>
 
       <CardContent
