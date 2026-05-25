@@ -1,44 +1,26 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { userService } from "../../features/profile/services/userService";
 import { LogOut, Menu, Settings, UserRound } from "lucide-react";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+
+const DEFAULT_AVATAR =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23e7e5e4'/%3E%3Ccircle cx='20' cy='16' r='7' fill='%23a8a29e'/%3E%3Cellipse cx='20' cy='36' rx='13' ry='10' fill='%23a8a29e'/%3E%3C/svg%3E";
 
 export default function TopBar({ onMenuClick }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const {
+    state: { user, loading },
+    actions: { logout },
+  } = useAuth();
   const navigate = useNavigate();
 
-  const defaultAvatar =
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
-
   useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        if (!userService.isAuthenticated()) {
-          navigate("/auth/login");
-          return;
-        }
-        const data = await userService.getProfile();
-        setUser({
-          name: data.name,
-          image: data.image || defaultAvatar,
-        });
-      } catch (err) {
-        if (err.message.includes("sesion") || err.message.includes("401")) {
-          navigate("/auth/login");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadUserData();
-  }, [defaultAvatar, navigate]);
+    if (!loading && !user) navigate("/auth/login");
+  }, [loading, user, navigate]);
 
   const handleLogout = () => {
     if (confirm("Seguro quieres cerrar sesion?")) {
-      userService.logout();
+      logout();
       navigate("/auth/login");
     }
   };
@@ -82,11 +64,11 @@ export default function TopBar({ onMenuClick }) {
       <div className="group relative cursor-pointer">
         <div className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-stone-100">
           <img
-            src={user?.image}
+            src={user?.image || DEFAULT_AVATAR}
             className="size-10 rounded-full border border-stone-200 object-cover"
             alt={user?.name ?? "Usuario"}
             onError={(e) => {
-              e.target.src = defaultAvatar;
+              e.target.src = DEFAULT_AVATAR;
             }}
           />
           <span className="hidden text-sm font-medium text-stone-800 sm:inline">
