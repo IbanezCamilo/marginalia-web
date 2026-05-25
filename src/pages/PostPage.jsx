@@ -1,7 +1,7 @@
 import { ArrowLeft, BookOpen, RefreshCw } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
-import { BASE_URL } from "@/lib/config";
+import { toCoverImageUrl, toProfileImageUrl } from "@/utils/imageUtils";
 import { usePublicPost } from "@/features/posts/hooks/usePublicPost";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import PostCard from "@/features/posts/components/PostCard";
@@ -46,11 +46,7 @@ function PostSkeleton() {
 }
 
 function AuthorCard({ post }) {
-  const avatarSrc = post?.authorProfilePicture?.startsWith("http")
-    ? post.authorProfilePicture
-    : post?.authorProfilePicture
-    ? `${BASE_URL}/api/images/${encodeURIComponent(post.authorProfilePicture)}`
-    : null;
+  const avatarSrc = toProfileImageUrl(post?.authorProfilePicture);
 
   return (
     <div className="mt-14 border-t border-stone-200 pt-10 dark:border-stone-700">
@@ -102,9 +98,7 @@ export default function PostPage() {
 
   const author = post?.authorName ?? post?.AuthorName ?? "Autor";
   const category = post?.categoryName ?? post?.CategoryName ?? "Lectura";
-  const imageSrc = post?.coverImage
-    ? `${BASE_URL}/images/${encodeURIComponent(post.coverImage)}`
-    : null;
+  const imageSrc = toCoverImageUrl(post?.coverImage);
   const isoDate = post?.createdAt ? new Date(post.createdAt).toISOString() : undefined;
 
   const relatedPosts = allPosts

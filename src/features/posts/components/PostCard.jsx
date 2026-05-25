@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BookOpen } from "lucide-react";
-import { BASE_URL } from "@/lib/config";
+import { toCoverImageUrl } from "@/utils/imageUtils";
 import { editorContentToText } from "@/features/posts/utils/editorContent";
 
 const getExcerpt = (content, maxLength = 140) => {
@@ -25,7 +25,7 @@ export default function PostCard({ post, hideAuthor = false, headingAs = "h2" })
   const author = post.authorName ?? post.AuthorName ?? "Autor";
   const category = post.categoryName ?? post.CategoryName ?? "Lectura";
   const coverImage = post.coverImage;
-  const imageSrc = coverImage ? `${BASE_URL}/images/${encodeURIComponent(coverImage)}` : null;
+  const imageSrc = toCoverImageUrl(coverImage);
   const isoDate = post.createdAt ? new Date(post.createdAt).toISOString() : undefined;
 
   return (

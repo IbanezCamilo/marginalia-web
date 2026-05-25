@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { userService } from "@/features/profile/services/userService";
-import { BASE_URL } from "@/lib/config";
+import { toProfileImageUrl } from "@/utils/imageUtils";
 import { toast } from "sonner";
 
 export function useMyProfile(){
@@ -44,9 +44,7 @@ export function useMyProfile(){
   // Handle image upload
   const handleImageUpdate = async (imageFile) => {
     const response = await userService.uploadProfileImage(imageFile);
-    const imageUrl = response.imageUrl.startsWith("http")
-      ? response.imageUrl
-      : `${BASE_URL}${response.imageUrl}`;
+    const imageUrl = toProfileImageUrl(response.imageUrl);
 
     setUser((prev) => ({ ...prev, image: imageUrl }));
     toast.success("Imagen actualizada correctamente");

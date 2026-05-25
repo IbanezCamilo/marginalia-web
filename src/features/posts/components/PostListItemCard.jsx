@@ -1,5 +1,5 @@
 import { BookOpen } from "lucide-react";
-import { BASE_URL } from "@/lib/config";
+import { toCoverImageUrl } from "@/utils/imageUtils";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import PostRowActions from "./PostRowActions";
@@ -16,7 +16,7 @@ export default function PostListItemCard({
 }) {
   const navigate = useNavigate();
 
-  const resolvedImage = imageUrl ? `${BASE_URL}/images/${encodeURIComponent(imageUrl)}` : null;
+  const resolvedImage = toCoverImageUrl(imageUrl);
 
   const statusConfig = {
     PUBLISHED: {

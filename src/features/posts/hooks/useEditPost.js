@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { postService } from "../services/myPostService";
 import { categoryService } from "@/features/categories/services/categoryService";
 import { validatePost } from "@/utils/postValidation";
-import { BASE_URL } from "@/lib/config";
+import { toCoverImageUrl } from "@/utils/imageUtils";
 import { toast } from "sonner";
 
 export function useEditPost(id, navigate) {
@@ -35,9 +35,7 @@ export function useEditPost(id, navigate) {
           categoryId: postData.categoryId,
           status: postData.status,
           image: postData.coverImage ?? "",
-          previewUrl: postData.coverImage
-            ? `${BASE_URL}/api/images/${postData.coverImage}`
-            : "",
+          previewUrl: toCoverImageUrl(postData.coverImage) ?? "",
           updatedAt: postData.updatedAt,
           createdAt: postData.createdAt,
         };

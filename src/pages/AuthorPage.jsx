@@ -1,6 +1,6 @@
 import { ArrowLeft, BookOpen, RefreshCw } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { BASE_URL } from "@/lib/config";
+import { toProfileImageUrl } from "@/utils/imageUtils";
 import { usePublicAuthor } from "@/features/authors/hooks/usePublicAuthor";
 import PostCard from "@/features/posts/components/PostCard";
 import Footer from "../shared/components/Footer";
@@ -36,11 +36,7 @@ export default function AuthorPage() {
   const { authorId } = useParams();
   const { author, posts, loading, error, reload } = usePublicAuthor(authorId);
 
-  const avatarSrc = author?.profilePicture?.startsWith("http")
-    ? author.profilePicture
-    : author?.profilePicture
-    ? `${BASE_URL}/api/images/${encodeURIComponent(author.profilePicture)}`
-    : null;
+  const avatarSrc = toProfileImageUrl(author?.profilePicture);
 
   return (
     <>
