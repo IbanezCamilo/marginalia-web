@@ -1,5 +1,5 @@
 <h1>
-  <img src="src/shared/components/Icons/logo.svg" alt="Marginalia logo" width="48" height="48" style="vertical-align:middle; margin-right:10px;">
+  <img src="src/shared/components/Icons/marginalia.svg" alt="Marginalia logo" width="48" height="48" style="vertical-align:middle; margin-right:10px;">
   Marginalia — Literary Blog · Frontend
 </h1>
 
