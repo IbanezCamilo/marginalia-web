@@ -1,5 +1,12 @@
 {
-  "name": "v4-blog-literario-frondend",
+  "name": "marginalia-web",
+  "description": "Frontend for Marginalia, a literary blogging platform built with React, Vite, and TipTap.",
+  "author": "IbanezCamilo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IbanezCamilo/marginalia-web.git"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",

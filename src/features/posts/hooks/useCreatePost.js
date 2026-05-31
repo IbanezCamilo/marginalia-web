@@ -63,7 +63,6 @@ export function useCreatePost() {
     const validation = validatePost(post, initialStatus);
 
     if (!validation.isValid) {
-      validation.errors.forEach((err) => console.error("  -", err));
       toast.warning("Por favor completa todos los campos:", {
         description: validation.errors.map(e => `• ${e}`).join("\n"),
         classNames: {

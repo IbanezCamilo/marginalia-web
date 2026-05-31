@@ -25,7 +25,7 @@ export const parseEditorContent = (content) => {
     try {
       return JSON.parse(content);
     } catch (err) {
-      console.error("❌ JSON parse failed:", err.message);
+      if (import.meta.env.DEV) console.error("JSON parse failed:", err.message);
       return EMPTY_DOCUMENT;
     }
   }

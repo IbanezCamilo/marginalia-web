@@ -69,7 +69,6 @@ export function useEditPost(id, navigate) {
     const validation = validatePost(post, statusToSave);
 
     if (!validation.isValid) {
-      validation.errors.forEach((err) => console.error("  -", err));
       toast.warning("Por favor completa todos los campos:", {
         description: validation.errors.map(e => `• ${e}`).join("\n"),
         classNames: {

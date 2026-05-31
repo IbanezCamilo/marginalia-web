@@ -70,8 +70,8 @@ Pages import hooks only. Hooks call services. Services use `apiClient`. Nothing 
 ### Steps
 
 ```bash
-git clone https://github.com/IbanezCamilo/blog-literario-frontend.git
-cd blog-literario-frontend
+git clone https://github.com/IbanezCamilo/marginalia-web.git
+cd marginalia-web
 cp .env.sample .env
 # Edit .env with your backend URLs
 npm install
