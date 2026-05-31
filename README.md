@@ -1,4 +1,7 @@
-# Marginalia — Literary Blog · Frontend
+<h1>
+  <img src="src/shared/components/Icons/logo.svg" alt="Marginalia logo" width="48" height="48" style="vertical-align:middle; margin-right:10px;">
+  Marginalia — Literary Blog · Frontend
+</h1>
 
 User interface for **Marginalia**, a literary blogging platform. Includes a public reading site and an admin panel for authors, with a dashboard, post management, categories, and user profile.
 
