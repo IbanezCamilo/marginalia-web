@@ -86,7 +86,7 @@ export function useCreatePost() {
       setSubmitting(true);
       setSubmitError(null);
 
-      const createdPost = await postService.create(postData, image);
+      await postService.create(postData, image);
 
       toast.success(`Post ${
           initialStatus === "PUBLISHED" ? "Publicado" : "Guardado como borrador"

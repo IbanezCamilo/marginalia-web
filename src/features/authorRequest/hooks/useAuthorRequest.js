@@ -32,7 +32,7 @@ export function useAuthorRequest() {
         const all = data.content ?? [];
         setActiveRequest(all[0] ?? null);
         setHistory(all.slice(1));
-      } catch (err) {
+      } catch {
         if (!cancelled) toast.error("No se pudo cargar el estado de tu solicitud.");
       } finally {
         if (!cancelled) setLoading(false);

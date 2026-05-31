@@ -1,4 +1,4 @@
-import { Link, useRouteError, isRouteErrorResponse } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { PenLine, ArrowLeft } from "lucide-react";
 import Navbar from "@/shared/components/Navbar";
 import Footer from "@/shared/components/Footer";
@@ -7,10 +7,6 @@ export default function NotFoundPage() {
   // useRouteError permite capturar tanto errores de rutas (404)
   // como errores de carga de datos (loaders). Si no hay error de ruta
   // (uso directo del componente), simplemente muestra el 404.
-  const error = useRouteError?.();
-  const is404 =
-    !error || (isRouteErrorResponse?.(error) && error.status === 404);
-
   return (
     <>
       <Navbar />

@@ -1,0 +1,260 @@
+Tiptap Playbook
+
+Technical and architectural guide for correctly implementing, maintaining, and scaling Tiptap within the project.
+
+=================================================================
+
+GOALS
+
+- Maintain architectural consistency.
+- Reduce technical debt.
+- Avoid schema corruption.
+- Improve maintainability.
+- Standardize extensions.
+- Avoid performance issues.
+- Facilitate scalability.
+- Maintain future compatibility.
+
+=================================================================
+
+BASE STACK
+
+- React
+- Vite
+- Tiptap v3
+- ProseMirror
+- TypeScript
+- JSON persistence
+
+=================================================================
+
+GENERAL PHILOSOPHY
+
+Tiptap is NOT a simple editor.
+
+Tiptap is a layer on top of:
+- ProseMirror State
+- Transactions
+- Plugins
+- Schema
+- Commands
+- Selections
+
+Many seemingly "Tiptap" errors are actually:
+- schema problems,
+- poor state management,
+- rerenders,
+- incorrect lifecycle,
+- or misuse of ProseMirror.
+
+=================================================================
+
+MAIN RULE
+
+The editor does NOT contain business logic.
+
+The editor:
+- renders,
+- serializes,
+- executes commands.
+
+It must NOT:
+- save directly to the DB,
+- consume APIs,
+- handle auth,
+- contain complex business logic.
+
+Incorrect:
+
+editor.on('update', async () => {
+  await api.save()
+})
+
+Correct:
+
+onUpdate({ editor }) {
+  onChange(editor.getJSON())
+}
+
+=================================================================
+
+PERSISTENCE
+
+Always persist as JSON.
+
+Correct:
+
+editor.getJSON()
+
+Incorrect:
+
+editor.getHTML()
+
+as the primary source.
+
+Why JSON?
+
+Advantages:
+- structural stability,
+- better validation,
+- lower XSS risk,
+- easier migration,
+- future compatibility,
+- cleaner backend integration.
+
+=================================================================
+
+RECOMMENDED ARCHITECTURE
+
+src/
+  features/
+    editor/
+      components/
+      extensions/
+      commands/
+      menus/
+      hooks/
+      serializers/
+      schemas/
+      utils/
+      styles/
+
+=================================================================
+
+EXTENSION RULES
+
+One responsibility per extension.
+
+Correct:
+- LinkExtension
+- ImageExtension
+- CalloutExtension
+
+Incorrect:
+- CustomEditorExtension doing everything.
+
+=================================================================
+
+BASE CONFIGURATION
+
+const editor = useEditor({
+  extensions: [
+    StarterKit,
+    Placeholder,
+    Link,
+    Underline,
+  ],
+
+  content,
+
+  immediatelyRender: false,
+
+  onUpdate({ editor }) {
+    onChange(editor.getJSON())
+  },
+})
+
+=================================================================
+
+PERFORMANCE RULES
+
+1. Do not recreate the editor constantly.
+
+2. Do not call setContent on every render.
+
+3. Debounce persistence.
+
+Correct:
+
+debounce(saveContent, 1000)
+
+4. Memoize:
+- toolbars,
+- menus,
+- floating panels.
+
+Use:
+- React.memo
+- useMemo
+- useCallback
+
+=================================================================
+
+SECURITY
+
+Never trust:
+- external HTML,
+- external embeds,
+- pasted content without sanitization.
+
+Validate:
+- links,
+- uploads,
+- embeds,
+- iframes.
+
+=================================================================
+
+NODEVIEWS
+
+Use NodeViews ONLY when necessary.
+
+Good reasons:
+- embeds,
+- widgets,
+- complex layouts,
+- interactive React elements.
+
+Bad reasons:
+- decorative text,
+- unnecessary wrappers.
+
+=================================================================
+
+SSR / NEXT.JS
+
+If SSR is in use:
+
+immediatelyRender: false
+
+Avoid:
+- window,
+- document,
+- early DOM access.
+
+=================================================================
+
+PRE-MERGE CHECKLIST
+
+Architecture
+- No business logic in the editor
+- Decoupled extensions
+- No unnecessary side effects
+
+Performance
+- No excessive rerenders
+- Debounced persistence
+- Justified NodeViews
+
+Schema
+- Compatible with existing content
+- Valid JSON
+- No unnecessary breaking changes
+
+UX
+- Correct focus behavior
+- Functional shortcuts
+- Defined loading/error states
+
+=================================================================
+
+FINAL RULE
+
+If a solution:
+- breaks the schema,
+- forces rerenders,
+- relies on DOM hacks,
+- duplicates logic,
+- or ignores the editor lifecycle,
+
+it is probably implemented incorrectly.
