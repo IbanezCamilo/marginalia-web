@@ -123,6 +123,10 @@ npm run lint     # ESLint (flat config v9)
 
 ## Screenshots
 
-| Public feed | Admin dashboard |
+| Public feed | Individual post |
 |---|---|
-| ![Public feed](docs/screenshots/public-page.png) | ![Dashboard](docs/screenshots/panel-page.png) |
+| ![Public feed](docs/screenshots/public-page.png) | ![Individual post](docs/screenshots/individual-post-page.png) |
+
+| Admin dashboard | TipTap editor |
+|---|---|
+| ![Dashboard](docs/screenshots/panel-page.png) | ![Editor](docs/screenshots/tiptap-editor.png) |
