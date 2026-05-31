@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import {
+  BadgeCheck,
   ChevronLeft,
+  ClipboardList,
   Files,
   Folder,
   Home,
@@ -13,14 +15,16 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/shared/components/logo";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
-const ROLE_LEVEL = { AUTHOR: 1, MODERATOR: 2, ADMIN: 3 };
+const ROLE_LEVEL = { READER: 0, AUTHOR: 1, MODERATOR: 2, ADMIN: 3 };
 
 const ALL_MENU_ITEMS = [
-  { path: "/user/dashboard",   icon: LayoutDashboard, label: "Dashboard",  minRole: "AUTHOR" },
-  { path: "/user/create-post", icon: PenSquare,        label: "Crear Post", minRole: "AUTHOR" },
-  { path: "/user/posts",       icon: Files,            label: "Mis Posts",  minRole: "AUTHOR" },
-  { path: "/user/categories",  icon: Folder,           label: "Categorias", minRole: "ADMIN"  },
-  { path: "/user/profile",     icon: UserRound,        label: "Perfil",     minRole: "AUTHOR" },
+  { path: "/user/author-request", icon: BadgeCheck,     label: "Ser Autor",  minRole: "READER", maxRole: "READER" },
+  { path: "/user/dashboard",      icon: LayoutDashboard, label: "Dashboard",  minRole: "AUTHOR" },
+  { path: "/user/create-post",    icon: PenSquare,       label: "Crear Post", minRole: "AUTHOR" },
+  { path: "/user/posts",          icon: Files,           label: "Mis Posts",  minRole: "AUTHOR" },
+  { path: "/user/categories",     icon: Folder,          label: "Categorias",  minRole: "ADMIN"  },
+  { path: "/user/solicitudes",    icon: ClipboardList,   label: "Solicitudes", minRole: "ADMIN"  },
+  { path: "/user/profile",        icon: UserRound,       label: "Perfil",      minRole: "READER" },
 ];
 
 export default function SidebarCollapsible({
@@ -32,11 +36,13 @@ export default function SidebarCollapsible({
   const location = useLocation();
   const { state: { user } } = useAuth();
 
-  const menuItems = ALL_MENU_ITEMS.filter(
-    (item) =>
-      user?.role &&
-      (ROLE_LEVEL[user.role] ?? 0) >= ROLE_LEVEL[item.minRole]
-  );
+  const menuItems = ALL_MENU_ITEMS.filter((item) => {
+    if (!user?.role) return false;
+    const userLevel = ROLE_LEVEL[user.role] ?? 0;
+    const min = ROLE_LEVEL[item.minRole] ?? 0;
+    const max = item.maxRole != null ? ROLE_LEVEL[item.maxRole] ?? 0 : Infinity;
+    return userLevel >= min && userLevel <= max;
+  });
 
   const renderMenu = (onClick) => (
     <nav className="space-y-1 p-3">

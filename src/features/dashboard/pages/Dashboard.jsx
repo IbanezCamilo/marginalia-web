@@ -2,16 +2,19 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  BadgeCheck,
   BookOpen,
   FileText,
   Folder,
   PenLine,
   RefreshCw,
   Sparkles,
+  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PanelCard } from "../components/PanelCard";
 import { PanelCardSkeleton } from "../components/PanelCardSkeleton";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { userService } from "../../profile/services/userService";
 import { postService } from "../../posts/services/myPostService";
 import { categoryService } from "../../categories/services/categoryService";
@@ -45,6 +48,7 @@ const getStatusClassName = (status) => {
 };
 
 export default function DashBoard() {
+  const { state: { user: authUser } } = useAuth();
   const [user, setUser] = useState(null);
   const [postsData, setPostsData] = useState({
     posts: [],
@@ -55,8 +59,9 @@ export default function DashBoard() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (authUser?.role === "READER") return;
     loadDashboard();
-  }, []);
+  }, [authUser?.role]);
 
   const loadDashboard = async () => {
     try {
@@ -118,6 +123,10 @@ export default function DashBoard() {
   }, [categories.length, postsData.posts, postsData.totalElements]);
 
   const maxBarValue = Math.max(...stats.map((item) => item.value), 1);
+
+  if (authUser?.role === "READER") {
+    return <ReaderDashboard user={authUser} />;
+  }
 
   if (loading) {
     return (
@@ -356,4 +365,78 @@ export default function DashBoard() {
 
 function UserLinkIcon() {
   return <PenLine size={16} />;
+}
+
+function ReaderDashboard({ user }) {
+  return (
+    <div className="mx-auto max-w-2xl space-y-6">
+      <section className="rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-700">
+          Tu cuenta
+        </p>
+        <h1 className="mt-3 font-serif text-4xl leading-tight text-stone-950 sm:text-5xl">
+          Bienvenido, {user?.name ?? "lector"}.
+        </h1>
+        <p className="mt-4 text-sm leading-7 text-stone-600">
+          Tu cuenta de lector está activa en Marginalia.
+        </p>
+      </section>
+
+      <PanelCard>
+        <div className="flex items-start gap-4">
+          <span className="grid size-10 shrink-0 place-items-center rounded-md border border-stone-200 bg-stone-50 text-rose-800">
+            <BadgeCheck size={18} strokeWidth={1.8} />
+          </span>
+          <div className="flex-1">
+            <h2 className="font-serif text-2xl text-stone-950">
+              Conviértete en autor
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-stone-500">
+              Solicita el rol de autor para publicar artículos y reseñas en el
+              blog. El equipo revisará tu solicitud.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <Button asChild className="bg-rose-700 hover:bg-rose-800">
+                <Link to="/user/author-request">
+                  <BadgeCheck size={15} />
+                  Solicitar autoría
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="border-stone-300 bg-transparent">
+                <Link to="/">
+                  Ver blog
+                  <ArrowRight size={15} />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PanelCard>
+
+      <PanelCard>
+        <div className="flex items-start gap-4">
+          <span className="grid size-10 shrink-0 place-items-center rounded-md border border-stone-200 bg-stone-50 text-rose-800">
+            <UserRound size={18} strokeWidth={1.8} />
+          </span>
+          <div className="flex-1">
+            <h2 className="font-serif text-2xl text-stone-950">
+              Perfil público
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-stone-500">
+              Actualiza tu nombre y descripción para que aparezcan correctamente
+              si publicas en el futuro.
+            </p>
+            <div className="mt-4">
+              <Button asChild variant="outline" className="border-stone-300 bg-transparent">
+                <Link to="/user/profile">
+                  Editar perfil
+                  <ArrowRight size={15} />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PanelCard>
+    </div>
+  );
 }

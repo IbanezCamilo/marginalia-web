@@ -1,7 +1,8 @@
 import { toProfileImageUrl } from "@/utils/imageUtils";
 import { apiClient } from "@/lib/apiClient";
 
-const DEFAULT_AVATAR = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg";
+const defaultAvatar = (name) =>
+  `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=44403c&color=fafaf9&bold=true`;
 
 const BASE_ENDPOINT = '/me/profile';
 
@@ -12,6 +13,12 @@ export const userService = {
             email: credentials.email,
             password: credentials.password,
         });
+        localStorage.setItem('token', data.token);
+        return data;
+    },
+
+    register: async ({ name, email, password }) => {
+        const data = await apiClient.post('/auth/register', { name, email, password });
         localStorage.setItem('token', data.token);
         return data;
     },
@@ -32,7 +39,7 @@ export const userService = {
             name:        data.name,
             email:       data.email,
             description: data.description || '',
-            image:       toProfileImageUrl(data.profilePicture) ?? DEFAULT_AVATAR,
+            image:       toProfileImageUrl(data.profilePicture) ?? defaultAvatar(data.name),
             role:        data.role,
         };
     },

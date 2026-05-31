@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Logo from "@/shared/components/logo";
-import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useRegister } from "@/features/auth/hooks/useRegister";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const {
+    name,
+    setName,
     email,
     setEmail,
     password,
@@ -17,7 +19,7 @@ export default function LoginPage() {
     loading,
     error,
     handleSubmit,
-  } = useLogin();
+  } = useRegister();
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[45fr_55fr]">
@@ -26,28 +28,45 @@ export default function LoginPage() {
       <section className="flex min-h-screen flex-col justify-between bg-stone-950 px-10 py-10 lg:px-14 lg:py-12">
 
         {/* Marca */}
-          <Link to={"/"}>
-            <div className="flex items-center gap-2">
-              <Logo size={30} className="text-white" />
-              <span className="font-serif text-lg tracking-wide text-white">Marginalia</span>
-            </div>
-          </Link>
+        <Link to={"/"}>
+          <div className="flex items-center gap-2">
+            <Logo size={30} className="text-white" />
+            <span className="font-serif text-lg tracking-wide text-white">Marginalia</span>
+          </div>
+        </Link>
 
         {/* Formulario */}
         <div className="mx-auto w-full max-w-sm space-y-7">
           <div className="space-y-1">
             <p className="text-[10px] uppercase tracking-[0.22em] text-stone-500">
-              Iniciar sesión
+              Crear cuenta
             </p>
-            <h1 className="font-serif text-4xl text-white">Acceder</h1>
+            <h1 className="font-serif text-4xl text-white">Registrarse</h1>
             <p className="text-sm italic text-stone-400">
-              Continúa desde donde lo dejaste.
+              Únete a la comunidad literaria.
             </p>
           </div>
 
           <div className="border-t border-stone-800" />
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-1.5">
+              <Label htmlFor="name" className="text-stone-400 text-xs uppercase tracking-wide">
+                Nombre
+              </Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Tu nombre"
+                autoComplete="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={loading}
+                className="h-10 bg-stone-900 border-stone-700 text-white placeholder:text-stone-600
+                           focus-visible:border-stone-500 focus-visible:ring-stone-500/20"
+              />
+            </div>
+
             <div className="space-y-1.5">
               <Label htmlFor="email" className="text-stone-400 text-xs uppercase tracking-wide">
                 Correo electrónico
@@ -73,8 +92,8 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Tu contraseña"
-                  autoComplete="current-password"
+                  placeholder="Mínimo 8 caracteres"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
@@ -110,20 +129,20 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <Loader2 size={14} className="animate-spin" />
-                  Iniciando sesión…
+                  Creando cuenta…
                 </>
               ) : (
-                "Iniciar sesión"
+                "Crear cuenta"
               )}
             </Button>
 
             <p className="text-center text-sm text-stone-500">
-              ¿No tienes cuenta?{" "}
+              ¿Ya tienes cuenta?{" "}
               <Link
-                to="/auth/register"
+                to="/auth/login"
                 className="text-rose-500 hover:text-rose-400 transition-colors"
               >
-                Regístrate
+                Inicia sesión
               </Link>
             </p>
           </form>
@@ -147,8 +166,8 @@ export default function LoginPage() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
         >
-          <span className="font-serif text-[16rem] leading-none text-stone-200 -rotate-6 translate-y-6">
-            M
+          <span className="font-serif text-[16rem] leading-none text-stone-200 rotate-6 translate-y-6">
+            L
           </span>
         </div>
 
@@ -160,10 +179,10 @@ export default function LoginPage() {
 
           <blockquote className="max-w-xs space-y-3">
             <p className="font-serif text-2xl italic leading-relaxed text-stone-700">
-              "La lectura es a la mente lo que el ejercicio al cuerpo."
+              "Un libro es un sueño que tienes en tus manos."
             </p>
             <cite className="block text-xs text-stone-400 not-italic">
-              — Joseph Addison
+              — Neil Gaiman
             </cite>
           </blockquote>
 
@@ -171,12 +190,12 @@ export default function LoginPage() {
 
           {/* Book spines decorativas */}
           <div className="flex items-end gap-1.5" aria-hidden="true">
-            <div className="h-16 w-2.5 rounded-sm bg-rose-900" />
-            <div className="h-12 w-2 rounded-sm bg-stone-600" />
             <div className="h-14 w-3 rounded-sm bg-stone-800" />
             <div className="h-10 w-2 rounded-sm bg-rose-800" />
-            <div className="h-16 w-2.5 rounded-sm bg-stone-500" />
+            <div className="h-16 w-2.5 rounded-sm bg-rose-900" />
+            <div className="h-12 w-2 rounded-sm bg-stone-600" />
             <div className="h-11 w-2 rounded-sm bg-stone-700" />
+            <div className="h-16 w-2.5 rounded-sm bg-stone-500" />
             <div className="h-14 w-3 rounded-sm bg-stone-400" />
           </div>
         </div>

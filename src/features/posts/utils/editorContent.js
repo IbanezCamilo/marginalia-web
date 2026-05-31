@@ -103,15 +103,12 @@ export const editorContentToHtml = (content) => {
   if (!content) return "";
   
   if (typeof content === "string" && !isJsonLike(content)) {
-    console.log("⚠️  Not JSON-like, returning as-is");
     return content;
   }
-  
+
   const parsed = parseEditorContent(content);
   const html = renderNode(parsed);
-  
-  console.log("📄 Generated HTML length:", html.length);
-  
+
   return html;
 };
 
