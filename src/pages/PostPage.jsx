@@ -1,7 +1,6 @@
 import { ArrowLeft, BookOpen, RefreshCw } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
-import { toCoverImageUrl, toProfileImageUrl } from "@/utils/imageUtils";
 import { usePublicPost } from "@/features/posts/hooks/usePublicPost";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import PostCard from "@/features/posts/components/PostCard";
@@ -46,7 +45,7 @@ function PostSkeleton() {
 }
 
 function AuthorCard({ post }) {
-  const avatarSrc = toProfileImageUrl(post?.authorProfilePicture);
+  const avatarSrc = post?.authorProfilePicture;
 
   return (
     <div className="mt-14 border-t border-stone-200 pt-10 dark:border-stone-700">
@@ -98,7 +97,7 @@ export default function PostPage() {
 
   const author = post?.authorName ?? post?.AuthorName ?? "Autor";
   const category = post?.categoryName ?? post?.CategoryName ?? "Lectura";
-  const imageSrc = toCoverImageUrl(post?.coverImage);
+  const imageSrc = post?.coverImage;
   const isoDate = post?.createdAt ? new Date(post.createdAt).toISOString() : undefined;
 
   const relatedPosts = allPosts

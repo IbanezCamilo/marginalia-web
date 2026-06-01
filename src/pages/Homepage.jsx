@@ -1,6 +1,5 @@
 import { ArrowRight, BookOpen, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
-import { toCoverImageUrl } from "@/utils/imageUtils";
 import PostCard from "@/features/posts/components/PostCard";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import CategoryBox from "../features/categories/components/CategoryBox";
@@ -72,7 +71,7 @@ export default function Homepage() {
     featuredPost?.authorName ?? featuredPost?.AuthorName ?? "Autor";
   const featuredCategory =
     featuredPost?.categoryName ?? featuredPost?.CategoryName ?? "Lectura";
-  const featuredImage = toCoverImageUrl(featuredPost?.coverImage);
+  const featuredImage = featuredPost?.coverImage;
   const featuredIsoDate = featuredPost?.createdAt
     ? new Date(featuredPost.createdAt).toISOString()
     : undefined;

@@ -1,6 +1,5 @@
 import { ArrowLeft, BookOpen, RefreshCw } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { toProfileImageUrl } from "@/utils/imageUtils";
 import { usePublicAuthor } from "@/features/authors/hooks/usePublicAuthor";
 import PostCard from "@/features/posts/components/PostCard";
 import Footer from "../shared/components/Footer";
@@ -36,7 +35,7 @@ export default function AuthorPage() {
   const { authorId } = useParams();
   const { author, posts, loading, error, reload } = usePublicAuthor(authorId);
 
-  const avatarSrc = toProfileImageUrl(author?.profilePicture);
+  const avatarSrc = author?.profilePicture;
 
   return (
     <>
