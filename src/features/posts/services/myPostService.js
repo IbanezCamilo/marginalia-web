@@ -48,6 +48,9 @@ export const postService = {
   updateStatus: (id, newStatus) =>
       apiClient.patch(`${BASE_ENDPOINT}/${id}/status`, { status: newStatus }),
 
+  deleteCoverImage: (id) =>
+      apiClient.delete(`${BASE_ENDPOINT}/${id}/cover-image`),
+
   delete: (id) =>
       apiClient.delete(`${BASE_ENDPOINT}/${id}`),
 

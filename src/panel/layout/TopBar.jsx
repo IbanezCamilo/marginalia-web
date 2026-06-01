@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Menu, Settings, UserRound } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
-const DEFAULT_AVATAR =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23e7e5e4'/%3E%3Ccircle cx='20' cy='16' r='7' fill='%23a8a29e'/%3E%3Cellipse cx='20' cy='36' rx='13' ry='10' fill='%23a8a29e'/%3E%3C/svg%3E";
 
 export default function TopBar({ onMenuClick }) {
   const {
@@ -63,14 +61,17 @@ export default function TopBar({ onMenuClick }) {
 
       <div className="group relative cursor-pointer">
         <div className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-stone-100">
-          <img
-            src={user?.image || DEFAULT_AVATAR}
-            className="size-10 rounded-full border border-stone-200 object-cover"
-            alt={user?.name ?? "Usuario"}
-            onError={(e) => {
-              e.target.src = DEFAULT_AVATAR;
-            }}
-          />
+          {user?.image ? (
+            <img
+              src={user.image}
+              className="size-10 rounded-full border border-stone-200 object-cover"
+              alt={user.name ?? "Usuario"}
+            />
+          ) : (
+            <div className="flex size-10 items-center justify-center rounded-full border border-stone-200 bg-stone-100 font-serif text-base text-stone-600">
+              {user?.name?.charAt(0)?.toUpperCase() ?? <UserRound size={18} />}
+            </div>
+          )}
           <span className="hidden text-sm font-medium text-stone-800 sm:inline">
             {user?.name}
           </span>

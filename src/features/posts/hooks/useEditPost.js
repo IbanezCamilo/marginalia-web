@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { postService } from "../services/myPostService";
 import { categoryService } from "@/features/categories/services/categoryService";
 import { validatePost } from "@/utils/postValidation";
-import { toCoverImageUrl } from "@/utils/imageUtils";
 import { toast } from "sonner";
 
 export function useEditPost(id, navigate) {
@@ -13,6 +12,7 @@ export function useEditPost(id, navigate) {
   const [loadError, setLoadError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [imageDeleted, setImageDeleted] = useState(false);
 
   // To detect changes and show "Unsaved changes" indicator in header
   const [originalPost, setOriginalPost] = useState(null);
@@ -35,7 +35,7 @@ export function useEditPost(id, navigate) {
           categoryId: postData.categoryId,
           status: postData.status,
           image: postData.coverImage ?? "",
-          previewUrl: toCoverImageUrl(postData.coverImage) ?? "",
+          previewUrl: postData.coverImage ?? "",
           updatedAt: postData.updatedAt,
           createdAt: postData.createdAt,
         };
@@ -92,6 +92,10 @@ export function useEditPost(id, navigate) {
 
       await postService.update(Number(id), postData, image);
 
+      if (imageDeleted) {
+        await postService.deleteCoverImage(Number(id));
+      }
+
         toast.success(`Post ${
         statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
         } exitosamente!`,)
@@ -110,6 +114,12 @@ export function useEditPost(id, navigate) {
   const handleChange = (field, value) => {
     if (field === "image") {
       setImage(value);
+      if (value === null) {
+        setPost((prev) => ({ ...prev, image: "" }));
+        setImageDeleted(true);
+      } else {
+        setImageDeleted(false);
+      }
       return;
     }
     setPost((prev) => ({ ...prev, [field]: value }));
