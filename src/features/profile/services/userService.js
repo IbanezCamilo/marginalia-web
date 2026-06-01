@@ -1,8 +1,4 @@
-import { toProfileImageUrl } from "@/utils/imageUtils";
 import { apiClient } from "@/lib/apiClient";
-
-const defaultAvatar = (name) =>
-  `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=44403c&color=fafaf9&bold=true`;
 
 const BASE_ENDPOINT = '/me/profile';
 
@@ -39,7 +35,7 @@ export const userService = {
             name:        data.name,
             email:       data.email,
             description: data.description || '',
-            image:       toProfileImageUrl(data.profilePicture) ?? defaultAvatar(data.name),
+            image:       data.profilePicture ?? null,
             role:        data.role,
         };
     },
@@ -58,7 +54,10 @@ export const userService = {
     uploadProfileImage: async (imageFile) => {
         const formData = new FormData();
         formData.append('image', imageFile);
-        return apiClient.postForm(`${BASE_ENDPOINT}/upload-image`, formData);
+        return apiClient.postForm(`${BASE_ENDPOINT}/image`, formData);
     },
+
+    deleteProfileImage: () =>
+        apiClient.delete(`${BASE_ENDPOINT}/image`),
 
 };

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { userService } from "@/features/profile/services/userService";
-import { toProfileImageUrl } from "@/utils/imageUtils";
 import { toast } from "sonner";
 
 export function useMyProfile(){
@@ -28,9 +27,7 @@ export function useMyProfile(){
         role: data.role,
         email: data.email,
         description: data.description || "",
-        image:
-          data.image ||
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Voltaire_Philosophy_of_Newton_frontispiece.jpg/250px-Voltaire_Philosophy_of_Newton_frontispiece.jpg",
+        image: data.image ?? null,
       };
       setUser(mappedUser);
     } catch (err) {
@@ -44,10 +41,15 @@ export function useMyProfile(){
   // Handle image upload
   const handleImageUpdate = async (imageFile) => {
     const response = await userService.uploadProfileImage(imageFile);
-    const imageUrl = toProfileImageUrl(response.imageUrl);
-
-    setUser((prev) => ({ ...prev, image: imageUrl }));
+    setUser((prev) => ({ ...prev, image: response.imageUrl }));
     toast.success("Imagen actualizada correctamente");
+  };
+
+  // Handle image deletion
+  const handleImageDelete = async () => {
+    await userService.deleteProfileImage();
+    await loadProfile();
+    toast.success("Foto de perfil eliminada");
   };
 
   // Handle data update
@@ -73,6 +75,7 @@ export function useMyProfile(){
     error,
     loadProfile,
     handleImageUpdate,
+    handleImageDelete,
     handleDataUpdate
   }
 }

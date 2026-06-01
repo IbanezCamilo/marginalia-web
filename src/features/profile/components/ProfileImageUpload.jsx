@@ -11,6 +11,7 @@ import {
 export default function ProfileImageUpload({
   currentImage,
   onImageUpdated,
+  onImageDeleted,
   isOpen,
   onClose,
 }) {
@@ -86,6 +87,17 @@ export default function ProfileImageUpload({
               Cancelar
             </Button>
           </div>
+
+          {onImageDeleted && !selectedFile && (
+            <Button
+              onClick={onImageDeleted}
+              variant="outline"
+              className="w-full text-red-600 border-red-200 hover:bg-red-50"
+              disabled={uploading}
+            >
+              Eliminar foto de perfil
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>
