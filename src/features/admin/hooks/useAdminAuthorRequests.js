@@ -21,8 +21,8 @@ export function useAdminAuthorRequests() {
     try {
       const data = await adminAuthorRequestService.list(status, page);
       setRequests(data.content ?? []);
-      setTotalElements(data.totalElements ?? 0);
-      setTotalPages(data.totalPages ?? 0);
+      setTotalElements(data.page?.totalElements ?? 0);
+      setTotalPages(data.page?.totalPages ?? 0);
       setCurrentPage(page);
     } catch (err) {
       setError("No se pudieron cargar las solicitudes: " + err.message);

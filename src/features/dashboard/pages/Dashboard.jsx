@@ -77,7 +77,7 @@ export default function DashBoard() {
       setUser(profile);
       setPostsData({
         posts: postsResponse.content ?? [],
-        totalElements: postsResponse.totalElements ?? 0,
+        totalElements: postsResponse.page?.totalElements ?? 0,
       });
       setCategories(categoriesResponse ?? []);
     } catch (err) {

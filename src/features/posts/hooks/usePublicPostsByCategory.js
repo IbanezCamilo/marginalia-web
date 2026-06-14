@@ -27,8 +27,8 @@ export function usePublicPostsByCategory(slug, page = 0, size = 12) {
         `/public/posts?categoryId=${category.id}&page=${page}&size=${size}&sort=createdAt,desc`
       );
       setPosts(data.content ?? []);
-      setTotalElements(data.totalElements ?? 0);
-      setTotalPages(data.totalPages ?? 0);
+      setTotalElements(data.page?.totalElements ?? 0);
+      setTotalPages(data.page?.totalPages ?? 0);
     } catch (err) {
       setError(err.message || "Error al cargar la categoría.");
     } finally {

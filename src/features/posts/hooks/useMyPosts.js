@@ -27,9 +27,9 @@ export function useMyPosts(currentPage) {
       setLoading(true);
       setError(null);
       const data = await postService.getAll(page, 10);
-      setPosts(data.content);
-      setTotalPages(data.totalPages);
-      setTotalElements(data.totalElements);
+      setPosts(data.content ?? []);
+      setTotalPages(data.page?.totalPages ?? 0);
+      setTotalElements(data.page?.totalElements ?? 0);
     } catch (err) {
       setError("Error al cargar los posts: " + err.message);
     } finally {

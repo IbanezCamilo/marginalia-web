@@ -14,8 +14,8 @@ export function usePublicPosts(page = 0, size = 9) {
       setError(null);
       const data = await publicPostService.getAll(page, size);
       setPosts(data.content ?? []);
-      setTotalPages(data.totalPages ?? 0);
-      setTotalElements(data.totalElements ?? 0);
+      setTotalPages(data.page?.totalPages ?? 0);
+      setTotalElements(data.page?.totalElements ?? 0);
     } catch (err) {
       setError(err.message || "Error al cargar los articulos.");
     } finally {
