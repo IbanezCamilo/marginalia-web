@@ -5,27 +5,18 @@ const BASE_ENDPOINT = '/me/profile';
 export const userService = {
 
     login: async (credentials) => {
-        const data = await apiClient.post('/auth/login', {
+        return apiClient.post('/auth/login', {
             email: credentials.email,
             password: credentials.password,
         });
-        localStorage.setItem('token', data.token);
-        return data;
     },
 
     register: async ({ name, email, password }) => {
-        const data = await apiClient.post('/auth/register', { name, email, password });
-        localStorage.setItem('token', data.token);
-        return data;
-    },
-    
-    isAuthenticated: () => {
-        const token = localStorage.getItem('token');
-        return !!token;
+        return apiClient.post('/auth/register', { name, email, password });
     },
 
-    logout: () => {
-      localStorage.removeItem('token');
+    logout: async () => {
+        await apiClient.post('/auth/logout', {});
     },
 
     getProfile: async () => {

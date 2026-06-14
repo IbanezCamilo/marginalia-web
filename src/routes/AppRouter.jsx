@@ -11,10 +11,11 @@ import Posts from "@/features/posts/pages/Posts.jsx";
 import ProfilePage from "../features/profile/pages/ProfilePage.jsx";
 import AuthorRequestPage from "@/features/authorRequest/pages/AuthorRequestPage.jsx";
 import AdminAuthorRequests from "@/features/admin/pages/AdminAuthorRequests.jsx";
-import PostPage from "@/pages/PostPage.jsx"; 
-import CategoryPage from "@/pages/CategoryPage.jsx"; 
+import PostPage from "@/pages/PostPage.jsx";
+import CategoryPage from "@/pages/CategoryPage.jsx";
 import AuthorPage from "@/pages/AuthorPage.jsx";
 import NotFoundPage from "@/shared/pages/NotFoundPage.jsx";
+import PrivateRoute from "@/features/auth/components/PrivateRoute.jsx";
 
 export const router = createBrowserRouter([
   //Public home route
@@ -50,16 +51,21 @@ export const router = createBrowserRouter([
   //Private routes
   {
     path: "/user",
-    element: <AdminLayout />,
+    element: <PrivateRoute />,
     children: [
-      { path: "dashboard", element: <DashBoard /> },
-      { path: "create-post", element: <CreatePost /> },
-      { path: "edit-post/:id", element: <EditPost /> },
-      { path: "profile", element: <ProfilePage /> },
-      { path: "author-request", element: <AuthorRequestPage /> },
-      { path: "solicitudes", element: <AdminAuthorRequests /> },
-      { path: "categories", element: <Categories /> },
-      { path: "posts", element: <Posts /> },
+      {
+        element: <AdminLayout />,
+        children: [
+          { path: "dashboard", element: <DashBoard /> },
+          { path: "create-post", element: <CreatePost /> },
+          { path: "edit-post/:id", element: <EditPost /> },
+          { path: "profile", element: <ProfilePage /> },
+          { path: "author-request", element: <AuthorRequestPage /> },
+          { path: "solicitudes", element: <AdminAuthorRequests /> },
+          { path: "categories", element: <Categories /> },
+          { path: "posts", element: <Posts /> },
+        ],
+      },
     ],
   },
 

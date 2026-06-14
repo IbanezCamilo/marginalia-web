@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService } from "@/features/profile/services/userService";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export function useLogin() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { actions: { refreshUser } } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ export function useLogin() {
     setLoading(true);
     try {
       await userService.login({ email, password });
+      await refreshUser();
       navigate("/user/dashboard");
     } catch (err) {
       let msg = "Error de conexión con el servidor.";

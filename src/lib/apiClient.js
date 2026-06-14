@@ -1,29 +1,23 @@
 import { API_URL } from "./config";
 
-const getToken = () => localStorage.getItem('token');
-
-//Core request handler 
+//Core request handler
 async function request(endpoint, options = {}){
-    const token = getToken();
-
     //Detect if body is FormData to avoid setting Content-Type (browser will set it with boundary)
     const isFormData = options.body instanceof FormData;
 
     const headers = {
-        ...(!isFormData && { "Content-Type": "application/json" }), // only set for non-FormData
-        ...(token && { "Authorization": `Bearer ${token}` }), // only set if token exists
-        ...options.headers, // allow overriding headers if needed
+        ...(!isFormData && { "Content-Type": "application/json" }),
+        ...options.headers,
     }
 
-    
     const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers,
-});
+        ...options,
+        headers,
+        credentials: 'include',
+    });
 
 //Session expired - redirect to login
 if (response.status === 401) {
-    localStorage.removeItem('token');
     window.location.href = '/auth/login';
     throw new Error('Session expired');
 }
@@ -33,10 +27,8 @@ if (!response.ok) {
     throw new Error(errorText || `Request failed with status ${response.status}`);
 }
 
-//204 No Content - return null instead of trying to parse JSON
-if (response.status === 204) return null;
-
-return response.json();
+const text = await response.text();
+return text ? JSON.parse(text) : null;
 
 }
 

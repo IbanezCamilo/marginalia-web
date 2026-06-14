@@ -9,22 +9,26 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!userService.isAuthenticated()) {
-      setLoading(false);
-      return;
-    }
     userService
       .getProfile()
       .then(setUser)
-      .catch((err) => {
-        if (import.meta.env.DEV) console.error("[AuthContext] profile fetch failed:", err);
-        setUser(null);
-      })
+      .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
 
-  const logout = useCallback(() => {
-    userService.logout();
+  const refreshUser = useCallback(async () => {
+    try {
+      const profile = await userService.getProfile();
+      setUser(profile);
+      return profile;
+    } catch {
+      setUser(null);
+      return null;
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    await userService.logout();
     setUser(null);
   }, []);
 
@@ -37,7 +41,7 @@ export function AuthProvider({ children }) {
     <AuthContext
       value={{
         state: { user, loading },
-        actions: { logout },
+        actions: { logout, refreshUser },
         meta: { isAdmin, isModerator, isAuthor, isAuthenticated: !!user },
       }}
     >
