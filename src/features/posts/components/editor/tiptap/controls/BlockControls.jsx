@@ -17,25 +17,25 @@ const toolbarButtonClass = (active) =>
 export default function BlockControls({ editor, state }) {
   const blockTypes = [
     {
-      label: "Parrafo",
+      label: "Párrafo",
       Icon: Pilcrow,
       active: state.isParagraph,
       action: () => editor.chain().focus().setParagraph().run(),
     },
     {
-      label: "Titulo 1",
+      label: "Título 1",
       Icon: Heading1,
       active: state.isHeading1,
       action: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
     },
     {
-      label: "Titulo 2",
+      label: "Título 2",
       Icon: Heading2,
       active: state.isHeading2,
       action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
     },
     {
-      label: "Titulo 3",
+      label: "Título 3",
       Icon: Heading3,
       active: state.isHeading3,
       action: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
@@ -57,7 +57,7 @@ export default function BlockControls({ editor, state }) {
           >
             <CurrentIcon size={16} />
             <span className="hidden text-xs font-medium sm:inline">
-              {blockTypes.find((block) => block.active)?.label ?? "Parrafo"}
+              {blockTypes.find((block) => block.active)?.label ?? "Párrafo"}
             </span>
             <ChevronDown size={14} />
           </Button>
@@ -83,8 +83,8 @@ export default function BlockControls({ editor, state }) {
         type="button"
         variant="ghost"
         size="icon-sm"
-        title="Lista con vinetas"
-        aria-label="Lista con vinetas"
+        title="Lista con viñetas"
+        aria-label="Lista con viñetas"
         aria-pressed={state.isBulletList}
         disabled={!state.canBulletList}
         onClick={() => editor.chain().focus().toggleBulletList().run()}

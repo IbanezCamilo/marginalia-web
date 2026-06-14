@@ -22,17 +22,20 @@ export default function EditorTopbar({
             <span className="text-sm font-medium">Volver</span>
           </button>
 
-          {hasChanges && !submitting && (
-            <div className="flex items-center gap-2 text-xs font-semibold">
-              <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" aria-hidden="true" />
-              <span className="hidden md:inline text-amber-500 whitespace-nowrap">
-                Cambios sin guardar
-              </span>
-              <span className="md:hidden text-amber-500 whitespace-nowrap">
-                Sin guardar
-              </span>
-            </div>
-          )}
+          <div
+            aria-hidden={!hasChanges || submitting}
+            className={`flex items-center gap-2 text-xs font-semibold transition-opacity duration-200 ${
+              hasChanges && !submitting ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" aria-hidden="true" />
+            <span className="hidden md:inline text-amber-500 whitespace-nowrap">
+              Cambios sin guardar
+            </span>
+            <span className="md:hidden text-amber-500 whitespace-nowrap">
+              Sin guardar
+            </span>
+          </div>
 
           {submitting && (
             <span className="text-xs text-stone-400 flex items-center gap-1.5">

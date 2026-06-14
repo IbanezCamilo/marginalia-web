@@ -3,6 +3,13 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { LogOut, Menu, Settings, UserRound } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 
 export default function TopBar({ onMenuClick }) {
@@ -17,10 +24,8 @@ export default function TopBar({ onMenuClick }) {
   }, [loading, user, navigate]);
 
   const handleLogout = () => {
-    if (confirm("Seguro quieres cerrar sesion?")) {
-      logout();
-      navigate("/auth/login");
-    }
+    logout();
+    navigate("/auth/login");
   };
 
   if (loading) {
@@ -55,54 +60,50 @@ export default function TopBar({ onMenuClick }) {
           Panel editorial
         </p>
         <p className="text-sm text-stone-500">
-          Administra publicaciones, categorias y perfil.
+          Administra publicaciones, categorías y perfil.
         </p>
       </div>
 
-      <div className="group relative cursor-pointer">
-        <div className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-stone-100">
-          {user?.image ? (
-            <img
-              src={user.image}
-              className="size-10 rounded-full border border-stone-200 object-cover"
-              alt={user.name ?? "Usuario"}
-            />
-          ) : (
-            <div className="flex size-10 items-center justify-center rounded-full border border-stone-200 bg-stone-100 font-serif text-base text-stone-600">
-              {user?.name?.charAt(0)?.toUpperCase() ?? <UserRound size={18} />}
-            </div>
-          )}
-          <span className="hidden text-sm font-medium text-stone-800 sm:inline">
-            {user?.name}
-          </span>
-        </div>
-
-        <div className="pointer-events-none absolute right-0 top-full w-52 translate-y-2 rounded-md border border-stone-200 bg-white py-2 opacity-0 shadow-lg transition-all duration-300 ease-in-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
-          <ul className="flex w-full flex-col gap-1 p-1">
-            <Link
-              to="profile"
-              className="flex w-full items-center gap-2 rounded-md p-2 text-sm text-stone-700 hover:bg-stone-100"
-            >
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="flex items-center gap-3 rounded-md px-2 py-1 transition hover:bg-stone-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+            {user?.image ? (
+              <img
+                src={user.image}
+                className="size-10 rounded-full border border-stone-200 object-cover"
+                alt={user.name ?? "Usuario"}
+              />
+            ) : (
+              <div className="flex size-10 items-center justify-center rounded-full border border-stone-200 bg-stone-100 font-serif text-base text-stone-600">
+                {user?.name?.charAt(0)?.toUpperCase() ?? <UserRound size={18} />}
+              </div>
+            )}
+            <span className="hidden text-sm font-medium text-stone-800 sm:inline">
+              {user?.name}
+            </span>
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-52">
+          <DropdownMenuItem asChild>
+            <Link to="profile" className="flex w-full cursor-pointer items-center gap-2">
               <UserRound size={17} />
               <span>Perfil</span>
             </Link>
-            <li className="flex w-full items-center gap-2 rounded-md p-2 text-sm text-stone-400">
-              <Settings size={17} />
-              <span>Configuracion</span>
-            </li>
-            <li className="mt-1 border-t border-stone-200 pt-1">
-              <Button
-                variant="ghost"
-                onClick={handleLogout}
-                className="flex w-full justify-start gap-2 rounded-md p-2 text-left text-sm text-rose-700 hover:bg-rose-50 hover:text-rose-800"
-              >
-                <LogOut size={17} />
-                <span>Cerrar sesion</span>
-              </Button>
-            </li>
-          </ul>
-        </div>
-      </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem disabled className="gap-2">
+            <Settings size={17} />
+            <span>Configuración</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={handleLogout}
+            className="gap-2 text-rose-700 focus:bg-rose-50 focus:text-rose-800"
+          >
+            <LogOut size={17} />
+            <span>Cerrar sesión</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </nav>
   );
 }

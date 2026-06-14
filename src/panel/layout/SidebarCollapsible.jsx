@@ -22,7 +22,7 @@ const ALL_MENU_ITEMS = [
   { path: "/user/dashboard",      icon: LayoutDashboard, label: "Dashboard",  minRole: "AUTHOR" },
   { path: "/user/create-post",    icon: PenSquare,       label: "Crear Post", minRole: "AUTHOR" },
   { path: "/user/posts",          icon: Files,           label: "Mis Posts",  minRole: "AUTHOR" },
-  { path: "/user/categories",     icon: Folder,          label: "Categorias",  minRole: "ADMIN"  },
+  { path: "/user/categories",     icon: Folder,          label: "Categorías",  minRole: "ADMIN"  },
   { path: "/user/solicitudes",    icon: ClipboardList,   label: "Solicitudes", minRole: "ADMIN"  },
   { path: "/user/profile",        icon: UserRound,       label: "Perfil",      minRole: "READER" },
 ];
@@ -55,7 +55,7 @@ export default function SidebarCollapsible({
             key={item.path}
             to={item.path}
             onClick={onClick}
-            className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors ${
+            className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
               isActive
                 ? "bg-stone-950 text-white"
                 : "text-stone-700 hover:bg-white hover:text-stone-950"
@@ -111,7 +111,7 @@ export default function SidebarCollapsible({
         <div className="absolute bottom-0 left-0 right-0 border-t border-stone-200 p-3">
           <Link
             to="/"
-            className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-stone-600 transition-colors hover:bg-white hover:text-rose-800 ${
+            className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-stone-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:bg-white hover:text-rose-800 ${
               isCollapsed ? "justify-center" : ""
             }`}
             title={isCollapsed ? "Ver sitio" : ""}

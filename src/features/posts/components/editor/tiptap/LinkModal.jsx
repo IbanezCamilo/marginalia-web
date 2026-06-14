@@ -50,7 +50,7 @@ export default function LinkModal({ editor, open, onOpenChange }) {
     }
 
     if (!isValidUrl(finalUrl)) {
-      setError("Ingresa una URL valida.");
+      setError("Ingresa una URL válida.");
       return;
     }
 
@@ -97,7 +97,7 @@ export default function LinkModal({ editor, open, onOpenChange }) {
               placeholder="https://ejemplo.com"
               autoFocus
             />
-            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+            {error && <p className="mt-1 text-sm text-destructive">{error}</p>}
           </div>
 
           <div className="flex justify-end gap-2">

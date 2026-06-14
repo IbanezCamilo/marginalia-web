@@ -28,8 +28,8 @@ export default function AlignControls({ editor, state }) {
             type="button"
             variant="ghost"
             size="icon-sm"
-            title="Alineacion"
-            aria-label="Alineacion"
+            title="Alineación"
+            aria-label="Alineación"
             className="gap-1 text-stone-600 hover:bg-stone-100 hover:text-stone-950"
           >
             <CurrentIcon size={16} />
