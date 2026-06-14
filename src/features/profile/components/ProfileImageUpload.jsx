@@ -12,6 +12,7 @@ export default function ProfileImageUpload({
   currentImage,
   onImageUpdated,
   onImageDeleted,
+  isDeleting = false,
   isOpen,
   onClose,
 }) {
@@ -92,10 +93,10 @@ export default function ProfileImageUpload({
             <Button
               onClick={onImageDeleted}
               variant="outline"
-              className="w-full text-red-600 border-red-200 hover:bg-red-50"
-              disabled={uploading}
+              className="w-full text-destructive border-destructive/20 hover:bg-destructive/5"
+              disabled={uploading || isDeleting}
             >
-              Eliminar foto de perfil
+              {isDeleting ? "Eliminando..." : "Eliminar foto de perfil"}
             </Button>
           )}
         </div>

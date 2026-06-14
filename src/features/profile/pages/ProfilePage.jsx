@@ -14,8 +14,13 @@ const ROLE_LABELS = {
 export default function ProfilePage() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const { user, loading, error, loadProfile, handleImageUpdate, handleImageDelete, handleDataUpdate } =
+  const { user, loading, error, deleting, loadProfile, handleImageUpdate, handleImageDelete, handleDataUpdate } =
     useMyProfile();
+
+  const handleImageDeleteAndClose = async () => {
+    await handleImageDelete();
+    setImageModalOpen(false);
+  };
 
   if (loading) {
     return (
@@ -120,7 +125,8 @@ export default function ProfilePage() {
       <ProfileImageUpload
         currentImage={user.image}
         onImageUpdated={handleImageUpdate}
-        onImageDeleted={user.image ? handleImageDelete : undefined}
+        onImageDeleted={user.image ? handleImageDeleteAndClose : undefined}
+        isDeleting={deleting}
         isOpen={imageModalOpen}
         onClose={() => setImageModalOpen(false)}
       />

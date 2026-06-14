@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { userService } from "@/features/profile/services/userService";
 import { toast } from "sonner";
 
@@ -6,6 +6,8 @@ export function useMyProfile(){
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [deleting, setDeleting] = useState(false);
+    const deletingRef = useRef(false);
 
   //   Load profile on mount
   useEffect(() => {
@@ -47,9 +49,17 @@ export function useMyProfile(){
 
   // Handle image deletion
   const handleImageDelete = async () => {
-    await userService.deleteProfileImage();
-    await loadProfile();
-    toast.success("Foto de perfil eliminada");
+    if (deletingRef.current) return;
+    deletingRef.current = true;
+    setDeleting(true);
+    try {
+      await userService.deleteProfileImage();
+      await loadProfile();
+      toast.success("Foto de perfil eliminada");
+    } finally {
+      deletingRef.current = false;
+      setDeleting(false);
+    }
   };
 
   // Handle data update
@@ -73,6 +83,7 @@ export function useMyProfile(){
     user,
     loading,
     error,
+    deleting,
     loadProfile,
     handleImageUpdate,
     handleImageDelete,
