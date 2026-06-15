@@ -1,7 +1,11 @@
-import { BookOpen } from "lucide-react";
+import { BookOpen, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import PostRowActions from "./PostRowActions";
+import { getPostStatusConfig } from "@/features/posts/utils/postStatus";
+
+const truncate = (str, max = 90) =>
+  str && str.length > max ? str.slice(0, max) + "…" : (str ?? "");
 
 export default function PostListItemCard({
   postId,
@@ -12,26 +16,16 @@ export default function PostListItemCard({
   title,
   status,
   categoryName,
+  moderationNote,
+  rejectionCount,
+  canBeResubmitted,
+  isLastAttempt,
 }) {
   const navigate = useNavigate();
 
   const resolvedImage = imageUrl;
 
-  const statusConfig = {
-    PUBLISHED: {
-      label: "Publicado",
-      className: "border-emerald-200 bg-emerald-50 text-emerald-700",
-    },
-    DRAFT: {
-      label: "Borrador",
-      className: "border-amber-200 bg-amber-50 text-amber-700",
-    },
-  };
-
-  const badge = statusConfig[status] ?? {
-    label: status,
-    className: "border-stone-200 bg-stone-100 text-stone-600",
-  };
+  const badge = getPostStatusConfig(status);
 
   return (
     <Card className="group flex w-full max-w-5xl flex-col gap-0 rounded-md border-stone-200 p-3 shadow-[0_1px_2px_rgba(28,25,23,0.04)] transition-colors hover:bg-surface-warm md:flex-row">
@@ -60,10 +54,16 @@ export default function PostListItemCard({
           </p>
 
           <span
-            className={`rounded-full border px-2.5 py-1 text-xs font-medium ${badge.className}`}
+            className={`rounded-full border px-2.5 py-1 text-xs font-medium ${badge.badgeClass}`}
           >
             {badge.label}
           </span>
+
+          {status === "REJECTED" && (
+            <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700">
+              Rechazado ({rejectionCount ?? 0}/3)
+            </span>
+          )}
         </div>
 
         <CardTitle className="line-clamp-2 font-serif text-2xl font-normal leading-tight text-stone-950 transition-colors group-hover:text-rose-800">
@@ -73,11 +73,33 @@ export default function PostListItemCard({
         <CardDescription className="text-sm text-stone-500">
           Por {author ?? "Autor"}
         </CardDescription>
+
+        {status === "REJECTED" && moderationNote && (
+          <p className="text-sm leading-relaxed text-stone-500">
+            <span className="font-medium text-stone-600">Motivo: </span>
+            {truncate(moderationNote)}
+          </p>
+        )}
+
+        {status === "REJECTED" && isLastAttempt && canBeResubmitted && (
+          <p className="flex items-center gap-1.5 text-xs font-medium text-amber-700">
+            <AlertTriangle size={14} />
+            Última oportunidad: si se rechaza de nuevo, el post se archivará permanentemente.
+          </p>
+        )}
+
+        {status === "ARCHIVED" && moderationNote && (
+          <p className="text-sm leading-relaxed text-stone-500">
+            <span className="font-medium text-stone-600">Motivo del archivo: </span>
+            {truncate(moderationNote)}
+          </p>
+        )}
       </CardContent>
 
       <div className="flex items-start px-2 py-3">
         <PostRowActions
           status={status}
+          canBeResubmitted={canBeResubmitted}
           onDelete={onDelete}
           onToggleStatus={onToggleStatus}
         />

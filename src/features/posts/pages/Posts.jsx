@@ -113,6 +113,10 @@ export default function Posts() {
               title={post.title}
               status={post.status}
               categoryName={post.categoryName}
+              moderationNote={post.moderationNote}
+              rejectionCount={post.rejectionCount}
+              canBeResubmitted={post.canBeResubmitted}
+              isLastAttempt={post.isLastAttempt}
               onDelete={() => requestDeletePost(post.id)}
               onToggleStatus={() => requestToggleStatus(post.id, post.status)}
             />

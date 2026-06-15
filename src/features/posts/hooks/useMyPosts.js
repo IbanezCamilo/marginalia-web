@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
 import { postService } from "../services/myPostService";
 import { toast } from "sonner";
 
+const STATUS_TOGGLE_MAP = {
+  PUBLISHED: "DRAFT",
+  DRAFT: "PUBLISHED",
+  REJECTED: "DRAFT",
+};
+
 export function useMyPosts(currentPage) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -77,7 +83,7 @@ export function useMyPosts(currentPage) {
 
     if (type == "toggleStatus") {
 
-      newStatus = currentStatus === "PUBLISHED" ? "DRAFT" : "PUBLISHED";
+      newStatus = STATUS_TOGGLE_MAP[currentStatus] ?? "DRAFT";
       previousPosts = posts;
 
       // Optimistic UI update
@@ -87,9 +93,11 @@ export function useMyPosts(currentPage) {
     try {
       await postService.updateStatus(postId, newStatus);
       toast.success(
-        newStatus === "PUBLISHED"
-          ? "Post publicado"
-          : "Post guardado como borrador",
+        currentStatus === "REJECTED"
+          ? "Post movido a borrador. Ya puedes editarlo y reenviarlo."
+          : newStatus === "PUBLISHED"
+            ? "Post publicado"
+            : "Post guardado como borrador",
       );
     } catch {
       setPosts(previousPosts); //Revert to previous state
@@ -103,18 +111,25 @@ export function useMyPosts(currentPage) {
       description: "Esta acción es permanente y no se puede deshacer.",
       confirmLabel: "Sí, eliminar",
     },
-    toggleStatus: {
-      title:
-        confirmState.currentStatus === "PUBLISHED"
-          ? "¿Convertir a borrador?"
-          : "¿Publicar este post?",
-      description:
-        confirmState.currentStatus === "PUBLISHED"
-          ? "El post dejará de ser visible al público."
-          : "El post será visible para todos los lectores.",
-      confirmLabel:
-        confirmState.currentStatus === "PUBLISHED" ? "Convertir" : "Publicar",
-    },
+    toggleStatus:
+      confirmState.currentStatus === "REJECTED"
+        ? {
+            title: "¿Volver a borrador para editar?",
+            description: "Podrás editar el contenido y volver a enviarlo para revisión.",
+            confirmLabel: "Volver a borrador",
+          }
+        : {
+            title:
+              confirmState.currentStatus === "PUBLISHED"
+                ? "¿Convertir a borrador?"
+                : "¿Publicar este post?",
+            description:
+              confirmState.currentStatus === "PUBLISHED"
+                ? "El post dejará de ser visible al público."
+                : "El post será visible para todos los lectores.",
+            confirmLabel:
+              confirmState.currentStatus === "PUBLISHED" ? "Convertir" : "Publicar",
+          },
   };
 
   const currentDialogProps = confirmDialogProps[confirmState.type] ?? {};
