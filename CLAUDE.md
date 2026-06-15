@@ -34,7 +34,7 @@ Path alias `@` maps to `src/`.
 
 Every feature follows the same three-layer pattern:
 
-1. **`apiClient`** (`src/lib/apiClient.js`) — thin `fetch` wrapper; injects JWT from `localStorage`, handles 401 → redirect, detects `FormData` vs JSON automatically. Methods: `get`, `post`, `put`, `patch`, `delete`, `postForm`.
+1. **`apiClient`** (`src/lib/apiClient.js`) — thin `fetch` wrapper; sends `credentials: 'include'` so the browser attaches the HttpOnly session cookie set by the backend, handles 401 → redirect, detects `FormData` vs JSON automatically. Methods: `get`, `post`, `put`, `patch`, `delete`, `postForm`.
 2. **Service modules** (e.g. `src/features/posts/services/myPostService.js`) — async functions that call `apiClient`; no state.
 3. **Custom hooks** (e.g. `src/features/posts/hooks/useCreatePost.js`) — call services, own all local state (`loading`, `submitting`, `error`), show Sonner toasts, return data + handlers to pages.
 
