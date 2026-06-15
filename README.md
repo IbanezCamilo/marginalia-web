@@ -17,7 +17,7 @@ User interface for **Marginalia**, a literary blogging platform. Includes a publ
 | TipTap | 3 | Rich text editor |
 | DOMPurify | 3 | HTML sanitization |
 | Sonner | 2 | Toast notifications |
-| JWT | — | Authentication (stored in localStorage) |
+| — | — | Authentication via HttpOnly session cookie |
 
 ## Features
 
@@ -28,7 +28,7 @@ User interface for **Marginalia**, a literary blogging platform. Includes a publ
 - Browse by category
 
 **Admin panel** (`/user/*`)
-- Login / register with JWT and persistent session
+- Login / register with cookie-based session (HttpOnly cookie set by the backend)
 - Dashboard with post statistics
 - Post CRUD with cover image upload
 - TipTap editor (bold, italic, underline, alignment, links, character count)
@@ -51,7 +51,7 @@ src/
 ├── pages/             # Top-level public pages
 ├── panel/layout/      # Panel shell: AdminLayout, SidebarCollapsible, TopBar
 ├── lib/
-│   ├── apiClient.js   # Fetch wrapper: injects JWT, detects FormData/JSON, handles 401
+│   ├── apiClient.js   # Fetch wrapper: sends credentials so the browser attaches the HttpOnly session cookie, detects FormData/JSON, handles 401
 │   └── config.js      # Reads env vars (VITE_API_URL, VITE_BASE_URL)
 ├── components/ui/     # shadcn/ui primitives
 ├── shared/            # Shared components and pages (Navbar, Footer, 404…)
