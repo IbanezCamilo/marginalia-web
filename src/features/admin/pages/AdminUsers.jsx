@@ -1,0 +1,238 @@
+import { Plus, RefreshCw, Search, UserCog } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAdminUsers } from "@/features/admin/hooks/useAdminUsers";
+import CreateUserDialog from "@/features/admin/components/CreateUserDialog";
+import EditUserDialog from "@/features/admin/components/EditUserDialog";
+import UserRow from "@/features/admin/components/UserRow";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+const ROLE_TABS = [
+  { value: null, label: "Todos" },
+  { value: "ADMIN", label: "Administradores" },
+  { value: "AUTHOR", label: "Autores" },
+  { value: "MODERATOR", label: "Moderadores" },
+  { value: "READER", label: "Lectores" },
+];
+
+export default function AdminUsers() {
+  const { state: { user: currentUser } } = useAuth();
+  const {
+    users,
+    totalElements,
+    totalPages,
+    currentPage,
+    loading,
+    error,
+    searchInput,
+    roleFilter,
+    load,
+    changeSearch,
+    changeRoleFilter,
+    createOpen,
+    setCreateOpen,
+    submitCreate,
+    editState,
+    openEdit,
+    closeEdit,
+    submitEdit,
+    confirmDeleteState,
+    requestDelete,
+    closeDelete,
+    confirmDelete,
+  } = useAdminUsers();
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-6xl">
+        <div className="h-80 animate-pulse rounded-md border border-stone-200 bg-white" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
+        <UserCog size={40} strokeWidth={1.5} className="text-rose-700" />
+        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+          No pudimos cargar los usuarios
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <Button onClick={() => load(0)} className="mt-6 bg-rose-700 hover:bg-rose-800">
+          <RefreshCw size={16} />
+          Reintentar
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto max-w-6xl">
+      <CreateUserDialog
+        isOpen={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onSave={submitCreate}
+      />
+
+      <EditUserDialog
+        isOpen={editState.open}
+        user={editState.user}
+        onClose={closeEdit}
+        onSave={submitEdit}
+      />
+
+      <ConfirmDialog
+        open={confirmDeleteState.open}
+        onOpenChange={(open) => !open && closeDelete()}
+        title="¿Eliminar este usuario?"
+        description="Esta acción es permanente y revocará el acceso de la cuenta a la plataforma."
+        confirmLabel="Si, eliminar"
+        onConfirm={confirmDelete}
+        variant="destructive"
+      />
+
+      {/* Header */}
+      <div className="mb-6 rounded-md border border-stone-200 bg-[#fbf8f3] p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+              Administración
+            </p>
+            <h1 className="mt-2 font-serif text-4xl text-stone-950">
+              Usuarios
+              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-500">
+                {totalElements}
+              </span>
+            </h1>
+            <p className="mt-2 text-sm text-stone-600">
+              Gestiona las cuentas y roles de la plataforma.
+            </p>
+          </div>
+
+          <Button
+            onClick={() => setCreateOpen(true)}
+            className="bg-rose-700 hover:bg-rose-800"
+          >
+            <Plus size={16} />
+            Nuevo usuario
+          </Button>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative max-w-sm">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+          <Input
+            value={searchInput}
+            onChange={(e) => changeSearch(e.target.value)}
+            placeholder="Buscar por nombre o email…"
+            className="border-stone-200 bg-white pl-9 placeholder:text-stone-400 focus-visible:border-stone-400 focus-visible:ring-stone-400/20"
+          />
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {ROLE_TABS.map((tab) => (
+            <Button
+              key={tab.label}
+              size="sm"
+              onClick={() => changeRoleFilter(tab.value)}
+              className={
+                roleFilter === tab.value && !searchInput
+                  ? "bg-stone-950 text-white hover:bg-stone-800"
+                  : "border border-stone-300 bg-transparent text-stone-700 hover:bg-stone-100"
+              }
+            >
+              {tab.label}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {/* Empty state */}
+      {users.length === 0 ? (
+        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-stone-300 bg-white p-8 text-center">
+          <UserCog size={42} strokeWidth={1.5} className="text-stone-400" />
+          <h2 className="mt-5 font-serif text-3xl text-stone-950">
+            No se encontraron usuarios
+          </h2>
+          <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
+            Ajusta la búsqueda o el filtro de rol para encontrar lo que buscas.
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="overflow-hidden rounded-md border border-stone-200 bg-white shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+            <Table className="w-full">
+              <TableHeader className="border-b border-stone-200 bg-stone-50">
+                <TableRow>
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                    Nombre
+                  </TableHead>
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                    Email
+                  </TableHead>
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                    Rol
+                  </TableHead>
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                    Creado
+                  </TableHead>
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500"></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="divide-y divide-stone-200">
+                {users.map((user) => (
+                  <UserRow
+                    key={user.id}
+                    user={user}
+                    onEdit={() => openEdit(user)}
+                    onDelete={() => requestDelete(user.id)}
+                    disableDelete={user.id === currentUser?.id}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-4 flex items-center justify-between text-sm text-stone-500">
+              <span>
+                Página {currentPage + 1} de {totalPages}
+              </span>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={currentPage === 0}
+                  onClick={() => load(currentPage - 1)}
+                  className="border-stone-300"
+                >
+                  Anterior
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={currentPage >= totalPages - 1}
+                  onClick={() => load(currentPage + 1)}
+                  className="border-stone-300"
+                >
+                  Siguiente
+                </Button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
