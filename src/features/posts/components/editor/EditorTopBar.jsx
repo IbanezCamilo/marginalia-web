@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, Save } from "lucide-react";
+import { ChevronLeft, Lock, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function EditorTopbar({
@@ -7,6 +7,7 @@ export default function EditorTopbar({
   onPublish,
   submitting,
   hasChanges,
+  readOnly = false,
 }) {
   const navigate = useNavigate();
   return (
@@ -65,24 +66,33 @@ export default function EditorTopbar({
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onSaveDraft}
-            disabled={submitting}
-            className="font-medium min-h-[44px] border-stone-200 text-stone-700 hover:bg-stone-50"
-          >
-            <Save size={16} className="flex justify-center md:mr-2 shrink-0" aria-hidden="true" />
-            <span className="hidden sm:inline text-sm">Guardar Borrador</span>
-          </Button>
-          <Button
-            size="sm"
-            onClick={onPublish}
-            disabled={submitting}
-            className="bg-rose-700 hover:bg-rose-800 text-white font-semibold px-6 min-h-[44px]"
-          >
-            {submitting ? "Publicando…" : "Publicar"}
-          </Button>
+          {readOnly ? (
+            <span className="flex items-center gap-2 rounded-md border border-stone-200 bg-stone-100 px-4 py-2 text-sm font-medium text-stone-500 min-h-[44px]">
+              <Lock size={16} aria-hidden="true" />
+              Archivado — solo lectura
+            </span>
+          ) : (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onSaveDraft}
+                disabled={submitting}
+                className="font-medium min-h-[44px] border-stone-200 text-stone-700 hover:bg-stone-50"
+              >
+                <Save size={16} className="flex justify-center md:mr-2 shrink-0" aria-hidden="true" />
+                <span className="hidden sm:inline text-sm">Guardar Borrador</span>
+              </Button>
+              <Button
+                size="sm"
+                onClick={onPublish}
+                disabled={submitting}
+                className="bg-rose-700 hover:bg-rose-800 text-white font-semibold px-6 min-h-[44px]"
+              >
+                {submitting ? "Publicando…" : "Publicar"}
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </header>

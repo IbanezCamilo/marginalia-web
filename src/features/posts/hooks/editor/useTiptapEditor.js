@@ -6,12 +6,13 @@ import {
   serializeEditorContent,
 } from "@/features/posts/utils/editorContent";
 
-export function useTiptapEditor({ content = "", onChange }) {
+export function useTiptapEditor({ content = "", onChange, editable = true }) {
   const lastSyncedContent = useRef(content);
 
   const editor = useEditor({
     extensions: editorExtensions,
     content: parseEditorContent(content),
+    editable,
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
       const nextContent = serializeEditorContent(editor);
@@ -34,6 +35,11 @@ export function useTiptapEditor({ content = "", onChange }) {
     editor.commands.setContent(parseEditorContent(content), false);
     lastSyncedContent.current = content;
   }, [content, editor]);
+
+  useEffect(() => {
+    if (!editor) return;
+    editor.setEditable(editable);
+  }, [editor, editable]);
 
   return editor;
 }

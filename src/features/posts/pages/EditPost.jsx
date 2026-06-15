@@ -47,6 +47,8 @@ export default function EditPost() {
       post?.categoryId !== originalPost.categoryId ||
       image !== null);
 
+  const isArchived = post?.status === "ARCHIVED";
+
   if (loadError) {
     return (
       <div className="max-w-6xl mx-auto p-4">
@@ -72,13 +74,14 @@ export default function EditPost() {
         onPublish={(e) => handleOnSubmit(e, "PUBLISHED")}
         submitting={submitting}
         hasChanges={hasChanges}
+        readOnly={isArchived}
       />
 
       {/* Main Layout: Editor + SideBar */}
       <div className="flex flex-col md:flex-row pt-16 gap-8">
         {/* Main container */}
         <main className="flex-1 max-w-4xl mx-auto px-8 py-6 bg-white p-6 rounded-sm shadow-sm">
-          <PostEditor key={id} post={post} onChange={handleChange} />
+          <PostEditor key={id} post={post} onChange={handleChange} readOnly={isArchived} />
 
           {/* Error de submit */}
           {submitError && (

@@ -38,6 +38,10 @@ export function useEditPost(id, navigate) {
           previewUrl: postData.coverImage ?? "",
           updatedAt: postData.updatedAt,
           createdAt: postData.createdAt,
+          moderationNote: postData.moderationNote,
+          rejectionCount: postData.rejectionCount,
+          canBeResubmitted: postData.canBeResubmitted,
+          isLastAttempt: postData.isLastAttempt,
         };
 
         // If has image and previewUrl is empty, set it to the image URL
@@ -65,6 +69,11 @@ export function useEditPost(id, navigate) {
 
   const handleOnSubmit = async (e, statusToSave) => {
     e?.preventDefault?.();
+
+    if (post.status === "ARCHIVED") {
+      toast.error("Este post está archivado y no puede modificarse.");
+      return;
+    }
 
     const validation = validatePost(post, statusToSave);
 

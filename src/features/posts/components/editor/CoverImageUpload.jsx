@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useCoverImageUpload } from "../../hooks/editor/useCoverImageUpload";
 import { Upload, X, ImageIcon } from "lucide-react";
 
-export default function CoverImageUpload({ previewUrl, imageSrc, onChange }) {
+export default function CoverImageUpload({ previewUrl, imageSrc, onChange, readOnly = false }) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const {
     inputFileRef,
@@ -12,6 +12,8 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange }) {
   } = useCoverImageUpload(onChange);
 
   if (!previewUrl && !imageSrc) {
+    if (readOnly) return null;
+
     return (
       <div className="mb-8">
         <button
@@ -58,37 +60,41 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange }) {
         />
       </div>
 
-      <div className="absolute inset-0 flex items-end justify-start gap-2 bg-gradient-to-t from-black/30 p-4">
-        <button
-          type="button"
-          onClick={triggerFileSelect}
-          className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
-                       font-medium text-sm hover:bg-white transition-colors shadow-lg
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <Upload size={16} />
-          Cambiar
-        </button>
+      {!readOnly && (
+        <>
+          <div className="absolute inset-0 flex items-end justify-start gap-2 bg-gradient-to-t from-black/30 p-4">
+            <button
+              type="button"
+              onClick={triggerFileSelect}
+              className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
+                           font-medium text-sm hover:bg-white transition-colors shadow-lg
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Upload size={16} />
+              Cambiar
+            </button>
 
-        <button
-          type="button"
-          onClick={handleRemoveImage}
-          className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
-                       font-medium text-sm text-destructive hover:bg-white transition-colors shadow-lg
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <X size={16} />
-          Eliminar
-        </button>
-      </div>
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
+                           font-medium text-sm text-destructive hover:bg-white transition-colors shadow-lg
+                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <X size={16} />
+              Eliminar
+            </button>
+          </div>
 
-      <input
-        ref={inputFileRef}
-        type="file"
-        accept="image/*"
-        onChange={handleImageSelect}
-        className="hidden"
-      />
+          <input
+            ref={inputFileRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageSelect}
+            className="hidden"
+          />
+        </>
+      )}
     </div>
   );
 }

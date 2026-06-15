@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-export default function TitleInput({ value, onChange }) {
+export default function TitleInput({ value, onChange, readOnly = false }) {
   const textareaRef = useRef(null);
 
   //Auto-resize while writing
@@ -20,6 +20,7 @@ export default function TitleInput({ value, onChange }) {
       placeholder="Escribe el título aquí..."
       minLength={15}
       maxLength={70}
+      readOnly={readOnly}
       className="w-full mb-2 px-0 py-2
                  text-4xl font-bold leading-tight
                  selection:bg-primary selection:text-primary-foreground

@@ -1,7 +1,12 @@
 import { ComboBox } from "@/components/ui/comboBox";
-import { FolderOpen, Eye, EyeOff } from "lucide-react";
+import { FolderOpen, Eye, EyeOff, AlertTriangle, Lock } from "lucide-react";
+import { getPostStatusConfig } from "@/features/posts/utils/postStatus";
 
 export default function SideBarSettings({ categories, post, onChange }) {
+  const isRejected = post.status === "REJECTED";
+  const isArchived = post.status === "ARCHIVED";
+  const statusBadge = getPostStatusConfig(post.status);
+
   return (
     <div className="p-6 space-y-8">
       <div>
@@ -10,7 +15,47 @@ export default function SideBarSettings({ categories, post, onChange }) {
         </h3>
       </div>
 
-      <div className="space-y-3">
+      {isRejected && (
+        <div className="space-y-2 rounded-md border border-rose-200 bg-rose-50 p-3">
+          <p className="flex items-center gap-2 text-sm font-semibold text-rose-800">
+            <AlertTriangle size={16} />
+            Comentarios del moderador
+          </p>
+          {post.moderationNote && (
+            <p className="text-sm leading-relaxed text-rose-800">{post.moderationNote}</p>
+          )}
+          <p className="text-xs font-medium text-rose-700">
+            Intentos de rechazo: {post.rejectionCount ?? 0}/3
+          </p>
+          {post.isLastAttempt && (
+            <p className="text-xs font-semibold text-amber-700">
+              Última oportunidad: si se rechaza de nuevo, el post será archivado
+              permanentemente.
+            </p>
+          )}
+        </div>
+      )}
+
+      {isArchived && (
+        <div className="space-y-2 rounded-md border border-stone-300 bg-stone-100 p-3">
+          <p className="flex items-center gap-2 text-sm font-semibold text-stone-700">
+            <Lock size={16} />
+            Post archivado
+          </p>
+          <p className="text-sm leading-relaxed text-stone-600">
+            Este post está archivado y no puede editarse ni reenviarse. Si crees que es un
+            error, contacta a un administrador.
+          </p>
+          {post.moderationNote && (
+            <p className="text-sm leading-relaxed text-stone-600">
+              <span className="font-medium">Motivo: </span>
+              {post.moderationNote}
+            </p>
+          )}
+        </div>
+      )}
+
+      <div className={`space-y-3 ${isArchived ? "pointer-events-none opacity-60" : ""}`}>
         <label className="flex items-center gap-2 text-sm font-medium text-stone-700">
           <FolderOpen size={16} className="text-stone-400" />
           Categoría
@@ -45,13 +90,9 @@ export default function SideBarSettings({ categories, post, onChange }) {
         </label>
         <div className="flex items-center gap-2">
           <span
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors duration-200 ${
-              post.status === "PUBLISHED"
-                ? "bg-emerald-50 text-emerald-700"
-                : "bg-stone-100 text-stone-600"
-            }`}
+            className={`px-3 py-1 rounded-full text-xs font-medium border ${statusBadge.badgeClass}`}
           >
-            {post.status === "PUBLISHED" ? "Publicado" : "Borrador"}
+            {statusBadge.label}
           </span>
         </div>
       </div>
