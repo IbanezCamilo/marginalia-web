@@ -8,22 +8,25 @@ import {
   Home,
   LayoutDashboard,
   PenSquare,
+  ShieldCheck,
+  UserCog,
   UserRound,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/shared/components/logo";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-
-const ROLE_LEVEL = { READER: 0, AUTHOR: 1, MODERATOR: 2, ADMIN: 3 };
+import { ROLE_LEVEL } from "@/utils/roles";
 
 const ALL_MENU_ITEMS = [
   { path: "/user/author-request", icon: BadgeCheck,     label: "Ser Autor",  minRole: "READER", maxRole: "READER" },
   { path: "/user/dashboard",      icon: LayoutDashboard, label: "Dashboard",  minRole: "AUTHOR" },
   { path: "/user/create-post",    icon: PenSquare,       label: "Crear Post", minRole: "AUTHOR" },
   { path: "/user/posts",          icon: Files,           label: "Mis Posts",  minRole: "AUTHOR" },
+  { path: "/user/moderacion",     icon: ShieldCheck,     label: "Moderación",  minRole: "MODERATOR" },
   { path: "/user/categories",     icon: Folder,          label: "Categorías",  minRole: "ADMIN"  },
   { path: "/user/solicitudes",    icon: ClipboardList,   label: "Solicitudes", minRole: "ADMIN"  },
+  { path: "/user/usuarios",       icon: UserCog,         label: "Usuarios",    minRole: "ADMIN"  },
   { path: "/user/profile",        icon: UserRound,       label: "Perfil",      minRole: "READER" },
 ];
 

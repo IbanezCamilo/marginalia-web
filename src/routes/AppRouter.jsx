@@ -11,11 +11,14 @@ import Posts from "@/features/posts/pages/Posts.jsx";
 import ProfilePage from "../features/profile/pages/ProfilePage.jsx";
 import AuthorRequestPage from "@/features/authorRequest/pages/AuthorRequestPage.jsx";
 import AdminAuthorRequests from "@/features/admin/pages/AdminAuthorRequests.jsx";
+import AdminUsers from "@/features/admin/pages/AdminUsers.jsx";
+import PostModeration from "@/features/moderation/pages/PostModeration.jsx";
 import PostPage from "@/pages/PostPage.jsx";
 import CategoryPage from "@/pages/CategoryPage.jsx";
 import AuthorPage from "@/pages/AuthorPage.jsx";
 import NotFoundPage from "@/shared/pages/NotFoundPage.jsx";
 import PrivateRoute from "@/features/auth/components/PrivateRoute.jsx";
+import RoleRoute from "@/features/auth/components/RoleRoute.jsx";
 
 export const router = createBrowserRouter([
   //Public home route
@@ -61,9 +64,21 @@ export const router = createBrowserRouter([
           { path: "edit-post/:id", element: <EditPost /> },
           { path: "profile", element: <ProfilePage /> },
           { path: "author-request", element: <AuthorRequestPage /> },
-          { path: "solicitudes", element: <AdminAuthorRequests /> },
-          { path: "categories", element: <Categories /> },
           { path: "posts", element: <Posts /> },
+          {
+            element: <RoleRoute minRole="MODERATOR" />,
+            children: [
+              { path: "moderacion", element: <PostModeration /> },
+            ],
+          },
+          {
+            element: <RoleRoute minRole="ADMIN" />,
+            children: [
+              { path: "solicitudes", element: <AdminAuthorRequests /> },
+              { path: "categories", element: <Categories /> },
+              { path: "usuarios", element: <AdminUsers /> },
+            ],
+          },
         ],
       },
     ],
