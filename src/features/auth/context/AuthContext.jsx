@@ -16,6 +16,12 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    const handleSessionExpired = () => setUser(null);
+    window.addEventListener('auth:session-expired', handleSessionExpired);
+    return () => window.removeEventListener('auth:session-expired', handleSessionExpired);
+  }, []);
+
   const refreshUser = useCallback(async () => {
     try {
       const profile = await userService.getProfile();
