@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LogIn, Menu, Moon, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import Logo from "./logo";
+import AccountMenu from "./AccountMenu";
 
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -22,6 +24,17 @@ function ThemeToggle() {
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const {
+    state: { user, loading },
+    actions: { logout },
+  } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    setMobileOpen(false);
+    navigate("/");
+  };
 
   return (
     <>
@@ -76,13 +89,19 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
 
-            <Link
-              to="/auth/login"
-              className="inline-flex h-11 items-center gap-2 rounded-md border border-stone-300 px-3 text-sm font-semibold text-stone-900 transition hover:border-stone-950 hover:bg-stone-950 hover:text-white dark:border-stone-600 dark:text-stone-100 dark:hover:border-stone-400 dark:hover:bg-stone-100 dark:hover:text-stone-950"
-            >
-              <LogIn size={16} aria-hidden="true" />
-              <span className="hidden sm:inline">Iniciar sesion</span>
-            </Link>
+            {loading ? (
+              <div className="h-11 w-11 animate-pulse rounded-md bg-stone-100 dark:bg-stone-800 sm:w-24" />
+            ) : user ? (
+              <AccountMenu user={user} onLogout={handleLogout} />
+            ) : (
+              <Link
+                to="/auth/login"
+                className="inline-flex h-11 items-center gap-2 rounded-md border border-stone-300 px-3 text-sm font-semibold text-stone-900 transition hover:border-stone-950 hover:bg-stone-950 hover:text-white dark:border-stone-600 dark:text-stone-100 dark:hover:border-stone-400 dark:hover:bg-stone-100 dark:hover:text-stone-950"
+              >
+                <LogIn size={16} aria-hidden="true" />
+                <span className="hidden sm:inline">Iniciar sesion</span>
+              </Link>
+            )}
 
             <button
               type="button"
