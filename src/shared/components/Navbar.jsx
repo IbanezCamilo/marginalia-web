@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { LogIn, Menu, Moon, Sun, X } from "lucide-react";
+import { LogIn, LogOut, Menu, Moon, PenSquare, Sun, UserRound, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import Logo from "./logo";
@@ -174,14 +174,43 @@ export default function Navbar() {
             </ul>
 
             <div className="mt-auto border-t border-stone-200 p-4 dark:border-stone-800">
-              <Link
-                to="/auth/login"
-                onClick={() => setMobileOpen(false)}
-                className="flex h-11 items-center justify-center gap-2 rounded-md bg-stone-950 text-sm font-semibold text-white transition hover:bg-rose-900 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-100"
-              >
-                <LogIn size={16} aria-hidden="true" />
-                Iniciar sesion
-              </Link>
+              {loading ? null : user ? (
+                <div className="flex flex-col gap-1">
+                  <Link
+                    to="/user/dashboard"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 rounded-md px-4 py-3 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50 hover:text-stone-950 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-50"
+                  >
+                    <PenSquare size={16} aria-hidden="true" />
+                    Escribir
+                  </Link>
+                  <Link
+                    to="/user/profile"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 rounded-md px-4 py-3 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50 hover:text-stone-950 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-50"
+                  >
+                    <UserRound size={16} aria-hidden="true" />
+                    Perfil
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex h-11 items-center justify-center gap-2 rounded-md bg-stone-950 text-sm font-semibold text-white transition hover:bg-rose-900 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-100"
+                  >
+                    <LogOut size={16} aria-hidden="true" />
+                    Cerrar sesión
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/auth/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex h-11 items-center justify-center gap-2 rounded-md bg-stone-950 text-sm font-semibold text-white transition hover:bg-rose-900 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-100"
+                >
+                  <LogIn size={16} aria-hidden="true" />
+                  Iniciar sesion
+                </Link>
+              )}
             </div>
           </nav>
         </div>
