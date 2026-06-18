@@ -1,6 +1,7 @@
 import { categoryService } from "../services/categoryService";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useCategories(){
   const [categories, setCategories] = useState([]);
@@ -22,12 +23,15 @@ export function useCategories(){
       const data = await categoryService.getAll();
       setCategories(data);
     } catch (err) {
-      setError("Error al cargar las categorias: " + err.message);
+      setError(getErrorMessage(err, "No se pudieron cargar las categorías."));
     } finally {
       setLoading(false);
     }
   };
 
+  // No try/catch here by design — the only caller (useCreateCategory.handleSave)
+  // already wraps this and shows the error toast; a future direct caller must
+  // handle the rejection itself rather than have it silently swallowed.
   const addCategory = async (category) => {
     const newCategory = await categoryService.create(category);
     setCategories((prev) => [...prev, newCategory]);

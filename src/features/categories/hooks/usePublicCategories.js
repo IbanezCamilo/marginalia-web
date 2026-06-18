@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { categoryService } from "@/features/categories/services/categoryService";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function usePublicCategories() {
   const [categories, setCategories] = useState([]);
@@ -13,7 +14,7 @@ export function usePublicCategories() {
       const data = await categoryService.getAll();
       setCategories(data ?? []);
     } catch (err) {
-      setError(err.message || "Error al cargar las categorias.");
+      setError(getErrorMessage(err, "Error al cargar las categorias."));
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useCreateCategory( onSave, isOpen, onClose ){
     
@@ -43,7 +44,7 @@ export function useCreateCategory( onSave, isOpen, onClose ){
       toast.success("Categoria creada correctamente");
       onClose();
     } catch (err) {
-      toast.error("Error al crear: " + err.message);
+      toast.error(getErrorMessage(err, "No se pudo crear la categoría."));
     } finally {
       setSaving(false);
     }
