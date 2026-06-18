@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { publicAuthorService } from "../services/publicAuthorService";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function usePublicAuthor(authorId) {
   const [author, setAuthor] = useState(null);
@@ -19,7 +20,7 @@ export function usePublicAuthor(authorId) {
       setAuthor(authorData);
       setPosts(postsData.content ?? []);
     } catch (err) {
-      setError(err.message || "No pudimos cargar la información del autor.");
+      setError(getErrorMessage(err, "No pudimos cargar la información del autor."));
     } finally {
       setLoading(false);
     }
