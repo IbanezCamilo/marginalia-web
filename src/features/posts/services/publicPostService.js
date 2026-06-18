@@ -9,5 +9,14 @@ export const publicPostService = {
     ),
 
   getBySlug: (slug) => apiClient.get(`${BASE_ENDPOINT}/${slug}`),
+
+  getCatalog: ({ categoryId, sort = "createdAt,desc", page = 0, size = 12 } = {}) => {
+    const params = new URLSearchParams();
+    if (categoryId != null) params.set("categoryId", categoryId);
+    params.set("sort", sort);
+    params.set("page", page);
+    params.set("size", size);
+    return apiClient.get(`${BASE_ENDPOINT}?${params.toString()}`);
+  },
 };
 

@@ -17,8 +17,11 @@ export default function Footer() {
           <Link to="/" className="transition hover:text-white">
             Inicio
           </Link>
-          <Link to="/#categorias" className="transition hover:text-white">
-            Categorias
+          <Link to="/catalog" className="transition hover:text-white">
+            Catálogo
+          </Link>
+          <Link to="/about" className="transition hover:text-white">
+            Acerca de
           </Link>
           <Link to="/auth/login" className="transition hover:text-white">
             Iniciar sesion

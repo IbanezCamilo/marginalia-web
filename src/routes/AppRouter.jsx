@@ -15,6 +15,8 @@ import AdminUsers from "@/features/admin/pages/AdminUsers.jsx";
 import PostModeration from "@/features/moderation/pages/PostModeration.jsx";
 import PostPage from "@/pages/PostPage.jsx";
 import CategoryPage from "@/pages/CategoryPage.jsx";
+import CatalogPage from "@/pages/CatalogPage.jsx";
+import AboutPage from "@/pages/AboutPage.jsx";
 import AuthorPage from "@/pages/AuthorPage.jsx";
 import NotFoundPage from "@/shared/pages/NotFoundPage.jsx";
 import PrivateRoute from "@/features/auth/components/PrivateRoute.jsx";
@@ -49,6 +51,18 @@ export const router = createBrowserRouter([
   {
     path: "/categoria/:slug",
     element: <CategoryPage />,
+  },
+
+  // Public unified catalog
+  {
+    path: "/catalog",
+    element: <CatalogPage />,
+  },
+
+  // Public about page
+  {
+    path: "/about",
+    element: <AboutPage />,
   },
 
   //Private routes

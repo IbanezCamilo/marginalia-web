@@ -110,7 +110,14 @@ export default function Homepage() {
                     Ideas que demandan tiempo en un mundo que corre.
                   </h1>
                   <p className="mt-6 max-w-2xl text-base leading-8 text-stone-600 sm:text-lg dark:text-stone-400">
-                    Una seleccion de publicaciones recientes, organizada para leer con calma y descubrir nuevas voces.
+                    Una seleccion de publicaciones recientes, organizada para leer con calma y descubrir nuevas voces.{" "}
+                    <Link
+                      to="/about"
+                      className="font-medium text-stone-900 underline decoration-stone-300 underline-offset-4 transition hover:text-rose-800 hover:decoration-rose-300 dark:text-stone-100 dark:decoration-stone-600 dark:hover:text-rose-400"
+                    >
+                      Conoce mas sobre Marginalia
+                    </Link>
+                    .
                   </p>
                 </div>
 
@@ -212,6 +219,16 @@ export default function Homepage() {
                     {secondaryPosts.map((post) => (
                       <PostCard key={post.slug} post={post} headingAs="h3" />
                     ))}
+                  </div>
+
+                  <div className="mt-12 flex justify-center">
+                    <Link
+                      to="/catalog"
+                      className="inline-flex h-11 items-center gap-2 rounded-md border border-stone-300 px-5 text-sm font-semibold text-stone-900 transition hover:border-stone-950 hover:bg-stone-950 hover:text-white dark:border-stone-600 dark:text-stone-100 dark:hover:border-stone-400 dark:hover:bg-stone-100 dark:hover:text-stone-950"
+                    >
+                      Ver catálogo completo
+                      <ArrowRight size={16} aria-hidden="true" />
+                    </Link>
                   </div>
                 </section>
               )}
