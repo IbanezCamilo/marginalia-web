@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authorRequestService } from "@/features/authorRequest/services/authorRequestService";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useAuthorRequest() {
   const [activeRequest, setActiveRequest] = useState(null);
@@ -49,14 +50,7 @@ export function useAuthorRequest() {
       setLoading(true);
       await loadHistory();
     } catch (err) {
-      let msg = "No se pudo enviar la solicitud.";
-      try {
-        const parsed = JSON.parse(err.message);
-        msg = parsed.message || parsed.error || msg;
-      } catch {
-        if (err.message && !err.message.startsWith("Request failed")) msg = err.message;
-      }
-      toast.error(msg);
+      toast.error(getErrorMessage(err, "No se pudo enviar la solicitud."));
     } finally {
       setSubmitting(false);
     }
