@@ -19,88 +19,96 @@ import CatalogPage from "@/pages/CatalogPage.jsx";
 import AboutPage from "@/pages/AboutPage.jsx";
 import AuthorPage from "@/pages/AuthorPage.jsx";
 import NotFoundPage from "@/shared/pages/NotFoundPage.jsx";
+import ErrorPage from "@/shared/pages/ErrorPage.jsx";
 import PrivateRoute from "@/features/auth/components/PrivateRoute.jsx";
 import RoleRoute from "@/features/auth/components/RoleRoute.jsx";
 
 export const router = createBrowserRouter([
-  //Public home route
-  { path: "/", element: <App /> },
-
-  //Auth routes
   {
-    path: "/auth",
+    // Pathless layout route: catches render-time crashes from any route below
+    // without changing any existing path.
+    errorElement: <ErrorPage />,
     children: [
-      { path: "login",    element: <LoginPage /> },
-      { path: "register", element: <RegisterPage /> },
-    ],
-  },
+      //Public home route
+      { path: "/", element: <App /> },
 
-  //Public post page
-  {
-    path: "/post/:slug",
-    element: <PostPage />,
-  },
-
-  //Public author page
-  {
-    path: "/author/:authorId",
-    element: <AuthorPage/>,
-  },
-
-  // Public category page
-  {
-    path: "/categoria/:slug",
-    element: <CategoryPage />,
-  },
-
-  // Public unified catalog
-  {
-    path: "/catalog",
-    element: <CatalogPage />,
-  },
-
-  // Public about page
-  {
-    path: "/about",
-    element: <AboutPage />,
-  },
-
-  //Private routes
-  {
-    path: "/user",
-    element: <PrivateRoute />,
-    children: [
+      //Auth routes
       {
-        element: <AdminLayout />,
+        path: "/auth",
         children: [
-          { path: "dashboard", element: <DashBoard /> },
-          { path: "create-post", element: <CreatePost /> },
-          { path: "edit-post/:id", element: <EditPost /> },
-          { path: "profile", element: <ProfilePage /> },
-          { path: "author-request", element: <AuthorRequestPage /> },
-          { path: "posts", element: <Posts /> },
+          { path: "login",    element: <LoginPage /> },
+          { path: "register", element: <RegisterPage /> },
+        ],
+      },
+
+      //Public post page
+      {
+        path: "/post/:slug",
+        element: <PostPage />,
+      },
+
+      //Public author page
+      {
+        path: "/author/:authorId",
+        element: <AuthorPage/>,
+      },
+
+      // Public category page
+      {
+        path: "/categoria/:slug",
+        element: <CategoryPage />,
+      },
+
+      // Public unified catalog
+      {
+        path: "/catalog",
+        element: <CatalogPage />,
+      },
+
+      // Public about page
+      {
+        path: "/about",
+        element: <AboutPage />,
+      },
+
+      //Private routes
+      {
+        path: "/user",
+        element: <PrivateRoute />,
+        children: [
           {
-            element: <RoleRoute minRole="MODERATOR" />,
+            element: <AdminLayout />,
             children: [
-              { path: "moderacion", element: <PostModeration /> },
-            ],
-          },
-          {
-            element: <RoleRoute minRole="ADMIN" />,
-            children: [
-              { path: "solicitudes", element: <AdminAuthorRequests /> },
-              { path: "categories", element: <Categories /> },
-              { path: "usuarios", element: <AdminUsers /> },
+              { path: "dashboard", element: <DashBoard /> },
+              { path: "create-post", element: <CreatePost /> },
+              { path: "edit-post/:id", element: <EditPost /> },
+              { path: "profile", element: <ProfilePage /> },
+              { path: "author-request", element: <AuthorRequestPage /> },
+              { path: "posts", element: <Posts /> },
+              {
+                element: <RoleRoute minRole="MODERATOR" />,
+                children: [
+                  { path: "moderacion", element: <PostModeration /> },
+                ],
+              },
+              {
+                element: <RoleRoute minRole="ADMIN" />,
+                children: [
+                  { path: "solicitudes", element: <AdminAuthorRequests /> },
+                  { path: "categories", element: <Categories /> },
+                  { path: "usuarios", element: <AdminUsers /> },
+                ],
+              },
             ],
           },
         ],
       },
-    ],
-  },
 
-  // Catch-all 404
-  {
-    path: "*",
-    element: <NotFoundPage />,
+      // Catch-all 404
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
+    ],
   },
 ]);
