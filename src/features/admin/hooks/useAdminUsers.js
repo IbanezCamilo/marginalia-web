@@ -1,19 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { adminUserService } from "@/features/admin/services/adminUserService";
+import { getErrorMessage } from "@/lib/apiError";
 
 const INITIAL_EDIT = { open: false, user: null };
 const INITIAL_DELETE = { open: false, userId: null };
-
-const parseErrorMessage = (err, fallback) => {
-  try {
-    const parsed = JSON.parse(err.message);
-    return parsed.message || parsed.error || fallback;
-  } catch {
-    if (err.message && !err.message.startsWith("Request failed")) return err.message;
-    return fallback;
-  }
-};
 
 export function useAdminUsers() {
   const [users, setUsers] = useState([]);
@@ -54,7 +45,7 @@ export function useAdminUsers() {
       setTotalPages(data.page?.totalPages ?? 0);
       setCurrentPage(page);
     } catch (err) {
-      setError("No se pudieron cargar los usuarios: " + err.message);
+      setError(getErrorMessage(err, "No se pudieron cargar los usuarios."));
     } finally {
       setLoading(false);
     }
@@ -107,7 +98,7 @@ export function useAdminUsers() {
       setTotalElements((prev) => prev - 1);
       toast.success("Usuario eliminado correctamente.");
     } catch (err) {
-      toast.error(parseErrorMessage(err, "No se pudo eliminar el usuario."));
+      toast.error(getErrorMessage(err, "No se pudo eliminar el usuario."));
     }
   };
 
@@ -134,6 +125,5 @@ export function useAdminUsers() {
     requestDelete,
     closeDelete,
     confirmDelete,
-    parseErrorMessage,
   };
 }

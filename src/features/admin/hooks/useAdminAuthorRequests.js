@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { adminAuthorRequestService } from "@/features/admin/services/adminAuthorRequestService";
+import { getErrorMessage } from "@/lib/apiError";
 
 const INITIAL_RESOLVE = { open: false, type: null, requestId: null, adminNote: "" };
 
@@ -25,7 +26,7 @@ export function useAdminAuthorRequests() {
       setTotalPages(data.page?.totalPages ?? 0);
       setCurrentPage(page);
     } catch (err) {
-      setError("No se pudieron cargar las solicitudes: " + err.message);
+      setError(getErrorMessage(err, "No se pudieron cargar las solicitudes."));
     } finally {
       setLoading(false);
     }
@@ -62,14 +63,7 @@ export function useAdminAuthorRequests() {
       closeResolve();
       await load(currentPage, statusFilter);
     } catch (err) {
-      let msg = "No se pudo procesar la solicitud.";
-      try {
-        const parsed = JSON.parse(err.message);
-        msg = parsed.message || parsed.error || msg;
-      } catch {
-        if (err.message && !err.message.startsWith("Request failed")) msg = err.message;
-      }
-      toast.error(msg);
+      toast.error(getErrorMessage(err, "No se pudo procesar la solicitud."));
     } finally {
       setResolving(false);
     }

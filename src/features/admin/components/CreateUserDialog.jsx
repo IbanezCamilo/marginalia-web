@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ComboBox } from "@/components/ui/comboBox";
+import { getErrorMessage } from "@/lib/apiError";
 
 const ROLE_OPTIONS = [
   { id: "ADMIN", name: "Administrador" },
@@ -54,14 +55,7 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
       setSaving(true);
       await onSave({ name, email, password: form.password, roleName: form.roleName });
     } catch (err) {
-      let msg = "No se pudo crear el usuario.";
-      try {
-        const parsed = JSON.parse(err.message);
-        msg = parsed.message || parsed.error || msg;
-      } catch {
-        if (err.message && !err.message.startsWith("Request failed")) msg = err.message;
-      }
-      toast.error(msg);
+      toast.error(getErrorMessage(err, "No se pudo crear el usuario."));
     } finally {
       setSaving(false);
     }
