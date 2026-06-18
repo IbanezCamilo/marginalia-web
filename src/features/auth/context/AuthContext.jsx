@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect, useCallback, useRef } from "react";
+import { toast } from "sonner";
 import { userService } from "@/features/profile/services/userService";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -7,6 +8,11 @@ export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const userRef = useRef(null);
+
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
 
   useEffect(() => {
     userService
@@ -17,7 +23,14 @@ export function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    const handleSessionExpired = () => setUser(null);
+    const handleSessionExpired = () => {
+      // The anonymous first-load profile check also 401s and goes through
+      // this same event — only notify when there was a real logged-in session.
+      if (userRef.current) {
+        toast.error("Tu sesión ha expirado. Inicia sesión nuevamente.");
+      }
+      setUser(null);
+    };
     window.addEventListener('auth:session-expired', handleSessionExpired);
     return () => window.removeEventListener('auth:session-expired', handleSessionExpired);
   }, []);
