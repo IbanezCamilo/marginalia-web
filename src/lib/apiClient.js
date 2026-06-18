@@ -1,4 +1,7 @@
 import { API_URL } from "./config";
+import { ApiError } from "./apiError";
+
+const DEFAULT_TIMEOUT_MS = 15000;
 
 let isRefreshing = false;
 let pendingQueue = [];
@@ -18,16 +21,30 @@ async function request(endpoint, options = {}) {
         ...options.headers,
     };
 
-    const response = await fetch(`${API_URL}${endpoint}`, {
-        ...options,
-        headers,
-        credentials: 'include',
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT_MS);
+
+    let response;
+    try {
+        response = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers,
+            credentials: 'include',
+            signal: controller.signal,
+        });
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            throw new ApiError({ kind: 'timeout', message: 'Request timed out' });
+        }
+        throw new ApiError({ kind: 'network', message: err.message });
+    } finally {
+        clearTimeout(timeoutId);
+    }
 
     if (response.status === 401) {
         if (endpoint === '/auth/refresh') {
             window.dispatchEvent(new CustomEvent('auth:session-expired'));
-            throw new Error('Session expired');
+            throw new ApiError({ kind: 'http', status: 401, message: 'Session expired' });
         }
 
         if (isRefreshing) {
@@ -42,7 +59,7 @@ async function request(endpoint, options = {}) {
                 method: 'POST',
                 credentials: 'include',
             });
-            if (!r.ok) throw new Error('Refresh failed');
+            if (!r.ok) throw new ApiError({ kind: 'http', status: r.status, message: 'Refresh failed' });
             processQueue(null);
             return request(endpoint, options);
         } catch (err) {
@@ -56,7 +73,18 @@ async function request(endpoint, options = {}) {
 
     if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(errorText || `Request failed with status ${response.status}`);
+        let body = null;
+        try {
+            body = errorText ? JSON.parse(errorText) : null;
+        } catch {
+            body = null;
+        }
+        throw new ApiError({
+            kind: 'http',
+            status: response.status,
+            body,
+            message: errorText || `Request failed with status ${response.status}`,
+        });
     }
 
     const text = await response.text();
