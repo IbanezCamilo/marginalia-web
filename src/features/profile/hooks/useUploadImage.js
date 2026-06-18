@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useUploadImage(
     onImageUpdated,
@@ -59,7 +60,7 @@ export function useUploadImage(
       setSelectedFile(null);
       onClose();
     } catch (err) {
-      toast.error("Error al subir la imagen: " + err.message);
+      toast.error(getErrorMessage(err, "No se pudo subir la imagen."));
     } finally {
       setUploading(false);
     }

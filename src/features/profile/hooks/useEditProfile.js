@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useEditProfile( user, onSave, isOpen, onClose ){
     
@@ -42,7 +43,7 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
       });
       onClose();
     } catch (err) {
-      toast.error("Error al guardar: " + err.message);
+      toast.error(getErrorMessage(err, "No se pudo guardar el perfil."));
     } finally {
       setSaving(false);
     }

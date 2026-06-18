@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { userService } from "@/features/profile/services/userService";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useMyProfile(){
     const [user, setUser] = useState(null);
@@ -33,7 +34,7 @@ export function useMyProfile(){
       };
       setUser(mappedUser);
     } catch (err) {
-      setError("Error al cargar el perfil: " + err.message);
+      setError(getErrorMessage(err, "No se pudo cargar el perfil."));
       throw err; // Re-throw to allow further handling if needed
     } finally {
       setLoading(false);
@@ -74,7 +75,7 @@ export function useMyProfile(){
       }));
       toast.success("Perfil actualizado correctamente");
     } catch (error) {
-      setError("Error al editar usuario");
+      setError(getErrorMessage(error, "No se pudo editar el perfil."));
       throw error; // Re-throw to allow further handling if needed
     }
   };
