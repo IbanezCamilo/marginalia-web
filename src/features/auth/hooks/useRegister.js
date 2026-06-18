@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService } from "@/features/profile/services/userService";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useRegister() {
   const [name, setName] = useState("");
@@ -28,16 +29,7 @@ export function useRegister() {
       await refreshUser();
       navigate("/user/author-request");
     } catch (err) {
-      let msg = "Error de conexión con el servidor.";
-      try {
-        const parsed = JSON.parse(err.message);
-        msg = parsed.message || parsed.error || msg;
-      } catch {
-        if (err.message && !err.message.startsWith("Request failed")) {
-          msg = err.message;
-        }
-      }
-      setError(msg);
+      setError(getErrorMessage(err, "Error de conexión con el servidor."));
     } finally {
       setLoading(false);
     }
