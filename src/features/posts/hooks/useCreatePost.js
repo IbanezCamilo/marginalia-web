@@ -4,6 +4,7 @@ import { postService } from "../services/myPostService";
 import { validatePost } from "@/utils/postValidation";
 import { categoryService } from "@/features/categories/services/categoryService";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 const INITIAL_POST = {
   title: "",
@@ -40,7 +41,7 @@ export function useCreatePost() {
       });
       setCategories(categoriesMapped);
     } catch (err) {
-      setLoadError("Error al cargar las categorías: " + err.message);
+      setLoadError(getErrorMessage(err, "No se pudieron cargar las categorías."));
     } finally {
       setLoading(false);
     }
@@ -100,10 +101,9 @@ export function useCreatePost() {
         navigate("/user/posts");
       }, 800);
     } catch (error) {
-      setSubmitError(error.message);
-      toast.error("Error al crear el post:", {
-        description: error.message
-      });
+      const msg = getErrorMessage(error, "No se pudo crear el post.");
+      setSubmitError(msg);
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }

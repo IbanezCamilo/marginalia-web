@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { publicPostService } from "@/features/posts/services/publicPostService";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function usePublicPost(slug) {
   const [post, setPost] = useState(null);
@@ -15,7 +16,7 @@ export function usePublicPost(slug) {
       const data = await publicPostService.getBySlug(slug);
       setPost(data);
     } catch (err) {
-      setError(err.message || "No pudimos cargar este articulo.");
+      setError(getErrorMessage(err, "No pudimos cargar este articulo."));
     } finally {
       setLoading(false);
     }

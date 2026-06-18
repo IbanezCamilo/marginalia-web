@@ -3,6 +3,7 @@ import { postService } from "../services/myPostService";
 import { categoryService } from "@/features/categories/services/categoryService";
 import { validatePost } from "@/utils/postValidation";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useEditPost(id, navigate) {
   const [post, setPost] = useState(null); // null while loading
@@ -58,7 +59,7 @@ export function useEditPost(id, navigate) {
           categoriesData.map((cat) => ({ id: cat.id, name: cat.name })),
         );
       } catch (err) {
-        setLoadError("Error al cargar el post: " + err.message);
+        setLoadError(getErrorMessage(err, "No se pudo cargar el post."));
       } finally {
         setLoading(false);
       }
@@ -111,10 +112,9 @@ export function useEditPost(id, navigate) {
 
       navigate("/user/posts"); // Volver a la lista tras guardar
     } catch (error) {
-      setSubmitError(error.message);
-      toast.error("Error al actualizar el post:", {
-        description: error.message
-      });
+      const msg = getErrorMessage(error, "No se pudo actualizar el post.");
+      setSubmitError(msg);
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }

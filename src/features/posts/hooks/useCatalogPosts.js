@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { publicPostService } from "@/features/posts/services/publicPostService";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function useCatalogPosts({ categoryId, sort = "createdAt,desc", size = 12 } = {}) {
   const [posts, setPosts] = useState([]);
@@ -20,7 +21,7 @@ export function useCatalogPosts({ categoryId, sort = "createdAt,desc", size = 12
       setTotalElements(data.page?.totalElements ?? 0);
       setTotalPages(data.page?.totalPages ?? 0);
     } catch (err) {
-      setError(err.message || "Error al cargar las publicaciones.");
+      setError(getErrorMessage(err, "Error al cargar las publicaciones."));
     } finally {
       setLoading(false);
     }
@@ -41,7 +42,7 @@ export function useCatalogPosts({ categoryId, sort = "createdAt,desc", size = 12
       setTotalElements(data.page?.totalElements ?? totalElements);
       setTotalPages(data.page?.totalPages ?? totalPages);
     } catch (err) {
-      setError(err.message || "Error al cargar mas publicaciones.");
+      setError(getErrorMessage(err, "Error al cargar mas publicaciones."));
     } finally {
       setLoadingMore(false);
     }

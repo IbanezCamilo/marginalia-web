@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { publicPostService } from "@/features/posts/services/publicPostService";
+import { getErrorMessage } from "@/lib/apiError";
 
 export function usePublicPosts(page = 0, size = 9) {
   const [posts, setPosts] = useState([]);
@@ -17,7 +18,7 @@ export function usePublicPosts(page = 0, size = 9) {
       setTotalPages(data.page?.totalPages ?? 0);
       setTotalElements(data.page?.totalElements ?? 0);
     } catch (err) {
-      setError(err.message || "Error al cargar los articulos.");
+      setError(getErrorMessage(err, "Error al cargar los articulos."));
     } finally {
       setLoading(false);
     }

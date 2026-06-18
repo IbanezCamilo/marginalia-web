@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { postService } from "../services/myPostService";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/apiError";
 
 const STATUS_TOGGLE_MAP = {
   PUBLISHED: "DRAFT",
@@ -37,7 +38,7 @@ export function useMyPosts(currentPage) {
       setTotalPages(data.page?.totalPages ?? 0);
       setTotalElements(data.page?.totalElements ?? 0);
     } catch (err) {
-      setError("Error al cargar los posts: " + err.message);
+      setError(getErrorMessage(err, "No se pudieron cargar los posts."));
     } finally {
       setLoading(false);
     }
