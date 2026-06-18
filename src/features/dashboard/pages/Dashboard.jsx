@@ -18,6 +18,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { userService } from "../../profile/services/userService";
 import { postService } from "../../posts/services/myPostService";
 import { categoryService } from "../../categories/services/categoryService";
+import { getErrorMessage } from "@/lib/apiError";
 
 const formatDate = (date) => {
   if (!date) return "Sin fecha";
@@ -81,7 +82,7 @@ export default function DashBoard() {
       });
       setCategories(categoriesResponse ?? []);
     } catch (err) {
-      setError("Error al cargar la informacion: " + err.message);
+      setError(getErrorMessage(err, "No se pudo cargar la información."));
     } finally {
       setLoading(false);
     }
