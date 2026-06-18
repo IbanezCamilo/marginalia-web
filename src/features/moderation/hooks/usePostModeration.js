@@ -3,20 +3,11 @@ import { toast } from "sonner";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { adminPostService } from "@/features/moderation/services/adminPostService";
 import { moderatorPostService } from "@/features/moderation/services/moderatorPostService";
+import { getErrorMessage } from "@/lib/apiError";
 
 const INITIAL_MODERATION = { open: false, type: null, postId: null, moderationNote: "" };
 const INITIAL_RESET = { open: false, postId: null, moderationNote: "" };
 const INITIAL_DELETE = { open: false, postId: null };
-
-const parseErrorMessage = (err, fallback) => {
-  try {
-    const parsed = JSON.parse(err.message);
-    return parsed.message || parsed.error || fallback;
-  } catch {
-    if (err.message && !err.message.startsWith("Request failed")) return err.message;
-    return fallback;
-  }
-};
 
 export function usePostModeration() {
   const { meta: { isAdmin } } = useAuth();
@@ -45,7 +36,7 @@ export function usePostModeration() {
       setTotalPages(data.page?.totalPages ?? 0);
       setCurrentPage(page);
     } catch (err) {
-      setError("No se pudieron cargar los posts: " + err.message);
+      setError(getErrorMessage(err, "No se pudieron cargar los posts."));
     } finally {
       setLoading(false);
     }
@@ -93,7 +84,7 @@ export function usePostModeration() {
       closeModeration();
       await load(currentPage, statusFilter);
     } catch (err) {
-      toast.error(parseErrorMessage(err, "No se pudo actualizar el estado del post."));
+      toast.error(getErrorMessage(err, "No se pudo actualizar el estado del post."));
     } finally {
       setResolving(false);
     }
@@ -112,7 +103,7 @@ export function usePostModeration() {
       closeReset();
       await load(currentPage, statusFilter);
     } catch (err) {
-      toast.error(parseErrorMessage(err, "No se pudo restablecer el post."));
+      toast.error(getErrorMessage(err, "No se pudo restablecer el post."));
     } finally {
       setResolving(false);
     }
@@ -131,7 +122,7 @@ export function usePostModeration() {
       setTotalElements((prev) => prev - 1);
       toast.success("Post eliminado correctamente.");
     } catch (err) {
-      toast.error(parseErrorMessage(err, "No se pudo eliminar el post."));
+      toast.error(getErrorMessage(err, "No se pudo eliminar el post."));
     }
   };
 
