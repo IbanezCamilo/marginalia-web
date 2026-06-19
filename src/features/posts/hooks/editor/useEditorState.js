@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const getEditorState = (editor) => {
   const { from, to } = editor.state.selection;
@@ -34,13 +34,23 @@ const getEditorState = (editor) => {
   };
 };
 
+const hasChanged = (prev, next) =>
+  Object.keys(next).some((key) => prev[key] !== next[key]);
+
 export function useEditorState(editor) {
   const [state, setState] = useState({});
+  const stateRef = useRef(state);
 
   useEffect(() => {
     if (!editor) return;
 
-    const updateState = () => setState(getEditorState(editor));
+    const updateState = () => {
+      const next = getEditorState(editor);
+      if (hasChanged(stateRef.current, next)) {
+        stateRef.current = next;
+        setState(next);
+      }
+    };
 
     updateState();
     editor.on("transaction", updateState);
