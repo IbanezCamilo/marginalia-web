@@ -17,15 +17,15 @@ export default function PostRowActions({ onDelete, onToggleStatus, status, canBe
         <Button
           variant="ghost"
           size="icon-sm"
-          className="rounded-md text-stone-500 hover:bg-stone-100 hover:text-stone-950"
+          className="rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           <MoreHorizontal size={18} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-44 rounded-md border-stone-200 p-1">
+      <DropdownMenuContent className="w-44 rounded-md border-border p-1">
         {isPublished && (
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 text-stone-700"
+            className="flex cursor-pointer items-center gap-2 text-foreground"
             onClick={onToggleStatus}
           >
             <EyeOff size={16} />
@@ -34,7 +34,7 @@ export default function PostRowActions({ onDelete, onToggleStatus, status, canBe
         )}
         {status === "DRAFT" && (
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 text-stone-700 data-[highlighted]:bg-emerald-50 data-[highlighted]:text-emerald-700"
+            className="flex cursor-pointer items-center gap-2 text-foreground data-[highlighted]:bg-emerald-50 data-[highlighted]:text-emerald-700 dark:data-[highlighted]:bg-emerald-950 dark:data-[highlighted]:text-emerald-400"
             onClick={onToggleStatus}
           >
             <Eye size={16} />
@@ -43,7 +43,7 @@ export default function PostRowActions({ onDelete, onToggleStatus, status, canBe
         )}
         {isRejected && canBeResubmitted && (
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 text-stone-700"
+            className="flex cursor-pointer items-center gap-2 text-foreground"
             onClick={onToggleStatus}
           >
             <RotateCcw size={16} />

@@ -28,8 +28,8 @@ export default function PostListItemCard({
   const badge = getPostStatusConfig(status);
 
   return (
-    <Card className="group flex w-full max-w-5xl flex-col gap-0 rounded-md border-stone-200 p-3 shadow-[0_1px_2px_rgba(28,25,23,0.04)] transition-colors hover:bg-surface-warm md:flex-row">
-      <div className="w-full shrink-0 overflow-hidden rounded-md bg-stone-100 md:w-52">
+    <Card className="group flex w-full max-w-5xl flex-col gap-0 rounded-md border-border p-3 shadow-[0_1px_2px_rgba(28,25,23,0.04)] transition-colors hover:bg-surface-warm md:flex-row">
+      <div className="w-full shrink-0 overflow-hidden rounded-md bg-muted md:w-52">
         {resolvedImage ? (
           <img
             src={resolvedImage}
@@ -37,7 +37,7 @@ export default function PostListItemCard({
             className="aspect-video h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="aspect-video flex h-full w-full items-center justify-center text-stone-300">
+          <div className="aspect-video flex h-full w-full items-center justify-center text-muted-foreground">
             <BookOpen size={28} strokeWidth={1.4} aria-hidden="true" />
           </div>
         )}
@@ -49,7 +49,7 @@ export default function PostListItemCard({
         title="Clic para editar"
       >
         <div className="flex flex-wrap items-center gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-rose-700">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-rose-700 dark:text-rose-400">
             {categoryName ?? "Sin categoria"}
           </p>
 
@@ -60,37 +60,37 @@ export default function PostListItemCard({
           </span>
 
           {status === "REJECTED" && (
-            <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700">
+            <span className="rounded-full border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-400">
               Rechazado ({rejectionCount ?? 0}/3)
             </span>
           )}
         </div>
 
-        <CardTitle className="line-clamp-2 font-serif text-2xl font-normal leading-tight text-stone-950 transition-colors group-hover:text-rose-800">
+        <CardTitle className="line-clamp-2 font-serif text-2xl font-normal leading-tight text-foreground transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400">
           {title}
         </CardTitle>
 
-        <CardDescription className="text-sm text-stone-500">
+        <CardDescription className="text-sm text-muted-foreground">
           Por {author ?? "Autor"}
         </CardDescription>
 
         {status === "REJECTED" && moderationNote && (
-          <p className="text-sm leading-relaxed text-stone-500">
-            <span className="font-medium text-stone-600">Motivo: </span>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            <span className="font-medium text-foreground">Motivo: </span>
             {truncate(moderationNote)}
           </p>
         )}
 
         {status === "REJECTED" && isLastAttempt && canBeResubmitted && (
-          <p className="flex items-center gap-1.5 text-xs font-medium text-amber-700">
+          <p className="flex items-center gap-1.5 text-xs font-medium text-amber-700 dark:text-amber-400">
             <AlertTriangle size={14} />
             Última oportunidad: si se rechaza de nuevo, el post se archivará permanentemente.
           </p>
         )}
 
         {status === "ARCHIVED" && moderationNote && (
-          <p className="text-sm leading-relaxed text-stone-500">
-            <span className="font-medium text-stone-600">Motivo del archivo: </span>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            <span className="font-medium text-foreground">Motivo del archivo: </span>
             {truncate(moderationNote)}
           </p>
         )}

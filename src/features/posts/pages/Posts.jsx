@@ -29,7 +29,7 @@ export default function Posts() {
         {[1, 2, 3].map((item) => (
           <div
             key={item}
-            className="h-36 animate-pulse rounded-md border border-stone-200 bg-white"
+            className="h-36 animate-pulse rounded-md border border-border bg-card"
           />
         ))}
       </div>
@@ -39,11 +39,11 @@ export default function Posts() {
   if (error) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <FileText size={40} strokeWidth={1.5} className="text-rose-700" />
-        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+        <FileText size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
+        <h1 className="mt-5 font-serif text-4xl text-foreground">
           No pudimos cargar tus posts
         </h1>
-        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
         <Button
           onClick={() => loadPosts(currentPage)}
           className="mt-6 bg-rose-700 hover:bg-rose-800"
@@ -64,16 +64,16 @@ export default function Posts() {
         {...currentDialogProps}
       />
 
-      <div className="mb-6 rounded-md border border-stone-200 bg-[#fbf8f3] p-6">
+      <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700 dark:text-rose-400">
               Archivo personal
             </p>
-            <h1 className="mt-2 font-serif text-4xl text-stone-950">
+            <h1 className="mt-2 font-serif text-4xl text-foreground">
               Mis Posts
             </h1>
-            <p className="mt-2 text-sm text-stone-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               {totalElements} publicaciones creadas en tu cuenta.
             </p>
           </div>
@@ -87,12 +87,12 @@ export default function Posts() {
       </div>
 
       {posts.length === 0 ? (
-        <div className="flex min-h-80 flex-col items-center justify-center rounded-md border border-dashed border-stone-300 bg-white p-8 text-center">
-          <FileText size={42} strokeWidth={1.5} className="text-stone-400" />
-          <h2 className="mt-5 font-serif text-3xl text-stone-950">
+        <div className="flex min-h-80 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
+          <FileText size={42} strokeWidth={1.5} className="text-muted-foreground" />
+          <h2 className="mt-5 font-serif text-3xl text-foreground">
             Aun no tienes posts
           </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
+          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
             Empieza con un borrador y publicalo cuando el texto ya tenga forma.
           </p>
           <Button asChild className="mt-6 bg-rose-700 hover:bg-rose-800">
@@ -125,8 +125,8 @@ export default function Posts() {
       )}
 
       {totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-between rounded-md border border-stone-200 bg-white p-3">
-          <span className="text-sm text-stone-500">
+        <div className="mt-6 flex items-center justify-between rounded-md border border-border bg-card p-3">
+          <span className="text-sm text-muted-foreground">
             Pagina {currentPage + 1} de {totalPages}
           </span>
           <div className="flex gap-2">
