@@ -38,14 +38,14 @@ const getStatusLabel = (status) => {
 
 const getStatusClassName = (status) => {
   if (status === "PUBLISHED") {
-    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+    return "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950 dark:text-emerald-400";
   }
 
   if (status === "DRAFT") {
-    return "border-amber-200 bg-amber-50 text-amber-700";
+    return "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-400";
   }
 
-  return "border-stone-200 bg-stone-100 text-stone-600";
+  return "border-border bg-muted text-muted-foreground";
 };
 
 export default function DashBoard() {
@@ -148,11 +148,11 @@ export default function DashBoard() {
   if (error) {
     return (
       <div className="mx-auto flex min-h-[55vh] max-w-2xl flex-col items-center justify-center text-center">
-        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700" />
-        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
+        <h1 className="mt-5 font-serif text-4xl text-foreground">
           No pudimos abrir el panel
         </h1>
-        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
         <Button onClick={loadDashboard} className="mt-6 bg-rose-700 hover:bg-rose-800">
           <RefreshCw size={16} />
           Reintentar
@@ -163,16 +163,16 @@ export default function DashBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <section className="rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
+      <section className="rounded-md border border-border bg-surface-warm p-6 sm:p-8">
         <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-700 dark:text-rose-400">
               Mesa de trabajo
             </p>
-            <h1 className="mt-3 max-w-3xl font-serif text-4xl leading-tight text-stone-950 sm:text-5xl">
+            <h1 className="mt-3 max-w-3xl font-serif text-4xl leading-tight text-foreground sm:text-5xl">
               Bienvenido, {user?.name ?? "autor"}.
             </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-stone-600 sm:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
               Revisa el estado de tu archivo, continua textos pendientes y
               conserva el ritmo editorial desde un solo lugar.
             </p>
@@ -188,7 +188,7 @@ export default function DashBoard() {
             <Button
               asChild
               variant="outline"
-              className="border-stone-300 bg-transparent"
+              className="border-border bg-transparent"
             >
               <Link to="/user/posts">
                 Ver archivo
@@ -207,18 +207,18 @@ export default function DashBoard() {
             <PanelCard key={item.label} className="min-h-36">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="text-sm font-medium text-stone-500">
+                  <p className="text-sm font-medium text-muted-foreground">
                     {item.label}
                   </p>
-                  <p className="mt-3 font-serif text-4xl text-stone-950">
+                  <p className="mt-3 font-serif text-4xl text-foreground">
                     {item.value}
                   </p>
                 </div>
-                <span className="grid size-10 place-items-center rounded-md border border-stone-200 bg-stone-50 text-rose-800">
+                <span className="grid size-10 place-items-center rounded-md border border-border bg-muted text-rose-800 dark:text-rose-400">
                   <Icon size={18} strokeWidth={1.8} />
                 </span>
               </div>
-              <p className="mt-4 text-sm text-stone-500">{item.helper}</p>
+              <p className="mt-4 text-sm text-muted-foreground">{item.helper}</p>
             </PanelCard>
           );
         })}
@@ -226,16 +226,16 @@ export default function DashBoard() {
 
       <section className="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
         <PanelCard>
-          <div className="flex items-end justify-between gap-4 border-b border-stone-200 pb-4">
+          <div className="flex items-end justify-between gap-4 border-b border-border pb-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-700">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-700 dark:text-rose-400">
                 Archivo reciente
               </p>
-              <h2 className="mt-2 font-serif text-3xl text-stone-950">
+              <h2 className="mt-2 font-serif text-3xl text-foreground">
                 Ultimas publicaciones
               </h2>
             </div>
-            <Button asChild variant="ghost" className="text-stone-700">
+            <Button asChild variant="ghost" className="text-muted-foreground">
               <Link to="/user/posts">
                 Todas
                 <ArrowRight size={16} />
@@ -245,11 +245,11 @@ export default function DashBoard() {
 
           {postsData.posts.length === 0 ? (
             <div className="flex min-h-56 flex-col items-center justify-center text-center">
-              <BookOpen size={38} strokeWidth={1.5} className="text-stone-400" />
-              <h3 className="mt-4 font-serif text-3xl text-stone-950">
+              <BookOpen size={38} strokeWidth={1.5} className="text-muted-foreground" />
+              <h3 className="mt-4 font-serif text-3xl text-foreground">
                 Tu primera publicacion espera
               </h3>
-              <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
+              <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
                 Crea un borrador para comenzar a construir el archivo editorial
                 del blog.
               </p>
@@ -258,20 +258,20 @@ export default function DashBoard() {
               </Button>
             </div>
           ) : (
-            <div className="divide-y divide-stone-200">
+            <div className="divide-y divide-border">
               {postsData.posts.map((post) => (
                 <Link
                   key={post.id}
                   to={`/user/edit-post/${post.id}`}
-                  className="group grid gap-3 py-4 transition-colors hover:bg-stone-50 sm:grid-cols-[1fr_auto] sm:px-2"
+                  className="group grid gap-3 py-4 transition-colors hover:bg-muted sm:grid-cols-[1fr_auto] sm:px-2"
                 >
                   <div>
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-stone-500">
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                       <span>{post.categoryName ?? "Sin categoria"}</span>
-                      <span className="text-stone-300">/</span>
+                      <span className="text-muted-foreground">/</span>
                       <time>{formatDate(post.createdAt)}</time>
                     </div>
-                    <h3 className="mt-2 line-clamp-2 font-serif text-2xl leading-tight text-stone-950 transition-colors group-hover:text-rose-800">
+                    <h3 className="mt-2 line-clamp-2 font-serif text-2xl leading-tight text-foreground transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400">
                       {post.title}
                     </h3>
                   </div>
@@ -285,7 +285,7 @@ export default function DashBoard() {
                     </span>
                     <ArrowRight
                       size={16}
-                      className="text-stone-400 transition-transform group-hover:translate-x-1 group-hover:text-rose-800"
+                      className="text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-rose-800 dark:group-hover:text-rose-400"
                     />
                   </div>
                 </Link>
@@ -297,10 +297,10 @@ export default function DashBoard() {
         <div className="space-y-6">
           <PanelCard>
             <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-md bg-rose-50 text-rose-800">
+              <span className="grid size-10 place-items-center rounded-md bg-rose-50 text-rose-800 dark:bg-rose-950 dark:text-rose-400">
                 <Sparkles size={18} />
               </span>
-              <h2 className="font-serif text-2xl text-stone-950">
+              <h2 className="font-serif text-2xl text-foreground">
                 Siguiente accion
               </h2>
             </div>
@@ -328,24 +328,24 @@ export default function DashBoard() {
           </PanelCard>
 
           <PanelCard>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-rose-700 dark:text-rose-400">
               Pulso editorial
             </p>
-            <h2 className="mt-2 font-serif text-2xl text-stone-950">
+            <h2 className="mt-2 font-serif text-2xl text-foreground">
               Resumen visual
             </h2>
             <div className="mt-5 space-y-4">
               {stats.map((item) => (
                 <div key={item.label}>
                   <div className="mb-1 flex items-center justify-between text-sm">
-                    <span className="text-stone-600">{item.label}</span>
-                    <span className="font-medium text-stone-950">
+                    <span className="text-muted-foreground">{item.label}</span>
+                    <span className="font-medium text-foreground">
                       {item.value}
                     </span>
                   </div>
-                  <div className="h-2 rounded-full bg-stone-100">
+                  <div className="h-2 rounded-full bg-muted">
                     <div
-                      className="h-full rounded-full bg-rose-800"
+                      className="h-full rounded-full bg-rose-800 dark:bg-rose-400"
                       style={{
                         width: `${Math.max(
                           8,
@@ -371,28 +371,28 @@ function UserLinkIcon() {
 function ReaderDashboard({ user }) {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <section className="rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-700">
+      <section className="rounded-md border border-border bg-surface-warm p-6 sm:p-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-700 dark:text-rose-400">
           Tu cuenta
         </p>
-        <h1 className="mt-3 font-serif text-4xl leading-tight text-stone-950 sm:text-5xl">
+        <h1 className="mt-3 font-serif text-4xl leading-tight text-foreground sm:text-5xl">
           Bienvenido, {user?.name ?? "lector"}.
         </h1>
-        <p className="mt-4 text-sm leading-7 text-stone-600">
+        <p className="mt-4 text-sm leading-7 text-muted-foreground">
           Tu cuenta de lector está activa en Marginalia.
         </p>
       </section>
 
       <PanelCard>
         <div className="flex items-start gap-4">
-          <span className="grid size-10 shrink-0 place-items-center rounded-md border border-stone-200 bg-stone-50 text-rose-800">
+          <span className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-muted text-rose-800 dark:text-rose-400">
             <BadgeCheck size={18} strokeWidth={1.8} />
           </span>
           <div className="flex-1">
-            <h2 className="font-serif text-2xl text-stone-950">
+            <h2 className="font-serif text-2xl text-foreground">
               Conviértete en autor
             </h2>
-            <p className="mt-1 text-sm leading-6 text-stone-500">
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">
               Solicita el rol de autor para publicar artículos y reseñas en el
               blog. El equipo revisará tu solicitud.
             </p>
@@ -403,7 +403,7 @@ function ReaderDashboard({ user }) {
                   Solicitar autoría
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="border-stone-300 bg-transparent">
+              <Button asChild variant="outline" className="border-border bg-transparent">
                 <Link to="/">
                   Ver blog
                   <ArrowRight size={15} />
@@ -416,19 +416,19 @@ function ReaderDashboard({ user }) {
 
       <PanelCard>
         <div className="flex items-start gap-4">
-          <span className="grid size-10 shrink-0 place-items-center rounded-md border border-stone-200 bg-stone-50 text-rose-800">
+          <span className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-muted text-rose-800 dark:text-rose-400">
             <UserRound size={18} strokeWidth={1.8} />
           </span>
           <div className="flex-1">
-            <h2 className="font-serif text-2xl text-stone-950">
+            <h2 className="font-serif text-2xl text-foreground">
               Perfil público
             </h2>
-            <p className="mt-1 text-sm leading-6 text-stone-500">
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">
               Actualiza tu nombre y descripción para que aparezcan correctamente
               si publicas en el futuro.
             </p>
             <div className="mt-4">
-              <Button asChild variant="outline" className="border-stone-300 bg-transparent">
+              <Button asChild variant="outline" className="border-border bg-transparent">
                 <Link to="/user/profile">
                   Editar perfil
                   <ArrowRight size={15} />
