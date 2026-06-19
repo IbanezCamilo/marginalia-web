@@ -29,7 +29,7 @@ export default function Footer() {
         </nav>
       </div>
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl justify-between px-5 py-5 text-xs text-stone-500 sm:px-8">
+        <div className="mx-auto flex max-w-7xl justify-between px-5 py-5 text-xs text-stone-400 sm:px-8">
           <p>Copyright 2026 Marginalia.</p>
           <p>Todos los derechos reservados.</p>
         </div>

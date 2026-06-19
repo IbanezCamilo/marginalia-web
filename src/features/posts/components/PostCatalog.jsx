@@ -22,7 +22,7 @@ const DEFAULT_SORT = "createdAt,desc";
 
 function FilterTrigger({ children }) {
   return (
-    <DropdownMenuTrigger className="inline-flex h-10 items-center gap-2 rounded-md border border-stone-300 bg-white px-3 text-sm font-medium text-stone-700 transition hover:border-stone-950 dark:border-stone-600 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-stone-400">
+    <DropdownMenuTrigger className="inline-flex h-11 items-center gap-2 rounded-md border border-stone-300 bg-white px-3 text-sm font-medium text-stone-700 transition hover:border-stone-950 dark:border-stone-600 dark:bg-stone-900 dark:text-stone-300 dark:hover:border-stone-400">
       {children}
       <ChevronDown size={14} aria-hidden="true" />
     </DropdownMenuTrigger>
