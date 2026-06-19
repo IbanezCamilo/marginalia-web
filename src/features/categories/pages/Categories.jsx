@@ -30,7 +30,7 @@ export default function Categories() {
   if (loading) {
     return (
       <div className="mx-auto max-w-6xl">
-        <div className="h-80 animate-pulse rounded-md border border-stone-200 bg-white" />
+        <div className="h-80 animate-pulse rounded-md border border-border bg-card" />
       </div>
     );
   }
@@ -38,11 +38,11 @@ export default function Categories() {
   if (error) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <Folder size={40} strokeWidth={1.5} className="text-rose-700" />
-        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+        <Folder size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
+        <h1 className="mt-5 font-serif text-4xl text-foreground">
           No pudimos cargar las categorias
         </h1>
-        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
         <Button onClick={loadCategories} className="mt-6 bg-rose-700 hover:bg-rose-800">
           <RefreshCw size={16} />
           Reintentar
@@ -62,19 +62,19 @@ export default function Categories() {
         confirmLabel="Si, eliminar"
       />
 
-      <div className="mb-6 rounded-md border border-stone-200 bg-[#fbf8f3] p-6">
+      <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700 dark:text-rose-400">
               Taxonomia
             </p>
-            <h1 className="mt-2 font-serif text-4xl text-stone-950">
+            <h1 className="mt-2 font-serif text-4xl text-foreground">
               Categorias
-              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-500">
+              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
                 {categories.length}
               </span>
             </h1>
-            <p className="mt-2 text-sm text-stone-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               Gestiona los temas que ordenan el archivo publico del blog.
             </p>
           </div>
@@ -90,12 +90,12 @@ export default function Categories() {
       </div>
 
       {categories.length === 0 ? (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-stone-300 bg-white p-8 text-center">
-          <Folder size={42} strokeWidth={1.5} className="text-stone-400" />
-          <h2 className="mt-5 font-serif text-3xl text-stone-950">
+        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
+          <Folder size={42} strokeWidth={1.5} className="text-muted-foreground" />
+          <h2 className="mt-5 font-serif text-3xl text-foreground">
             Aun no hay categorias
           </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
+          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
             Crea una primera categoria para que las publicaciones se puedan
             explorar por tema.
           </p>
@@ -107,23 +107,23 @@ export default function Categories() {
           </Button>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-md border border-stone-200 bg-white shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+        <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
           <Table className="w-full">
-            <TableHeader className="border-b border-stone-200 bg-stone-50">
+            <TableHeader className="border-b border-border bg-muted">
               <TableRow>
-                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   Nombre
                 </TableHead>
-                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   Slug
                 </TableHead>
-                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                   Creado
                 </TableHead>
-                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500"></TableHead>
+                <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"></TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="divide-y divide-stone-200">
+            <TableBody className="divide-y divide-border">
               {categories.map((cat) => (
                 <CategoryRow
                   key={cat.id}

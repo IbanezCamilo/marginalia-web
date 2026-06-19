@@ -14,12 +14,12 @@ export default function CategoryRowActions({ onDelete }) {
         <Button
           variant="ghost"
           size="icon-sm"
-          className="rounded-md text-stone-500 hover:bg-stone-100 hover:text-stone-950"
+          className="rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           <MoreHorizontal size={18} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-36 rounded-md border-stone-200 p-1">
+      <DropdownMenuContent className="w-36 rounded-md border-border p-1">
         <DropdownMenuItem
           variant="destructive"
           className="flex cursor-pointer items-center gap-2"

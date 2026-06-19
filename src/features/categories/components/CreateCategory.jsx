@@ -15,7 +15,7 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md rounded-md border-stone-200">
+      <DialogContent className="max-w-md rounded-md border-border">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">
             Crear Categoria
