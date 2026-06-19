@@ -19,23 +19,23 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange, readO
         <button
           type="button"
           onClick={triggerFileSelect}
-          className="w-full h-64 border-2 border-dashed border-stone-300 rounded-xl
+          className="w-full h-64 border-2 border-dashed border-border rounded-xl
                      flex flex-col items-center justify-center gap-4
-                     hover:border-stone-400 hover:bg-stone-50 transition-all
+                     hover:border-stone-400 hover:bg-muted dark:hover:border-stone-500 transition-all
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
                      group cursor-pointer"
         >
           <div
-            className="w-16 h-16 rounded-full bg-stone-100 flex items-center justify-center
-                          group-hover:bg-stone-200 transition-colors"
+            className="w-16 h-16 rounded-full bg-muted flex items-center justify-center
+                          group-hover:bg-stone-200 dark:group-hover:bg-stone-700 transition-colors"
           >
-            <ImageIcon size={32} className="text-stone-400" />
+            <ImageIcon size={32} className="text-muted-foreground" />
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-stone-700 mb-1">
+            <p className="text-sm font-medium text-foreground mb-1">
               Agregar imagen de portada
             </p>
-            <p className="text-xs text-stone-500">Recomendado: 1600 × 840</p>
+            <p className="text-xs text-muted-foreground">Recomendado: 1600 × 840</p>
           </div>
         </button>
         <input
@@ -51,7 +51,7 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange, readO
 
   return (
     <div className="relative mb-8 group">
-      <div className="relative w-full h-96 rounded-xl overflow-hidden bg-stone-100">
+      <div className="relative w-full h-96 rounded-xl overflow-hidden bg-muted">
         <img
           src={previewUrl || imageSrc}
           alt="Imagen de portada"
@@ -67,7 +67,7 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange, readO
               type="button"
               onClick={triggerFileSelect}
               className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
-                           font-medium text-sm hover:bg-white transition-colors shadow-lg
+                           font-medium text-sm text-stone-900 hover:bg-white transition-colors shadow-lg
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Upload size={16} />
@@ -78,7 +78,7 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange, readO
               type="button"
               onClick={handleRemoveImage}
               className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
-                           font-medium text-sm text-destructive hover:bg-white transition-colors shadow-lg
+                           font-medium text-sm text-rose-700 hover:bg-white transition-colors shadow-lg
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <X size={16} />
