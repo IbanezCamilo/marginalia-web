@@ -1,26 +1,10 @@
 import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { LogIn, LogOut, Menu, Moon, PenSquare, Sun, UserRound, X } from "lucide-react";
-import { useTheme } from "next-themes";
+import { LogIn, LogOut, Menu, PenSquare, UserRound, X } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import Logo from "./logo";
 import AccountMenu from "./AccountMenu";
-
-function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
-
-  return (
-    <button
-      type="button"
-      aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="grid size-9 place-items-center rounded-md border border-stone-200 text-stone-600 transition hover:border-stone-400 hover:text-stone-950 dark:border-stone-700 dark:text-stone-400 dark:hover:border-stone-500 dark:hover:text-stone-100"
-    >
-      {isDark ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
-    </button>
-  );
-}
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -96,6 +80,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/auth/login"
+                aria-label="Iniciar sesión"
                 className="inline-flex h-11 items-center gap-2 rounded-md border border-stone-300 px-3 text-sm font-semibold text-stone-900 transition hover:border-stone-950 hover:bg-stone-950 hover:text-white dark:border-stone-600 dark:text-stone-100 dark:hover:border-stone-400 dark:hover:bg-stone-100 dark:hover:text-stone-950"
               >
                 <LogIn size={16} aria-hidden="true" />
@@ -130,7 +115,7 @@ export default function Navbar() {
           />
           <nav
             aria-label="Menu movil"
-            className="absolute right-0 top-0 flex h-full w-72 flex-col bg-white shadow-xl dark:bg-stone-950"
+            className="absolute right-0 top-0 flex h-full w-[85vw] max-w-72 flex-col bg-white shadow-xl dark:bg-stone-950"
           >
             <div className="flex h-16 items-center justify-between border-b border-stone-200 px-5 dark:border-stone-800">
               <span className="font-serif text-lg text-stone-950 dark:text-stone-50">
