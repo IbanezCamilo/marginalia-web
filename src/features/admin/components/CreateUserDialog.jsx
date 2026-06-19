@@ -68,7 +68,7 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md rounded-md border-stone-200">
+      <DialogContent className="max-w-md rounded-md border-border">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">Nuevo usuario</DialogTitle>
         </DialogHeader>
@@ -109,7 +109,7 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
               placeholder="••••••••"
               disabled={saving}
             />
-            <p className="text-xs text-stone-500">Mínimo 8 caracteres.</p>
+            <p className="text-xs text-muted-foreground">Mínimo 8 caracteres.</p>
           </div>
 
           <div className="space-y-2">

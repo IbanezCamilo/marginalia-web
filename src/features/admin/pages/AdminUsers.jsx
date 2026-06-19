@@ -53,7 +53,7 @@ export default function AdminUsers() {
   if (loading) {
     return (
       <div className="mx-auto max-w-6xl">
-        <div className="h-80 animate-pulse rounded-md border border-stone-200 bg-white" />
+        <div className="h-80 animate-pulse rounded-md border border-border bg-card" />
       </div>
     );
   }
@@ -61,11 +61,11 @@ export default function AdminUsers() {
   if (error) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <UserCog size={40} strokeWidth={1.5} className="text-rose-700" />
-        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+        <UserCog size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
+        <h1 className="mt-5 font-serif text-4xl text-foreground">
           No pudimos cargar los usuarios
         </h1>
-        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
         <Button onClick={() => load(0)} className="mt-6 bg-rose-700 hover:bg-rose-800">
           <RefreshCw size={16} />
           Reintentar
@@ -100,19 +100,19 @@ export default function AdminUsers() {
       />
 
       {/* Header */}
-      <div className="mb-6 rounded-md border border-stone-200 bg-[#fbf8f3] p-6">
+      <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700 dark:text-rose-400">
               Administración
             </p>
-            <h1 className="mt-2 font-serif text-4xl text-stone-950">
+            <h1 className="mt-2 font-serif text-4xl text-foreground">
               Usuarios
-              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-500">
+              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
                 {totalElements}
               </span>
             </h1>
-            <p className="mt-2 text-sm text-stone-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               Gestiona las cuentas y roles de la plataforma.
             </p>
           </div>
@@ -130,12 +130,12 @@ export default function AdminUsers() {
       {/* Filters */}
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative max-w-sm">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={searchInput}
             onChange={(e) => changeSearch(e.target.value)}
             placeholder="Buscar por nombre o email…"
-            className="border-stone-200 bg-white pl-9 placeholder:text-stone-400 focus-visible:border-stone-400 focus-visible:ring-stone-400/20"
+            className="border-border bg-card pl-9 placeholder:text-muted-foreground focus-visible:border-stone-400 focus-visible:ring-stone-400/20"
           />
         </div>
 
@@ -147,8 +147,8 @@ export default function AdminUsers() {
               onClick={() => changeRoleFilter(tab.value)}
               className={
                 roleFilter === tab.value && !searchInput
-                  ? "bg-stone-950 text-white hover:bg-stone-800"
-                  : "border border-stone-300 bg-transparent text-stone-700 hover:bg-stone-100"
+                  ? "bg-stone-950 text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-300"
+                  : "border border-border bg-transparent text-muted-foreground hover:bg-muted"
               }
             >
               {tab.label}
@@ -159,37 +159,37 @@ export default function AdminUsers() {
 
       {/* Empty state */}
       {users.length === 0 ? (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-stone-300 bg-white p-8 text-center">
-          <UserCog size={42} strokeWidth={1.5} className="text-stone-400" />
-          <h2 className="mt-5 font-serif text-3xl text-stone-950">
+        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
+          <UserCog size={42} strokeWidth={1.5} className="text-muted-foreground" />
+          <h2 className="mt-5 font-serif text-3xl text-foreground">
             No se encontraron usuarios
           </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
+          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
             Ajusta la búsqueda o el filtro de rol para encontrar lo que buscas.
           </p>
         </div>
       ) : (
         <>
-          <div className="overflow-hidden rounded-md border border-stone-200 bg-white shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+          <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
             <Table className="w-full">
-              <TableHeader className="border-b border-stone-200 bg-stone-50">
+              <TableHeader className="border-b border-border bg-muted">
                 <TableRow>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Nombre
                   </TableHead>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Email
                   </TableHead>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Rol
                   </TableHead>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Creado
                   </TableHead>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500"></TableHead>
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"></TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody className="divide-y divide-stone-200">
+              <TableBody className="divide-y divide-border">
                 {users.map((user) => (
                   <UserRow
                     key={user.id}
@@ -205,7 +205,7 @@ export default function AdminUsers() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-4 flex items-center justify-between text-sm text-stone-500">
+            <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
               <span>
                 Página {currentPage + 1} de {totalPages}
               </span>
@@ -215,7 +215,7 @@ export default function AdminUsers() {
                   variant="outline"
                   disabled={currentPage === 0}
                   onClick={() => load(currentPage - 1)}
-                  className="border-stone-300"
+                  className="border-border"
                 >
                   Anterior
                 </Button>
@@ -224,7 +224,7 @@ export default function AdminUsers() {
                   variant="outline"
                   disabled={currentPage >= totalPages - 1}
                   onClick={() => load(currentPage + 1)}
-                  className="border-stone-300"
+                  className="border-border"
                 >
                   Siguiente
                 </Button>
