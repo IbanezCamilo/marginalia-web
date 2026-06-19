@@ -39,7 +39,7 @@ export default function ProfileImageUpload({
               <img
                 src={preview || currentImage}
                 alt="Preview"
-                className="w-48 h-48 rounded-full object-cover border-4 border-stone-200 shadow-lg"
+                className="w-48 h-48 rounded-full object-cover border-4 border-border shadow-lg"
               />
 
               {/* Botón de selección superpuesto */}
@@ -62,11 +62,11 @@ export default function ProfileImageUpload({
           </div>
 
           {!selectedFile ? (
-            <p className="text-center text-sm text-stone-500">
+            <p className="text-center text-sm text-muted-foreground">
               Haz clic en la imagen para seleccionar una nueva foto
             </p>
           ) : (
-            <p className="text-center text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 p-2 rounded-md">
+            <p className="text-center text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 p-2 rounded-md dark:text-emerald-400 dark:bg-emerald-950 dark:border-emerald-900">
               Nueva imagen seleccionada
             </p>
           )}

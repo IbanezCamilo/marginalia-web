@@ -25,14 +25,14 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-4xl">
-        <div className="animate-pulse rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
+        <div className="animate-pulse rounded-md border border-border bg-surface-warm p-6 sm:p-8">
           <div className="flex flex-col gap-8 sm:flex-row sm:items-start">
-            <div className="mx-auto size-32 shrink-0 rounded-full bg-stone-200 sm:mx-0" />
+            <div className="mx-auto size-32 shrink-0 rounded-full bg-muted sm:mx-0" />
             <div className="flex-1 space-y-4">
-              <div className="mx-auto h-3 w-24 rounded bg-stone-200 sm:mx-0" />
-              <div className="mx-auto h-10 w-64 rounded bg-stone-200 sm:mx-0" />
-              <div className="mx-auto h-3 w-48 rounded bg-stone-100 sm:mx-0" />
-              <div className="mt-2 h-20 w-full rounded bg-stone-100" />
+              <div className="mx-auto h-3 w-24 rounded bg-muted sm:mx-0" />
+              <div className="mx-auto h-10 w-64 rounded bg-muted sm:mx-0" />
+              <div className="mx-auto h-3 w-48 rounded bg-muted sm:mx-0" />
+              <div className="mt-2 h-20 w-full rounded bg-muted" />
             </div>
           </div>
         </div>
@@ -43,11 +43,11 @@ export default function ProfilePage() {
   if (error) {
     return (
       <div className="mx-auto flex min-h-[55vh] max-w-2xl flex-col items-center justify-center text-center">
-        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700" />
-        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
+        <h1 className="mt-5 font-serif text-4xl text-foreground">
           No pudimos cargar el perfil
         </h1>
-        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
         <Button onClick={loadProfile} className="mt-6 bg-rose-700 hover:bg-rose-800">
           <RefreshCw size={16} />
           Reintentar
@@ -62,7 +62,7 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <section className="rounded-md border border-stone-200 bg-surface-warm p-6 sm:p-8">
+      <section className="rounded-md border border-border bg-surface-warm p-6 sm:p-8">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start">
           <button
             type="button"
@@ -73,7 +73,7 @@ export default function ProfilePage() {
             <img
               src={user.image}
               alt={user.name}
-              className="size-32 rounded-full border-4 border-white object-cover shadow-md transition duration-300 group-hover:brightness-75"
+              className="size-32 rounded-full border-4 border-card object-cover shadow-md transition duration-300 group-hover:brightness-75"
             />
             <span className="absolute inset-0 flex items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100">
               <Camera size={22} className="text-white drop-shadow-md" />
@@ -81,29 +81,29 @@ export default function ProfilePage() {
           </button>
 
           <div className="flex-1 text-center sm:text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700 dark:text-rose-400">
               Perfil de autor
             </p>
-            <h1 className="mt-2 font-serif text-4xl text-stone-950 sm:text-5xl">
+            <h1 className="mt-2 font-serif text-4xl text-foreground sm:text-5xl">
               {user.name}
             </h1>
             <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 sm:justify-start">
-              <span className="flex items-center gap-1.5 text-sm text-stone-500">
+              <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <Shield size={13} strokeWidth={1.8} />
                 {roleLabel}
               </span>
-              <span className="flex items-center gap-1.5 text-sm text-stone-500">
+              <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <Mail size={13} strokeWidth={1.8} />
                 {user.email}
               </span>
             </div>
 
             {user.description ? (
-              <p className="mt-5 max-w-2xl text-base leading-8 text-stone-600">
+              <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
                 {user.description}
               </p>
             ) : (
-              <p className="mt-5 text-sm italic text-stone-400">
+              <p className="mt-5 text-sm italic text-muted-foreground">
                 Aún no has añadido una presentación como autor.
               </p>
             )}
@@ -112,7 +112,7 @@ export default function ProfilePage() {
               <Button
                 onClick={() => setEditModalOpen(true)}
                 variant="outline"
-                className="border-stone-300 bg-transparent"
+                className="border-border bg-transparent"
               >
                 <PenLine size={15} />
                 Editar perfil

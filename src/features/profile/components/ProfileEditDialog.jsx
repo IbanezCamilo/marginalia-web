@@ -42,9 +42,9 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
               id="email"
               value={user.email}
               disabled
-              className="bg-stone-100"
+              className="bg-muted"
             />
-            <p className="text-xs text-stone-500">
+            <p className="text-xs text-muted-foreground">
               El email no se puede modificar
             </p>
           </div>
@@ -62,7 +62,7 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
               disabled={saving}
               maxLength={500}
             />
-            <p className="text-xs text-stone-500">
+            <p className="text-xs text-muted-foreground">
               {editedData.description.length}/500 caracteres
             </p>
           </div>
