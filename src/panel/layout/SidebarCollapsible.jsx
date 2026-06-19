@@ -60,8 +60,8 @@ export default function SidebarCollapsible({
             onClick={onClick}
             className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
               isActive
-                ? "bg-stone-950 text-white"
-                : "text-stone-700 hover:bg-white hover:text-stone-950"
+                ? "bg-stone-950 text-white dark:bg-stone-100 dark:text-stone-950"
+                : "text-stone-700 hover:bg-white hover:text-stone-950 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-50"
             } ${isCollapsed ? "justify-center" : ""}`}
             title={isCollapsed ? item.label : ""}
           >
@@ -76,17 +76,17 @@ export default function SidebarCollapsible({
   return (
     <>
       <aside
-        className={`fixed left-0 top-0 z-50 hidden h-screen border-r border-stone-200 bg-surface-warm transition-all duration-300 md:block ${
+        className={`fixed left-0 top-0 z-50 hidden h-screen border-r border-stone-200 dark:border-stone-800 bg-surface-warm transition-all duration-300 md:block ${
           isCollapsed ? "w-16" : "w-60"
         }`}
       >
-        <div className="flex h-16 items-center justify-between border-b border-stone-200 px-3">
+        <div className="flex h-16 items-center justify-between border-b border-stone-200 dark:border-stone-800 px-3">
           {!isCollapsed && (
             <Link to="/" className="group flex items-center gap-3 p-2">
-              <span className="grid size-9 place-items-center rounded-md border border-stone-300 bg-stone-950 text-white transition-colors group-hover:bg-rose-900">
+              <span className="grid size-9 place-items-center rounded-md border border-stone-300 dark:border-stone-600 bg-stone-950 dark:bg-stone-800 text-white transition-colors group-hover:bg-rose-900">
                 <Logo size={30} />
               </span>
-              <span className="font-serif text-xl text-stone-950">
+              <span className="font-serif text-xl text-stone-950 dark:text-stone-50">
                 Marginalia
               </span>
             </Link>
@@ -95,7 +95,7 @@ export default function SidebarCollapsible({
           <button
             type="button"
             onClick={onToggle}
-            className={`rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-200/70 hover:text-stone-950 ${
+            className={`rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-200/70 hover:text-stone-950 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100 ${
               isCollapsed ? "mx-auto" : ""
             }`}
             aria-label={isCollapsed ? "Expandir menu" : "Contraer menu"}
@@ -111,10 +111,10 @@ export default function SidebarCollapsible({
 
         {renderMenu()}
 
-        <div className="absolute bottom-0 left-0 right-0 border-t border-stone-200 p-3">
+        <div className="absolute bottom-0 left-0 right-0 border-t border-stone-200 dark:border-stone-800 p-3">
           <Link
             to="/"
-            className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-stone-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:bg-white hover:text-rose-800 ${
+            className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-stone-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:bg-white hover:text-rose-800 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-rose-400 ${
               isCollapsed ? "justify-center" : ""
             }`}
             title={isCollapsed ? "Ver sitio" : ""}
@@ -126,16 +126,16 @@ export default function SidebarCollapsible({
       </aside>
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-screen w-64 border-r border-stone-200 bg-surface-warm transition-transform duration-300 md:hidden ${
+        className={`fixed left-0 top-0 z-50 h-screen w-64 border-r border-stone-200 dark:border-stone-800 bg-surface-warm transition-transform duration-300 md:hidden ${
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex h-16 items-center justify-between border-b border-stone-200 px-4">
+        <div className="flex h-16 items-center justify-between border-b border-stone-200 dark:border-stone-800 px-4">
           <Link to="/" className="flex items-center gap-2">
-            <span className="grid size-9 place-items-center rounded-md border border-stone-300 bg-stone-950 text-white">
+            <span className="grid size-9 place-items-center rounded-md border border-stone-300 dark:border-stone-600 bg-stone-950 dark:bg-stone-800 text-white">
               <Logo size={30} />
             </span>
-            <span className="font-serif text-xl text-stone-950">
+            <span className="font-serif text-xl text-stone-950 dark:text-stone-50">
               Marginalia
             </span>
           </Link>
@@ -144,7 +144,7 @@ export default function SidebarCollapsible({
             variant="ghost"
             size="icon-sm"
             onClick={onMobileClose}
-            className="rounded-md text-stone-600 hover:bg-stone-200/70"
+            className="rounded-md text-stone-600 hover:bg-stone-200/70 dark:text-stone-400 dark:hover:bg-stone-800"
           >
             <X size={20} />
           </Button>

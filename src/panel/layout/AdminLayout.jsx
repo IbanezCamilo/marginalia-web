@@ -24,7 +24,7 @@ export default function AdminLayout() {
     location.pathname.startsWith("/user/edit-post/");
 
   return (
-    <div className="admin-shell min-h-screen bg-stone-50 text-stone-950">
+    <div className="admin-shell min-h-screen bg-background text-foreground">
       {!isEditorPage && (
         <SidebarCollapsible
           isCollapsed={isCollapsed}
