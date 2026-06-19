@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import PostEditor from "../components/editor/PostEditor";
 import EditorHeader from "@/features/posts/components/editor/EditorTopBar";
 import SideBarSettings from "@/features/posts/components/editor/SideBarSettings";
+import { Button } from "@/components/ui/button";
 import { useEditPost } from "@/features/posts/hooks/useEditPost";
 
 export default function EditPost() {
@@ -22,17 +23,17 @@ export default function EditPost() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 animate-pulse">
-        <div className="h-16 bg-white border-b border-gray-200" />
+      <div className="min-h-screen bg-background animate-pulse">
+        <div className="h-16 bg-card border-b border-border" />
         <div className="flex pt-16">
           <div className="flex-1 max-w-4xl mx-auto px-8 py-8">
-            <div className="h-96 bg-gray-200 rounded-lg mb-8" />
-            <div className="h-12 bg-gray-200 rounded mb-4" />
-            <div className="h-64 bg-gray-200 rounded" />
+            <div className="h-96 bg-muted rounded-lg mb-8" />
+            <div className="h-12 bg-muted rounded mb-4" />
+            <div className="h-64 bg-muted rounded" />
           </div>
-          <div className="w-80 border-l border-gray-200 bg-white p-6 space-y-4">
-            <div className="h-8 bg-gray-200 rounded" />
-            <div className="h-32 bg-gray-200 rounded" />
+          <div className="w-80 border-l border-border bg-card p-6 space-y-4">
+            <div className="h-8 bg-muted rounded" />
+            <div className="h-32 bg-muted rounded" />
           </div>
         </div>
       </div>
@@ -52,21 +53,18 @@ export default function EditPost() {
   if (loadError) {
     return (
       <div className="max-w-6xl mx-auto p-4">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">{loadError}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-          >
+        <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4">
+          <p className="text-destructive">{loadError}</p>
+          <Button onClick={() => window.location.reload()} variant="destructive" className="mt-2">
             Reintentar
-          </button>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Fixed Header */}
 
       <EditorHeader
@@ -78,15 +76,15 @@ export default function EditPost() {
       />
 
       {/* Main Layout: Editor + SideBar */}
-      <div className="flex flex-col md:flex-row pt-16 gap-8">
+      <div className="flex flex-col lg:flex-row pt-16 gap-8">
         {/* Main container */}
-        <main className="flex-1 max-w-4xl mx-auto px-8 py-6 bg-white p-6 rounded-sm shadow-sm">
+        <main className="flex-1 max-w-4xl mx-auto px-8 py-6 bg-card p-6 rounded-sm shadow-sm">
           <PostEditor key={id} post={post} onChange={handleChange} readOnly={isArchived} />
 
           {/* Error de submit */}
           {submitError && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-sm whitespace-pre-line">
+            <div className="mt-4 p-3 bg-destructive/10 border border-destructive/30 rounded-lg">
+              <p className="text-destructive text-sm whitespace-pre-line">
                 {submitError}
               </p>
             </div>
@@ -94,7 +92,7 @@ export default function EditPost() {
         </main>
 
         {/* Fixed Right Sidebar */}
-        <aside className="md:w-80 bg-white border-t md:border-t-0 md:border-l border-gray-200 rounded-sm sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto">
+        <aside className="lg:w-80 bg-card border-t lg:border-t-0 lg:border-l border-border rounded-sm lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] overflow-y-auto">
           <SideBarSettings
             categories={categories}
             post={post}
