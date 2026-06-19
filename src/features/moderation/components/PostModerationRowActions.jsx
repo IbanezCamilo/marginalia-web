@@ -29,23 +29,23 @@ export default function PostModerationRowActions({
         <Button
           variant="ghost"
           size="icon-sm"
-          className="rounded-md text-stone-500 hover:bg-stone-100 hover:text-stone-950"
+          className="rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           <MoreHorizontal size={18} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-48 rounded-md border-stone-200 p-1">
+      <DropdownMenuContent className="w-48 rounded-md border-border p-1">
         {status === "DRAFT" && (
           <>
             <DropdownMenuItem
-              className="flex cursor-pointer items-center gap-2 text-stone-700 data-[highlighted]:bg-emerald-50 data-[highlighted]:text-emerald-700"
+              className="flex cursor-pointer items-center gap-2 text-foreground data-[highlighted]:bg-emerald-50 data-[highlighted]:text-emerald-700 dark:data-[highlighted]:bg-emerald-950 dark:data-[highlighted]:text-emerald-400"
               onClick={() => onModerate("approve")}
             >
               <Check size={16} />
               Aprobar
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="flex cursor-pointer items-center gap-2 text-stone-700 data-[highlighted]:bg-rose-50 data-[highlighted]:text-rose-700"
+              className="flex cursor-pointer items-center gap-2 text-foreground data-[highlighted]:bg-rose-50 data-[highlighted]:text-rose-700 dark:data-[highlighted]:bg-rose-950 dark:data-[highlighted]:text-rose-400"
               onClick={() => onModerate("reject")}
             >
               <X size={16} />
@@ -57,14 +57,14 @@ export default function PostModerationRowActions({
         {status === "PUBLISHED" && (
           <>
             <DropdownMenuItem
-              className="flex cursor-pointer items-center gap-2 text-stone-700 data-[highlighted]:bg-rose-50 data-[highlighted]:text-rose-700"
+              className="flex cursor-pointer items-center gap-2 text-foreground data-[highlighted]:bg-rose-50 data-[highlighted]:text-rose-700 dark:data-[highlighted]:bg-rose-950 dark:data-[highlighted]:text-rose-400"
               onClick={() => onModerate("reject")}
             >
               <X size={16} />
               Rechazar
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="flex cursor-pointer items-center gap-2 text-stone-700"
+              className="flex cursor-pointer items-center gap-2 text-foreground"
               onClick={() => onModerate("archive")}
             >
               <Archive size={16} />
@@ -76,14 +76,14 @@ export default function PostModerationRowActions({
         {status === "REJECTED" && (
           <>
             <DropdownMenuItem
-              className="flex cursor-pointer items-center gap-2 text-stone-700 data-[highlighted]:bg-emerald-50 data-[highlighted]:text-emerald-700"
+              className="flex cursor-pointer items-center gap-2 text-foreground data-[highlighted]:bg-emerald-50 data-[highlighted]:text-emerald-700 dark:data-[highlighted]:bg-emerald-950 dark:data-[highlighted]:text-emerald-400"
               onClick={() => onModerate("approve")}
             >
               <Check size={16} />
               Aprobar
             </DropdownMenuItem>
             <DropdownMenuItem
-              className="flex cursor-pointer items-center gap-2 text-stone-700"
+              className="flex cursor-pointer items-center gap-2 text-foreground"
               onClick={() => onModerate("toDraft")}
             >
               <RotateCcw size={16} />
@@ -94,7 +94,7 @@ export default function PostModerationRowActions({
 
         {status === "ARCHIVED" && isAdmin && isPermanentlyBlocked && (
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 text-stone-700"
+            className="flex cursor-pointer items-center gap-2 text-foreground"
             onClick={onReset}
           >
             <RefreshCw size={16} />

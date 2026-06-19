@@ -50,7 +50,7 @@ const MODERATION_COPY = {
     description:
       "El post dejará de estar visible. Solo un administrador podrá restablecerlo más adelante.",
     confirmLabel: "Archivar",
-    confirmClass: "bg-stone-800 hover:bg-stone-900 text-white",
+    confirmClass: "bg-stone-800 hover:bg-stone-900 text-white dark:bg-stone-700 dark:hover:bg-stone-600",
     noteRequired: false,
   },
   toDraft: {
@@ -58,7 +58,7 @@ const MODERATION_COPY = {
     description:
       "El post volverá a estado borrador para que el autor pueda editarlo y reenviarlo para revisión.",
     confirmLabel: "Volver a borrador",
-    confirmClass: "bg-stone-800 hover:bg-stone-900 text-white",
+    confirmClass: "bg-stone-800 hover:bg-stone-900 text-white dark:bg-stone-700 dark:hover:bg-stone-600",
     noteRequired: false,
   },
 };
@@ -105,7 +105,7 @@ export default function PostModeration() {
   if (loading) {
     return (
       <div className="mx-auto max-w-6xl">
-        <div className="h-80 animate-pulse rounded-md border border-stone-200 bg-white" />
+        <div className="h-80 animate-pulse rounded-md border border-border bg-card" />
       </div>
     );
   }
@@ -113,11 +113,11 @@ export default function PostModeration() {
   if (error) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <ShieldCheck size={40} strokeWidth={1.5} className="text-rose-700" />
-        <h1 className="mt-5 font-serif text-4xl text-stone-950">
+        <ShieldCheck size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
+        <h1 className="mt-5 font-serif text-4xl text-foreground">
           No pudimos cargar los posts
         </h1>
-        <p className="mt-3 text-sm leading-6 text-stone-600">{error}</p>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
         <Button
           onClick={() => load(0, statusFilter)}
           className="mt-6 bg-rose-700 hover:bg-rose-800"
@@ -138,21 +138,21 @@ export default function PostModeration() {
       <Dialog open={moderationState.open} onOpenChange={(open) => !open && closeModeration()}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-serif text-2xl text-stone-950">
+            <DialogTitle className="font-serif text-2xl text-foreground">
               {moderationCopy?.title}
             </DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-stone-500">{moderationCopy?.description}</p>
+          <p className="text-sm text-muted-foreground">{moderationCopy?.description}</p>
           <div className="space-y-1.5">
             <Label
               htmlFor="moderationNote"
-              className="text-xs uppercase tracking-wide text-stone-500"
+              className="text-xs uppercase tracking-wide text-muted-foreground"
             >
               Nota{" "}
               {moderationCopy?.noteRequired ? (
-                <span className="normal-case tracking-normal text-rose-600">(obligatoria)</span>
+                <span className="normal-case tracking-normal text-rose-600 dark:text-rose-400">(obligatoria)</span>
               ) : (
-                <span className="normal-case tracking-normal text-stone-400">(opcional)</span>
+                <span className="normal-case tracking-normal text-muted-foreground">(opcional)</span>
               )}
             </Label>
             <Textarea
@@ -164,10 +164,10 @@ export default function PostModeration() {
               }
               maxLength={300}
               rows={3}
-              className="resize-none border-stone-200 bg-stone-50 text-stone-900 placeholder:text-stone-400
+              className="resize-none border-border bg-muted text-foreground placeholder:text-muted-foreground
                          focus-visible:border-stone-400 focus-visible:ring-stone-400/20"
             />
-            <p className="text-right text-xs text-stone-400">
+            <p className="text-right text-xs text-muted-foreground">
               {moderationState.moderationNote.length}/300
             </p>
           </div>
@@ -176,7 +176,7 @@ export default function PostModeration() {
               variant="outline"
               onClick={closeModeration}
               disabled={resolving}
-              className="border-stone-300"
+              className="border-border"
             >
               Cancelar
             </Button>
@@ -202,20 +202,20 @@ export default function PostModeration() {
       <Dialog open={resetState.open} onOpenChange={(open) => !open && closeReset()}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-serif text-2xl text-stone-950">
+            <DialogTitle className="font-serif text-2xl text-foreground">
               Restablecer post
             </DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-stone-500">
+          <p className="text-sm text-muted-foreground">
             El post volverá a estado borrador y su contador de rechazos se reiniciará a 0.
           </p>
           <div className="space-y-1.5">
             <Label
               htmlFor="resetNote"
-              className="text-xs uppercase tracking-wide text-stone-500"
+              className="text-xs uppercase tracking-wide text-muted-foreground"
             >
               Nota{" "}
-              <span className="normal-case tracking-normal text-stone-400">(opcional)</span>
+              <span className="normal-case tracking-normal text-muted-foreground">(opcional)</span>
             </Label>
             <Textarea
               id="resetNote"
@@ -226,10 +226,10 @@ export default function PostModeration() {
               }
               maxLength={300}
               rows={3}
-              className="resize-none border-stone-200 bg-stone-50 text-stone-900 placeholder:text-stone-400
+              className="resize-none border-border bg-muted text-foreground placeholder:text-muted-foreground
                          focus-visible:border-stone-400 focus-visible:ring-stone-400/20"
             />
-            <p className="text-right text-xs text-stone-400">
+            <p className="text-right text-xs text-muted-foreground">
               {resetState.moderationNote.length}/300
             </p>
           </div>
@@ -238,14 +238,14 @@ export default function PostModeration() {
               variant="outline"
               onClick={closeReset}
               disabled={resolving}
-              className="border-stone-300"
+              className="border-border"
             >
               Cancelar
             </Button>
             <Button
               onClick={confirmReset}
               disabled={resolving}
-              className="bg-stone-800 hover:bg-stone-900 text-white"
+              className="bg-stone-800 hover:bg-stone-900 text-white dark:bg-stone-700 dark:hover:bg-stone-600"
             >
               {resolving ? (
                 <>
@@ -272,19 +272,19 @@ export default function PostModeration() {
       />
 
       {/* Header */}
-      <div className="mb-6 rounded-md border border-stone-200 bg-[#fbf8f3] p-6">
+      <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700 dark:text-rose-400">
               Moderación
             </p>
-            <h1 className="mt-2 font-serif text-4xl text-stone-950">
+            <h1 className="mt-2 font-serif text-4xl text-foreground">
               Revisión de posts
-              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-stone-200 bg-white px-2.5 py-1 text-xs font-medium text-stone-500">
+              <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
                 {totalElements}
               </span>
             </h1>
-            <p className="mt-2 text-sm text-stone-600">
+            <p className="mt-2 text-sm text-muted-foreground">
               Aprueba, rechaza o archiva publicaciones de la plataforma.
             </p>
           </div>
@@ -298,8 +298,8 @@ export default function PostModeration() {
                 onClick={() => changeFilter(tab.value)}
                 className={
                   statusFilter === tab.value
-                    ? "bg-stone-950 text-white hover:bg-stone-800"
-                    : "border border-stone-300 bg-transparent text-stone-700 hover:bg-stone-100"
+                    ? "bg-stone-950 text-white hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-300"
+                    : "border border-border bg-transparent text-muted-foreground hover:bg-muted"
                 }
               >
                 {tab.label}
@@ -311,48 +311,48 @@ export default function PostModeration() {
 
       {/* Empty state */}
       {posts.length === 0 ? (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-stone-300 bg-white p-8 text-center">
-          <ShieldCheck size={42} strokeWidth={1.5} className="text-stone-400" />
-          <h2 className="mt-5 font-serif text-3xl text-stone-950">
+        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
+          <ShieldCheck size={42} strokeWidth={1.5} className="text-muted-foreground" />
+          <h2 className="mt-5 font-serif text-3xl text-foreground">
             No hay posts en esta categoría
           </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-stone-500">
+          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
             Cuando haya publicaciones con este estado, aparecerán aquí para su revisión.
           </p>
         </div>
       ) : (
         <>
-          <div className="overflow-hidden rounded-md border border-stone-200 bg-white shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
+          <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
             <Table className="w-full">
-              <TableHeader className="border-b border-stone-200 bg-stone-50">
+              <TableHeader className="border-b border-border bg-muted">
                 <TableRow>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Título
                   </TableHead>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Autor
                   </TableHead>
-                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 lg:table-cell">
+                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground lg:table-cell">
                     Categoría
                   </TableHead>
-                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 md:table-cell">
+                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground md:table-cell">
                     Moderado por
                   </TableHead>
-                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500 sm:table-cell">
+                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:table-cell">
                     Creado
                   </TableHead>
-                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-stone-500">
+                  <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Acciones
                   </TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody className="divide-y divide-stone-200">
+              <TableBody className="divide-y divide-border">
                 {posts.map((post) => {
                   const badge = getPostStatusConfig(post.status);
                   return (
-                    <TableRow key={post.id} className="transition-colors hover:bg-[#fbf8f3]">
+                    <TableRow key={post.id} className="transition-colors hover:bg-surface-warm">
                       <TableCell className="px-6 py-4">
-                        <div className="font-medium text-stone-950">{truncate(post.title, 50)}</div>
+                        <div className="font-medium text-foreground">{truncate(post.title, 50)}</div>
                         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                           <span
                             className={`rounded-full border px-2.5 py-1 text-xs font-medium ${badge.badgeClass}`}
@@ -360,32 +360,32 @@ export default function PostModeration() {
                             {badge.label}
                           </span>
                           {post.isPermanentlyBlocked && (
-                            <span className="rounded-full border border-rose-300 bg-rose-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-rose-700">
+                            <span className="rounded-full border border-rose-300 bg-rose-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-rose-700 dark:border-rose-800 dark:bg-rose-950 dark:text-rose-400">
                               Bloqueado
                             </span>
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="px-6 py-4 text-sm text-stone-600">
-                        <div className="font-medium text-stone-950">{post.authorName}</div>
+                      <TableCell className="px-6 py-4 text-sm text-muted-foreground">
+                        <div className="font-medium text-foreground">{post.authorName}</div>
                         {isAdmin && post.authorEmail && (
-                          <div className="text-xs text-stone-500">{post.authorEmail}</div>
+                          <div className="text-xs text-muted-foreground">{post.authorEmail}</div>
                         )}
                       </TableCell>
-                      <TableCell className="hidden px-6 py-4 text-sm text-stone-500 lg:table-cell">
+                      <TableCell className="hidden px-6 py-4 text-sm text-muted-foreground lg:table-cell">
                         {post.categoryName ?? "—"}
                       </TableCell>
-                      <TableCell className="hidden px-6 py-4 text-sm text-stone-500 md:table-cell">
+                      <TableCell className="hidden px-6 py-4 text-sm text-muted-foreground md:table-cell">
                         {post.moderatedByName ? (
                           <>
                             <div>{post.moderatedByName}</div>
-                            <div className="text-xs text-stone-400">{formatDate(post.moderatedAt)}</div>
+                            <div className="text-xs text-muted-foreground">{formatDate(post.moderatedAt)}</div>
                           </>
                         ) : (
                           "—"
                         )}
                       </TableCell>
-                      <TableCell className="hidden px-6 py-4 text-sm text-stone-500 sm:table-cell">
+                      <TableCell className="hidden px-6 py-4 text-sm text-muted-foreground sm:table-cell">
                         {formatDate(post.createdAt)}
                       </TableCell>
                       <TableCell className="px-6 py-4">
@@ -407,7 +407,7 @@ export default function PostModeration() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="mt-4 flex items-center justify-between text-sm text-stone-500">
+            <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
               <span>
                 Página {currentPage + 1} de {totalPages}
               </span>
@@ -417,7 +417,7 @@ export default function PostModeration() {
                   variant="outline"
                   disabled={currentPage === 0}
                   onClick={() => load(currentPage - 1, statusFilter)}
-                  className="border-stone-300"
+                  className="border-border"
                 >
                   Anterior
                 </Button>
@@ -426,7 +426,7 @@ export default function PostModeration() {
                   variant="outline"
                   disabled={currentPage >= totalPages - 1}
                   onClick={() => load(currentPage + 1, statusFilter)}
-                  className="border-stone-300"
+                  className="border-border"
                 >
                   Siguiente
                 </Button>
