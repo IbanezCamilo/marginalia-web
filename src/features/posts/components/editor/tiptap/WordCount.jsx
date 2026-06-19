@@ -24,11 +24,11 @@ export default function WordCount({ editor }) {
   }, [editor]);
 
   return (
-    <footer className="flex flex-wrap items-center justify-end gap-3 border-t border-gray-200 bg-stone-50 px-4 py-2 text-xs text-gray-500">
+    <footer className="flex flex-wrap items-center justify-end gap-3 border-t border-border bg-muted px-4 py-2 text-xs text-muted-foreground">
       <span>{stats.words} palabras</span>
-      <span className="text-gray-300">/</span>
+      <span className="text-muted-foreground">/</span>
       <span>{stats.characters} caracteres</span>
-      <span className="text-gray-300">/</span>
+      <span className="text-muted-foreground">/</span>
       <span>{stats.readingTime} min de lectura</span>
     </footer>
   );
