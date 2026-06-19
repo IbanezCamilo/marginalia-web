@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 
 const toolbarButtonClass = (active) =>
   cn(
-    "text-stone-600 hover:bg-stone-100 hover:text-stone-950",
-    active && "bg-rose-50 text-rose-800 hover:bg-rose-100 hover:text-rose-900"
+    "text-muted-foreground hover:bg-muted hover:text-foreground",
+    active && "bg-rose-50 text-rose-800 hover:bg-rose-100 hover:text-rose-900 dark:bg-rose-950 dark:text-rose-400 dark:hover:bg-rose-900 dark:hover:text-rose-300"
   );
 
 export default function BlockControls({ editor, state }) {
@@ -53,7 +53,7 @@ export default function BlockControls({ editor, state }) {
             type="button"
             variant="ghost"
             size="sm"
-            className="h-8 gap-2 px-2 text-stone-700 hover:bg-stone-100"
+            className="h-8 gap-2 px-2 text-foreground hover:bg-muted"
           >
             <CurrentIcon size={16} />
             <span className="hidden text-xs font-medium sm:inline">
@@ -71,7 +71,7 @@ export default function BlockControls({ editor, state }) {
                 <IconComponent size={16} />
                 <span>{block.label}</span>
                 {block.active && (
-                  <Check size={14} className="ml-auto text-rose-700" />
+                  <Check size={14} className="ml-auto text-rose-700 dark:text-rose-400" />
                 )}
               </DropdownMenuItem>
             );

@@ -11,13 +11,13 @@ export default function EditorTopbar({
 }) {
   const navigate = useNavigate();
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-stone-200 mb-2">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border mb-2">
       <div className="h-16 px-6 gap-4 flex items-center justify-between">
         <div className="flex items-center gap-3 w-1/6">
           <button
             type="button"
             onClick={() => navigate("/user/posts")}
-            className="flex items-center gap-2 text-stone-600 hover:text-stone-800 transition-colors min-h-[44px]"
+            className="flex items-center gap-2 text-stone-600 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-100 transition-colors min-h-[44px]"
           >
             <ChevronLeft size={16} aria-hidden="true" />
             <span className="text-sm font-medium">Volver</span>
@@ -30,16 +30,16 @@ export default function EditorTopbar({
             }`}
           >
             <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse" aria-hidden="true" />
-            <span className="hidden md:inline text-amber-500 whitespace-nowrap">
+            <span className="hidden md:inline text-amber-600 dark:text-amber-400 whitespace-nowrap">
               Cambios sin guardar
             </span>
-            <span className="md:hidden text-amber-500 whitespace-nowrap">
+            <span className="md:hidden text-amber-600 dark:text-amber-400 whitespace-nowrap">
               Sin guardar
             </span>
           </div>
 
           {submitting && (
-            <span className="text-xs text-stone-400 flex items-center gap-1.5">
+            <span className="text-xs text-stone-400 dark:text-stone-500 flex items-center gap-1.5">
               <svg
                 className="animate-spin h-3 w-3"
                 viewBox="0 0 24 24"
@@ -67,7 +67,7 @@ export default function EditorTopbar({
 
         <div className="flex items-center gap-2">
           {readOnly ? (
-            <span className="flex items-center gap-2 rounded-md border border-stone-200 bg-stone-100 px-4 py-2 text-sm font-medium text-stone-500 min-h-[44px]">
+            <span className="flex items-center gap-2 rounded-md border border-border bg-muted px-4 py-2 text-sm font-medium text-muted-foreground min-h-[44px]">
               <Lock size={16} aria-hidden="true" />
               Archivado — solo lectura
             </span>
@@ -78,7 +78,7 @@ export default function EditorTopbar({
                 size="sm"
                 onClick={onSaveDraft}
                 disabled={submitting}
-                className="font-medium min-h-[44px] border-stone-200 text-stone-700 hover:bg-stone-50"
+                className="font-medium min-h-[44px]"
               >
                 <Save size={16} className="flex justify-center md:mr-2 shrink-0" aria-hidden="true" />
                 <span className="hidden sm:inline text-sm">Guardar Borrador</span>

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function HistoryControls({ editor, state }) {
   return (
-    <div className="ml-auto flex items-center gap-1 border-l border-stone-200 pl-2">
+    <div className="ml-auto flex items-center gap-1 border-l border-border pl-2">
       <Button
         type="button"
         variant="ghost"
@@ -12,7 +12,7 @@ export default function HistoryControls({ editor, state }) {
         aria-label="Deshacer"
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!state.canUndo}
-        className="text-stone-600 hover:bg-stone-100 hover:text-stone-950"
+        className="text-muted-foreground hover:bg-muted hover:text-foreground"
       >
         <Undo2 size={16} />
       </Button>
@@ -24,7 +24,7 @@ export default function HistoryControls({ editor, state }) {
         aria-label="Rehacer"
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!state.canRedo}
-        className="text-stone-600 hover:bg-stone-100 hover:text-stone-950"
+        className="text-muted-foreground hover:bg-muted hover:text-foreground"
       >
         <Redo2 size={16} />
       </Button>
