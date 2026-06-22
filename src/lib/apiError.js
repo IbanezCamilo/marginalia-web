@@ -21,7 +21,7 @@ export function getErrorMessage(error, fallback = "Ocurrió un error inesperado.
     return "La solicitud tardó demasiado. Intenta nuevamente.";
   }
 
-  const backendMessage = error.body?.message || error.body?.error;
+  const backendMessage = error.body?.detail || error.body?.message || error.body?.error;
 
   switch (error.status) {
     case 400:
