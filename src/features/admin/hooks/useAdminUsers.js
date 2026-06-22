@@ -102,6 +102,8 @@ export function useAdminUsers() {
     }
   };
 
+  const confirmDeleteUserName = users.find((u) => u.id === confirmDeleteState.userId)?.name;
+
   return {
     users,
     totalElements,
@@ -122,6 +124,7 @@ export function useAdminUsers() {
     closeEdit,
     submitEdit,
     confirmDeleteState,
+    confirmDeleteUserName,
     requestDelete,
     closeDelete,
     confirmDelete,

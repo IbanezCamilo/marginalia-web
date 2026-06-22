@@ -1,4 +1,4 @@
-import { ClipboardList, Loader2, RefreshCw } from "lucide-react";
+import { ClipboardList, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -17,6 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PageError } from "@/shared/components/PageError";
+import { EmptyState } from "@/shared/components/EmptyState";
 import { useAdminAuthorRequests } from "@/features/admin/hooks/useAdminAuthorRequests";
 
 const STATUS_BADGE = {
@@ -70,20 +72,12 @@ export default function AdminAuthorRequests() {
 
   if (error) {
     return (
-      <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <ClipboardList size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
-        <h1 className="mt-5 font-serif text-4xl text-foreground">
-          No pudimos cargar las solicitudes
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
-        <Button
-          onClick={() => load(0, statusFilter)}
-          className="mt-6 bg-rose-700 hover:bg-rose-800"
-        >
-          <RefreshCw size={16} />
-          Reintentar
-        </Button>
-      </div>
+      <PageError
+        icon={ClipboardList}
+        title="No pudimos cargar las solicitudes"
+        message={error}
+        onRetry={() => load(0, statusFilter)}
+      />
     );
   }
 
@@ -208,17 +202,15 @@ export default function AdminAuthorRequests() {
 
       {/* Empty state */}
       {requests.length === 0 ? (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
-          <ClipboardList size={42} strokeWidth={1.5} className="text-muted-foreground" />
-          <h2 className="mt-5 font-serif text-3xl text-foreground">
-            {statusFilter === "PENDING" ? "No hay solicitudes pendientes" : "No hay solicitudes"}
-          </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            {statusFilter === "PENDING"
+        <EmptyState
+          icon={ClipboardList}
+          title={statusFilter === "PENDING" ? "No hay solicitudes pendientes" : "No hay solicitudes"}
+          description={
+            statusFilter === "PENDING"
               ? "Todas las solicitudes han sido procesadas."
-              : "Aún no se han enviado solicitudes de autoría."}
-          </p>
-        </div>
+              : "Aún no se han enviado solicitudes de autoría."
+          }
+        />
       ) : (
         <>
           <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">

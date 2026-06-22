@@ -1,7 +1,9 @@
-import { Plus, RefreshCw, Search, UserCog } from "lucide-react";
+import { Plus, Search, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
+import { PageError } from "@/shared/components/PageError";
+import { EmptyState } from "@/shared/components/EmptyState";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useAdminUsers } from "@/features/admin/hooks/useAdminUsers";
 import CreateUserDialog from "@/features/admin/components/CreateUserDialog";
@@ -45,6 +47,7 @@ export default function AdminUsers() {
     closeEdit,
     submitEdit,
     confirmDeleteState,
+    confirmDeleteUserName,
     requestDelete,
     closeDelete,
     confirmDelete,
@@ -60,17 +63,12 @@ export default function AdminUsers() {
 
   if (error) {
     return (
-      <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <UserCog size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
-        <h1 className="mt-5 font-serif text-4xl text-foreground">
-          No pudimos cargar los usuarios
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
-        <Button onClick={() => load(0)} className="mt-6 bg-rose-700 hover:bg-rose-800">
-          <RefreshCw size={16} />
-          Reintentar
-        </Button>
-      </div>
+      <PageError
+        icon={UserCog}
+        title="No pudimos cargar los usuarios"
+        message={error}
+        onRetry={() => load(0)}
+      />
     );
   }
 
@@ -93,7 +91,11 @@ export default function AdminUsers() {
         open={confirmDeleteState.open}
         onOpenChange={(open) => !open && closeDelete()}
         title="¿Eliminar este usuario?"
-        description="Esta acción es permanente y revocará el acceso de la cuenta a la plataforma."
+        description={
+          confirmDeleteUserName
+            ? `Esta acción eliminará a "${confirmDeleteUserName}" de forma permanente y revocará su acceso a la plataforma.`
+            : "Esta acción es permanente y revocará el acceso de la cuenta a la plataforma."
+        }
         confirmLabel="Si, eliminar"
         onConfirm={confirmDelete}
         variant="destructive"
@@ -159,15 +161,11 @@ export default function AdminUsers() {
 
       {/* Empty state */}
       {users.length === 0 ? (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
-          <UserCog size={42} strokeWidth={1.5} className="text-muted-foreground" />
-          <h2 className="mt-5 font-serif text-3xl text-foreground">
-            No se encontraron usuarios
-          </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            Ajusta la búsqueda o el filtro de rol para encontrar lo que buscas.
-          </p>
-        </div>
+        <EmptyState
+          icon={UserCog}
+          title="No se encontraron usuarios"
+          description="Ajusta la búsqueda o el filtro de rol para encontrar lo que buscas."
+        />
       ) : (
         <>
           <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">

@@ -7,13 +7,14 @@ import {
   FileText,
   Folder,
   PenLine,
-  RefreshCw,
   Sparkles,
   UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PanelCard } from "../components/PanelCard";
 import { PanelCardSkeleton } from "../components/PanelCardSkeleton";
+import { PageError } from "@/shared/components/PageError";
+import { EmptyState } from "@/shared/components/EmptyState";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { userService } from "../../profile/services/userService";
 import { postService } from "../../posts/services/myPostService";
@@ -147,17 +148,12 @@ export default function DashBoard() {
 
   if (error) {
     return (
-      <div className="mx-auto flex min-h-[55vh] max-w-2xl flex-col items-center justify-center text-center">
-        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
-        <h1 className="mt-5 font-serif text-4xl text-foreground">
-          No pudimos abrir el panel
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
-        <Button onClick={loadDashboard} className="mt-6 bg-rose-700 hover:bg-rose-800">
-          <RefreshCw size={16} />
-          Reintentar
-        </Button>
-      </div>
+      <PageError
+        icon={BookOpen}
+        title="No pudimos abrir el panel"
+        message={error}
+        onRetry={loadDashboard}
+      />
     );
   }
 
@@ -244,19 +240,16 @@ export default function DashBoard() {
           </div>
 
           {postsData.posts.length === 0 ? (
-            <div className="flex min-h-56 flex-col items-center justify-center text-center">
-              <BookOpen size={38} strokeWidth={1.5} className="text-muted-foreground" />
-              <h3 className="mt-4 font-serif text-3xl text-foreground">
-                Tu primera publicacion espera
-              </h3>
-              <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-                Crea un borrador para comenzar a construir el archivo editorial
-                del blog.
-              </p>
-              <Button asChild className="mt-5 bg-rose-700 hover:bg-rose-800">
-                <Link to="/user/create-post">Crear post</Link>
-              </Button>
-            </div>
+            <EmptyState
+              icon={BookOpen}
+              iconSize={38}
+              variant="plain"
+              className="min-h-56"
+              headingAs="h3"
+              title="Tu primera publicacion espera"
+              description="Crea un borrador para comenzar a construir el archivo editorial del blog."
+              action={{ label: "Crear post", to: "/user/create-post" }}
+            />
           ) : (
             <div className="divide-y divide-border">
               {postsData.posts.map((post) => (

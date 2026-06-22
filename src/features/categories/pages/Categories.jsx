@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Folder, Plus, RefreshCw } from "lucide-react";
+import { Folder, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
+import { PageError } from "@/shared/components/PageError";
+import { EmptyState } from "@/shared/components/EmptyState";
 import { useCategories } from "../hooks/useCategories";
 import CreateCategoryDialog from "../components/CreateCategory";
 import CategoryRow from "../components/CategoryRow";
@@ -21,6 +23,7 @@ export default function Categories() {
     error,
     confirmState,
     setConfirmState,
+    confirmDeleteCategoryName,
     addCategory,
     requestDeleteCategory,
     handleConfirmDelete,
@@ -37,17 +40,12 @@ export default function Categories() {
 
   if (error) {
     return (
-      <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <Folder size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
-        <h1 className="mt-5 font-serif text-4xl text-foreground">
-          No pudimos cargar las categorias
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
-        <Button onClick={loadCategories} className="mt-6 bg-rose-700 hover:bg-rose-800">
-          <RefreshCw size={16} />
-          Reintentar
-        </Button>
-      </div>
+      <PageError
+        icon={Folder}
+        title="No pudimos cargar las categorias"
+        message={error}
+        onRetry={loadCategories}
+      />
     );
   }
 
@@ -57,8 +55,12 @@ export default function Categories() {
         open={confirmState.open}
         onOpenChange={(open) => setConfirmState((prev) => ({ ...prev, open }))}
         onConfirm={handleConfirmDelete}
-        title="Eliminar esta categoria?"
-        description="Esta accion es permanente. Los posts asociados quedaran sin categoria."
+        title="¿Eliminar esta categoria?"
+        description={
+          confirmDeleteCategoryName
+            ? `Esta acción eliminará "${confirmDeleteCategoryName}" de forma permanente. Los posts asociados quedarán sin categoría.`
+            : "Esta accion es permanente. Los posts asociados quedaran sin categoria."
+        }
         confirmLabel="Si, eliminar"
       />
 
@@ -90,22 +92,12 @@ export default function Categories() {
       </div>
 
       {categories.length === 0 ? (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
-          <Folder size={42} strokeWidth={1.5} className="text-muted-foreground" />
-          <h2 className="mt-5 font-serif text-3xl text-foreground">
-            Aun no hay categorias
-          </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            Crea una primera categoria para que las publicaciones se puedan
-            explorar por tema.
-          </p>
-          <Button
-            onClick={() => setCreateModalOpen(true)}
-            className="mt-6 bg-rose-700 hover:bg-rose-800"
-          >
-            Crear categoria
-          </Button>
-        </div>
+        <EmptyState
+          icon={Folder}
+          title="Aun no hay categorias"
+          description="Crea una primera categoria para que las publicaciones se puedan explorar por tema."
+          action={{ label: "Crear categoria", onClick: () => setCreateModalOpen(true) }}
+        />
       ) : (
         <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">
           <Table className="w-full">

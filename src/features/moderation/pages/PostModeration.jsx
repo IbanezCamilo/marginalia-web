@@ -1,4 +1,4 @@
-import { Loader2, RefreshCw, ShieldCheck } from "lucide-react";
+import { Loader2, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
+import { PageError } from "@/shared/components/PageError";
+import { EmptyState } from "@/shared/components/EmptyState";
 import { getPostStatusConfig } from "@/features/posts/utils/postStatus";
 import { usePostModeration } from "@/features/moderation/hooks/usePostModeration";
 import PostModerationRowActions from "@/features/moderation/components/PostModerationRowActions";
@@ -97,6 +99,7 @@ export default function PostModeration() {
     closeReset,
     confirmReset,
     confirmDeleteState,
+    confirmDeletePostTitle,
     requestDelete,
     closeDelete,
     confirmDelete,
@@ -112,20 +115,12 @@ export default function PostModeration() {
 
   if (error) {
     return (
-      <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <ShieldCheck size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
-        <h1 className="mt-5 font-serif text-4xl text-foreground">
-          No pudimos cargar los posts
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
-        <Button
-          onClick={() => load(0, statusFilter)}
-          className="mt-6 bg-rose-700 hover:bg-rose-800"
-        >
-          <RefreshCw size={16} />
-          Reintentar
-        </Button>
-      </div>
+      <PageError
+        icon={ShieldCheck}
+        title="No pudimos cargar los posts"
+        message={error}
+        onRetry={() => load(0, statusFilter)}
+      />
     );
   }
 
@@ -265,7 +260,11 @@ export default function PostModeration() {
         open={confirmDeleteState.open}
         onOpenChange={(open) => !open && closeDelete()}
         title="¿Eliminar este post permanentemente?"
-        description="Esta acción eliminará el post y su imagen de portada de forma irreversible. No podrá recuperarse."
+        description={
+          confirmDeletePostTitle
+            ? `Esta acción eliminará "${confirmDeletePostTitle}" y su imagen de portada de forma irreversible. No podrá recuperarse.`
+            : "Esta acción eliminará el post y su imagen de portada de forma irreversible. No podrá recuperarse."
+        }
         confirmLabel="Eliminar"
         onConfirm={confirmDelete}
         variant="destructive"
@@ -311,15 +310,11 @@ export default function PostModeration() {
 
       {/* Empty state */}
       {posts.length === 0 ? (
-        <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
-          <ShieldCheck size={42} strokeWidth={1.5} className="text-muted-foreground" />
-          <h2 className="mt-5 font-serif text-3xl text-foreground">
-            No hay posts en esta categoría
-          </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            Cuando haya publicaciones con este estado, aparecerán aquí para su revisión.
-          </p>
-        </div>
+        <EmptyState
+          icon={ShieldCheck}
+          title="No hay posts en esta categoría"
+          description="Cuando haya publicaciones con este estado, aparecerán aquí para su revisión."
+        />
       ) : (
         <>
           <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">

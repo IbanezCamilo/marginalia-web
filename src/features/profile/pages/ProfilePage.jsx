@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { BookOpen, Camera, KeyRound, Mail, PenLine, RefreshCw, Shield } from "lucide-react";
+import { BookOpen, Camera, KeyRound, Mail, PenLine, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PageError } from "@/shared/components/PageError";
 import ProfileImageUpload from "../components/ProfileImageUpload";
 import ProfileEditDialog from "../components/ProfileEditDialog";
 import ChangePasswordDialog from "../components/ChangePasswordDialog";
@@ -44,17 +45,12 @@ export default function ProfilePage() {
 
   if (error) {
     return (
-      <div className="mx-auto flex min-h-[55vh] max-w-2xl flex-col items-center justify-center text-center">
-        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
-        <h1 className="mt-5 font-serif text-4xl text-foreground">
-          No pudimos cargar el perfil
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
-        <Button onClick={loadProfile} className="mt-6 bg-rose-700 hover:bg-rose-800">
-          <RefreshCw size={16} />
-          Reintentar
-        </Button>
-      </div>
+      <PageError
+        icon={BookOpen}
+        title="No pudimos cargar el perfil"
+        message={error}
+        onRetry={loadProfile}
+      />
     );
   }
 

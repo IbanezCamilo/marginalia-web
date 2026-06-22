@@ -126,6 +126,8 @@ export function usePostModeration() {
     }
   };
 
+  const confirmDeletePostTitle = posts.find((p) => p.id === confirmDeleteState.postId)?.title;
+
   return {
     posts,
     totalElements,
@@ -147,6 +149,7 @@ export function usePostModeration() {
     setResetState,
     openReset,
     closeReset,
+    confirmDeletePostTitle,
     confirmReset,
     confirmDeleteState,
     setConfirmDeleteState,

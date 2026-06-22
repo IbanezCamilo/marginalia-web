@@ -54,5 +54,18 @@ export function useCategories(){
       }
       return; // If it's a delete action, we don't need to continue to toggle status logic
   }
-  return{categories, loading, error, confirmState, setConfirmState, addCategory, requestDeleteCategory, handleConfirmDelete, loadCategories}
+  const confirmDeleteCategoryName = categories.find((c) => c.id === confirmState.categoryId)?.name;
+
+  return{
+    categories,
+    loading,
+    error,
+    confirmState,
+    setConfirmState,
+    confirmDeleteCategoryName,
+    addCategory,
+    requestDeleteCategory,
+    handleConfirmDelete,
+    loadCategories,
+  }
 }
