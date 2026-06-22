@@ -35,6 +35,11 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
       return;
     }
 
+    if (editedData.name.trim().length < 2) {
+      toast.error("El nombre debe tener al menos 2 caracteres.");
+      return;
+    }
+
     try {
       setSaving(true);
       await onSave({
