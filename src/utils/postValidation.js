@@ -7,6 +7,8 @@ export const validatePost = (post, initialStatus) => {
   if (initialStatus === "PUBLISHED") {
     if (!post.title?.trim()) {
       errors.push("El titulo es obligatorio para publicar");
+    } else if (post.title.trim().length < 5) {
+      errors.push("El titulo debe tener al menos 5 caracteres");
     }
 
     if (!hasContent) {
