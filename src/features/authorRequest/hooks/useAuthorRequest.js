@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authorRequestService } from "@/features/authorRequest/services/authorRequestService";
-import { getErrorMessage } from "@/lib/apiError";
+import { ApiError, getErrorMessage } from "@/lib/apiError";
 
 export function useAuthorRequest() {
   const [activeRequest, setActiveRequest] = useState(null);
@@ -10,12 +10,17 @@ export function useAuthorRequest() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const loadHistory = async () => {
+  const loadData = async () => {
     try {
-      const data = await authorRequestService.getHistory(0, 10);
-      const all = data.content ?? [];
-      setActiveRequest(all[0] ?? null);
-      setHistory(all.slice(1));
+      const [active, historyData] = await Promise.all([
+        authorRequestService.getActive().catch((err) => {
+          if (err instanceof ApiError && err.status === 404) return null;
+          throw err;
+        }),
+        authorRequestService.getHistory(0, 10),
+      ]);
+      setActiveRequest(active);
+      setHistory((historyData.content ?? []).filter((r) => r.id !== active?.id));
     } catch {
       toast.error("No se pudo cargar el estado de tu solicitud.");
     } finally {
@@ -24,21 +29,7 @@ export function useAuthorRequest() {
   };
 
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const data = await authorRequestService.getHistory(0, 10);
-        if (cancelled) return;
-        const all = data.content ?? [];
-        setActiveRequest(all[0] ?? null);
-        setHistory(all.slice(1));
-      } catch {
-        if (!cancelled) toast.error("No se pudo cargar el estado de tu solicitud.");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => { cancelled = true; };
+    loadData();
   }, []);
 
   const submit = async () => {
@@ -48,7 +39,7 @@ export function useAuthorRequest() {
       setMotivation("");
       toast.success("¡Solicitud enviada! Revisaremos tu solicitud pronto.");
       setLoading(true);
-      await loadHistory();
+      await loadData();
     } catch (err) {
       toast.error(getErrorMessage(err, "No se pudo enviar la solicitud."));
     } finally {
