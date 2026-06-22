@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Logo from "@/shared/components/logo";
+import { FieldError } from "@/shared/components/FieldError";
 import { useRegister } from "@/features/auth/hooks/useRegister";
 
 export default function RegisterPage() {
@@ -18,6 +19,7 @@ export default function RegisterPage() {
     toggleShowPassword,
     loading,
     error,
+    fieldErrors,
     handleSubmit,
   } = useRegister();
 
@@ -62,9 +64,12 @@ export default function RegisterPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={loading}
+                aria-invalid={!!fieldErrors.name}
+                aria-describedby={fieldErrors.name ? "name-error" : undefined}
                 className="h-10 bg-stone-900 border-stone-700 text-white placeholder:text-stone-600
                            focus-visible:border-stone-500 focus-visible:ring-stone-500/20"
               />
+              <FieldError id="name-error">{fieldErrors.name}</FieldError>
             </div>
 
             <div className="space-y-1.5">
@@ -79,9 +84,12 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? "email-error" : undefined}
                 className="h-10 bg-stone-900 border-stone-700 text-white placeholder:text-stone-600
                            focus-visible:border-stone-500 focus-visible:ring-stone-500/20"
               />
+              <FieldError id="email-error">{fieldErrors.email}</FieldError>
             </div>
 
             <div className="space-y-1.5">
@@ -97,6 +105,8 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
+                  aria-invalid={!!fieldErrors.password}
+                  aria-describedby={fieldErrors.password ? "password-error" : undefined}
                   className="h-10 bg-stone-900 border-stone-700 text-white placeholder:text-stone-600
                              pr-10 focus-visible:border-stone-500 focus-visible:ring-stone-500/20"
                 />
@@ -111,10 +121,11 @@ export default function RegisterPage() {
                   {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
+              <FieldError id="password-error">{fieldErrors.password}</FieldError>
             </div>
 
             {error && (
-              <p className="rounded-md border border-rose-900 bg-rose-950/40 px-3 py-2
+              <p role="alert" className="rounded-md border border-rose-900 bg-rose-950/40 px-3 py-2
                             text-sm text-rose-400">
                 {error}
               </p>

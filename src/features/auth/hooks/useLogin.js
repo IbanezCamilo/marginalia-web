@@ -10,6 +10,7 @@ export function useLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
   const { actions: { refreshUser } } = useAuth();
 
@@ -17,10 +18,11 @@ export function useLogin() {
     e.preventDefault();
     setError("");
 
-    if (!email.trim() || !password.trim()) {
-      setError("Por favor, completa todos los campos.");
-      return;
-    }
+    const errors = {};
+    if (!email.trim()) errors.email = "Ingresa tu correo electrónico.";
+    if (!password.trim()) errors.password = "Ingresa tu contraseña.";
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     setLoading(true);
     try {
@@ -43,6 +45,7 @@ export function useLogin() {
     toggleShowPassword: () => setShowPassword((v) => !v),
     loading,
     error,
+    fieldErrors,
     handleSubmit,
   };
 }

@@ -11,6 +11,7 @@ export function useRegister() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
   const { actions: { refreshUser } } = useAuth();
 
@@ -18,10 +19,12 @@ export function useRegister() {
     e.preventDefault();
     setError("");
 
-    if (!name.trim() || !email.trim() || !password.trim()) {
-      setError("Por favor, completa todos los campos.");
-      return;
-    }
+    const errors = {};
+    if (!name.trim()) errors.name = "Ingresa tu nombre.";
+    if (!email.trim()) errors.email = "Ingresa tu correo electrónico.";
+    if (!password.trim()) errors.password = "Ingresa una contraseña.";
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     setLoading(true);
     try {
@@ -46,6 +49,7 @@ export function useRegister() {
     toggleShowPassword: () => setShowPassword((v) => !v),
     loading,
     error,
+    fieldErrors,
     handleSubmit,
   };
 }
