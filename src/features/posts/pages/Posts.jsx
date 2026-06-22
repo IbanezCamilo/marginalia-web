@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, FileText, Plus, RefreshCw } from "lucide-react";
+import { ArrowRight, FileText, Plus } from "lucide-react";
 import PostListItemCard from "@/features/posts/components/PostListItemCard.jsx";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
+import { PageError } from "@/shared/components/PageError";
+import { EmptyState } from "@/shared/components/EmptyState";
 import { useMyPosts } from "@/features/posts/hooks/useMyPosts";
 
 export default function Posts() {
@@ -14,6 +16,7 @@ export default function Posts() {
     error,
     totalPages,
     totalElements,
+    resolving,
     confirmState,
     setConfirmState,
     currentDialogProps,
@@ -38,20 +41,12 @@ export default function Posts() {
 
   if (error) {
     return (
-      <div className="mx-auto flex min-h-[50vh] max-w-2xl flex-col items-center justify-center text-center">
-        <FileText size={40} strokeWidth={1.5} className="text-rose-700 dark:text-rose-400" />
-        <h1 className="mt-5 font-serif text-4xl text-foreground">
-          No pudimos cargar tus posts
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-muted-foreground">{error}</p>
-        <Button
-          onClick={() => loadPosts(currentPage)}
-          className="mt-6 bg-rose-700 hover:bg-rose-800"
-        >
-          <RefreshCw size={16} />
-          Reintentar
-        </Button>
-      </div>
+      <PageError
+        icon={FileText}
+        title="No pudimos cargar tus posts"
+        message={error}
+        onRetry={() => loadPosts(currentPage)}
+      />
     );
   }
 
@@ -61,6 +56,7 @@ export default function Posts() {
         open={confirmState.open}
         onOpenChange={(open) => setConfirmState((prev) => ({ ...prev, open }))}
         onConfirm={handleConfirm}
+        loading={resolving}
         {...currentDialogProps}
       />
 
@@ -87,21 +83,12 @@ export default function Posts() {
       </div>
 
       {posts.length === 0 ? (
-        <div className="flex min-h-80 flex-col items-center justify-center rounded-md border border-dashed border-border bg-card p-8 text-center">
-          <FileText size={42} strokeWidth={1.5} className="text-muted-foreground" />
-          <h2 className="mt-5 font-serif text-3xl text-foreground">
-            Aun no tienes posts
-          </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            Empieza con un borrador y publicalo cuando el texto ya tenga forma.
-          </p>
-          <Button asChild className="mt-6 bg-rose-700 hover:bg-rose-800">
-            <Link to="/user/create-post">
-              Crear primer post
-              <ArrowRight size={16} />
-            </Link>
-          </Button>
-        </div>
+        <EmptyState
+          icon={FileText}
+          title="Aun no tienes posts"
+          description="Empieza con un borrador y publicalo cuando el texto ya tenga forma."
+          action={{ label: "Crear primer post", icon: ArrowRight, to: "/user/create-post" }}
+        />
       ) : (
         <div className="flex flex-col gap-4">
           {posts.map((post) => (

@@ -15,6 +15,7 @@ export function useMyPosts(currentPage) {
     const [error, setError] = useState(null);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
+    const [resolving, setResolving] = useState(false);
     const [confirmState, setConfirmState] = useState({
         open: false,
         postId: null,
@@ -64,7 +65,7 @@ export function useMyPosts(currentPage) {
 
   const handleConfirm = async () => {
     const { postId, type, currentStatus } = confirmState;
-    setConfirmState((prev) => ({ ...prev, open: false }));
+    setResolving(true);
 
     if (type == "delete") {
       try {
@@ -72,8 +73,11 @@ export function useMyPosts(currentPage) {
         setPosts((prev) => prev.filter((p) => p.id != postId));
         setTotalElements(prev => prev - 1);
         toast.success("Post eliminado correctamente");
-      } catch {
-        toast.error("Error al eliminar el post");
+        setConfirmState((prev) => ({ ...prev, open: false }));
+      } catch (err) {
+        toast.error(getErrorMessage(err, "No se pudo eliminar el post."));
+      } finally {
+        setResolving(false);
       }
       return; // If it's a delete action, we don't need to continue to toggle status logic
     }
@@ -100,17 +104,25 @@ export function useMyPosts(currentPage) {
             ? "Post publicado"
             : "Post guardado como borrador",
       );
-    } catch {
+      setConfirmState((prev) => ({ ...prev, open: false }));
+    } catch (err) {
       setPosts(previousPosts); //Revert to previous state
-      toast.error("Error al cambiar el estado");
+      toast.error(getErrorMessage(err, "No se pudo cambiar el estado del post."));
+    } finally {
+      setResolving(false);
     }
   };
+
+  const confirmPostTitle = posts.find((p) => p.id === confirmState.postId)?.title;
 
   const confirmDialogProps = {
     delete: {
       title: "¿Eliminar este post?",
-      description: "Esta acción es permanente y no se puede deshacer.",
+      description: confirmPostTitle
+        ? `Esta acción eliminará "${confirmPostTitle}" de forma permanente y no se puede deshacer.`
+        : "Esta acción es permanente y no se puede deshacer.",
       confirmLabel: "Sí, eliminar",
+      variant: "destructive",
     },
     toggleStatus:
       confirmState.currentStatus === "REJECTED"
@@ -118,6 +130,7 @@ export function useMyPosts(currentPage) {
             title: "¿Volver a borrador para editar?",
             description: "Podrás editar el contenido y volver a enviarlo para revisión.",
             confirmLabel: "Volver a borrador",
+            variant: "default",
           }
         : {
             title:
@@ -130,6 +143,7 @@ export function useMyPosts(currentPage) {
                 : "El post será visible para todos los lectores.",
             confirmLabel:
               confirmState.currentStatus === "PUBLISHED" ? "Convertir" : "Publicar",
+            variant: "default",
           },
   };
 
@@ -141,6 +155,7 @@ export function useMyPosts(currentPage) {
     error,
     totalPages,
     totalElements,
+    resolving,
     confirmState,
     setConfirmState,
     currentDialogProps,
