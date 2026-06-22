@@ -8,12 +8,14 @@ export function useCreateCategory( onSave, isOpen, onClose ){
     name: "",
     });
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     if (isOpen) {
       setNewCategory({
         name: "",
       });
+      setFieldErrors({});
     }
   }, [isOpen]);
 
@@ -30,18 +32,19 @@ export function useCreateCategory( onSave, isOpen, onClose ){
   const handleSave = async () => {
     const trimmed = newCategory.name.trim();
     if (!trimmed) {
-      toast.error("El nombre no puede estar vacío.");
+      setFieldErrors({ name: "El nombre no puede estar vacío." });
       return;
     }
     if (trimmed.length < 2) {
-      toast.error("El nombre debe tener al menos 2 caracteres.");
+      setFieldErrors({ name: "El nombre debe tener al menos 2 caracteres." });
       return;
     }
     if (trimmed.length > 100) {
-      toast.error("El nombre no puede superar los 100 caracteres.");
+      setFieldErrors({ name: "El nombre no puede superar los 100 caracteres." });
       return;
     }
 
+    setFieldErrors({});
     try {
       setSaving(true);
       await onSave({ name: trimmed });
@@ -59,12 +62,14 @@ export function useCreateCategory( onSave, isOpen, onClose ){
     setNewCategory({
       name: "",
     });
+    setFieldErrors({});
     onClose();
   };
 
   return {
     newCategory,
     saving,
+    fieldErrors,
     handleChange,
     handleSave,
     handleCancel

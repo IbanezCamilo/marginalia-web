@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FieldError } from "@/shared/components/FieldError";
 
 export default function CreateCategory({ onSave, isOpen, onClose }) {
-  const { newCategory, saving, handleChange, handleSave, handleCancel } =
+  const { newCategory, saving, fieldErrors, handleChange, handleSave, handleCancel } =
     useCreateCategory(onSave, isOpen, onClose);
 
   return (
@@ -32,7 +33,10 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
               placeholder="Ej: Ensayo, Poesia, Resenas"
               maxLength={100}
               disabled={saving}
+              aria-invalid={!!fieldErrors.name}
+              aria-describedby={fieldErrors.name ? "category-name-error" : undefined}
             />
+            <FieldError id="category-name-error">{fieldErrors.name}</FieldError>
           </div>
 
           <div className="flex gap-3 pt-4">

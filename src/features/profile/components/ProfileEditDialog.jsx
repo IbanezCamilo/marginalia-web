@@ -9,9 +9,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { FieldError } from "@/shared/components/FieldError";
 
 export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
-  const { editedData, saving, handleChange, handleSave, handleCancel } =
+  const { editedData, saving, fieldErrors, handleChange, handleSave, handleCancel } =
     useEditProfile(user, onSave, isOpen, onClose);
 
   return (
@@ -32,7 +33,10 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
               onChange={handleChange}
               placeholder="Tu nombre completo"
               disabled={saving}
+              aria-invalid={!!fieldErrors.name}
+              aria-describedby={fieldErrors.name ? "name-error" : undefined}
             />
+            <FieldError id="name-error">{fieldErrors.name}</FieldError>
           </div>
 
           {/* Email (solo lectura) */}

@@ -3,12 +3,13 @@ import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/apiError";
 
 export function useEditProfile( user, onSave, isOpen, onClose ){
-    
+
   const [editedData, setEditedData] = useState({
     name: user.name,
     description: user.description,
     });
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     if (isOpen && user) {
@@ -16,6 +17,7 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
         name: user.name || "",
         description: user.description || "",
       });
+      setFieldErrors({});
     }
   }, [isOpen, user]);
 
@@ -31,15 +33,16 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
   // Save changes
   const handleSave = async () => {
     if (!editedData.name.trim()) {
-      toast.error("El nombre no puede estar vacío.");
+      setFieldErrors({ name: "El nombre no puede estar vacío." });
       return;
     }
 
     if (editedData.name.trim().length < 2) {
-      toast.error("El nombre debe tener al menos 2 caracteres.");
+      setFieldErrors({ name: "El nombre debe tener al menos 2 caracteres." });
       return;
     }
 
+    setFieldErrors({});
     try {
       setSaving(true);
       await onSave({
@@ -60,12 +63,14 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
       name: user.name,
       description: user.description,
     });
+    setFieldErrors({});
     onClose();
   };
 
   return {
     editedData,
     saving,
+    fieldErrors,
     handleChange,
     handleSave,
     handleCancel,

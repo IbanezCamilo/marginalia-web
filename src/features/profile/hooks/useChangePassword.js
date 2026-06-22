@@ -10,6 +10,7 @@ export function useChangePassword(isOpen, onClose) {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     if (isOpen) {
@@ -17,19 +18,19 @@ export function useChangePassword(isOpen, onClose) {
       setNewPassword("");
       setShowCurrentPassword(false);
       setShowNewPassword(false);
+      setFieldErrors({});
     }
   }, [isOpen]);
 
   const handleSave = async () => {
-    if (!currentPassword.trim() || !newPassword.trim()) {
-      toast.error("Completa ambos campos de contraseña.");
-      return;
+    const errors = {};
+    if (!currentPassword.trim()) errors.currentPassword = "Ingresa tu contraseña actual.";
+    if (!newPassword.trim()) errors.newPassword = "Ingresa una nueva contraseña.";
+    else if (newPassword.length < 8) {
+      errors.newPassword = "La nueva contraseña debe tener al menos 8 caracteres.";
     }
-
-    if (newPassword.length < 8) {
-      toast.error("La nueva contraseña debe tener al menos 8 caracteres.");
-      return;
-    }
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     try {
       setSaving(true);
@@ -57,6 +58,7 @@ export function useChangePassword(isOpen, onClose) {
     showNewPassword,
     toggleShowNewPassword: () => setShowNewPassword((v) => !v),
     saving,
+    fieldErrors,
     handleSave,
     handleCancel,
   };

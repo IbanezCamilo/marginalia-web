@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { FieldError } from "@/shared/components/FieldError";
 
 export default function ChangePasswordDialog({ isOpen, onClose }) {
   const {
@@ -21,6 +22,7 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
     showNewPassword,
     toggleShowNewPassword,
     saving,
+    fieldErrors,
     handleSave,
     handleCancel,
   } = useChangePassword(isOpen, onClose);
@@ -45,6 +47,8 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Tu contraseña actual"
                 disabled={saving}
+                aria-invalid={!!fieldErrors.currentPassword}
+                aria-describedby={fieldErrors.currentPassword ? "currentPassword-error" : undefined}
                 className="pr-10"
               />
               <button
@@ -57,6 +61,7 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
                 {showCurrentPassword ? <EyeOff size={15} /> : <Eye size={15} />}
               </button>
             </div>
+            <FieldError id="currentPassword-error">{fieldErrors.currentPassword}</FieldError>
           </div>
 
           {/* Nueva contraseña */}
@@ -71,6 +76,8 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="Mínimo 8 caracteres"
                 disabled={saving}
+                aria-invalid={!!fieldErrors.newPassword}
+                aria-describedby={fieldErrors.newPassword ? "newPassword-error" : undefined}
                 className="pr-10"
               />
               <button
@@ -83,6 +90,7 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
                 {showNewPassword ? <EyeOff size={15} /> : <Eye size={15} />}
               </button>
             </div>
+            <FieldError id="newPassword-error">{fieldErrors.newPassword}</FieldError>
           </div>
 
           {/* Botones */}

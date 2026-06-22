@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ComboBox } from "@/components/ui/comboBox";
+import { FieldError } from "@/shared/components/FieldError";
 import { getErrorMessage } from "@/lib/apiError";
 
 const ROLE_OPTIONS = [
@@ -24,9 +25,13 @@ const INITIAL = { name: "", email: "", password: "", roleName: "READER" };
 export default function CreateUserDialog({ isOpen, onClose, onSave }) {
   const [form, setForm] = useState(INITIAL);
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
-    if (isOpen) setForm(INITIAL);
+    if (isOpen) {
+      setForm(INITIAL);
+      setFieldErrors({});
+    }
   }, [isOpen]);
 
   const handleChange = (e) => {
@@ -38,18 +43,12 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
     const name = form.name.trim();
     const email = form.email.trim();
 
-    if (!name) {
-      toast.error("El nombre no puede estar vacío.");
-      return;
-    }
-    if (!email) {
-      toast.error("El email no puede estar vacío.");
-      return;
-    }
-    if (form.password.length < 8) {
-      toast.error("La contraseña debe tener al menos 8 caracteres.");
-      return;
-    }
+    const errors = {};
+    if (!name) errors.name = "El nombre no puede estar vacío.";
+    if (!email) errors.email = "El email no puede estar vacío.";
+    if (form.password.length < 8) errors.password = "La contraseña debe tener al menos 8 caracteres.";
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     try {
       setSaving(true);
@@ -63,6 +62,7 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
 
   const handleCancel = () => {
     setForm(INITIAL);
+    setFieldErrors({});
     onClose();
   };
 
@@ -82,7 +82,10 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
               onChange={handleChange}
               placeholder="Nombre completo"
               disabled={saving}
+              aria-invalid={!!fieldErrors.name}
+              aria-describedby={fieldErrors.name ? "create-name-error" : undefined}
             />
+            <FieldError id="create-name-error">{fieldErrors.name}</FieldError>
           </div>
 
           <div className="space-y-2">
@@ -95,7 +98,10 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
               onChange={handleChange}
               placeholder="correo@ejemplo.com"
               disabled={saving}
+              aria-invalid={!!fieldErrors.email}
+              aria-describedby={fieldErrors.email ? "create-email-error" : undefined}
             />
+            <FieldError id="create-email-error">{fieldErrors.email}</FieldError>
           </div>
 
           <div className="space-y-2">
@@ -108,8 +114,14 @@ export default function CreateUserDialog({ isOpen, onClose, onSave }) {
               onChange={handleChange}
               placeholder="••••••••"
               disabled={saving}
+              aria-invalid={!!fieldErrors.password}
+              aria-describedby={fieldErrors.password ? "create-password-error" : "create-password-hint"}
             />
-            <p className="text-xs text-muted-foreground">Mínimo 8 caracteres.</p>
+            {fieldErrors.password ? (
+              <FieldError id="create-password-error">{fieldErrors.password}</FieldError>
+            ) : (
+              <p id="create-password-hint" className="text-xs text-muted-foreground">Mínimo 8 caracteres.</p>
+            )}
           </div>
 
           <div className="space-y-2">

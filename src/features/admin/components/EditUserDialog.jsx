@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ComboBox } from "@/components/ui/comboBox";
+import { FieldError } from "@/shared/components/FieldError";
 import { getErrorMessage } from "@/lib/apiError";
 
 const ROLE_OPTIONS = [
@@ -22,6 +23,7 @@ const ROLE_OPTIONS = [
 export default function EditUserDialog({ isOpen, user, onClose, onSave }) {
   const [form, setForm] = useState({ name: "", email: "", roleName: "READER" });
   const [saving, setSaving] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     if (isOpen && user) {
@@ -30,6 +32,7 @@ export default function EditUserDialog({ isOpen, user, onClose, onSave }) {
         email: user.email ?? "",
         roleName: user.role?.name ?? "READER",
       });
+      setFieldErrors({});
     }
   }, [isOpen, user]);
 
@@ -42,14 +45,11 @@ export default function EditUserDialog({ isOpen, user, onClose, onSave }) {
     const name = form.name.trim();
     const email = form.email.trim();
 
-    if (!name) {
-      toast.error("El nombre no puede estar vacío.");
-      return;
-    }
-    if (!email) {
-      toast.error("El email no puede estar vacío.");
-      return;
-    }
+    const errors = {};
+    if (!name) errors.name = "El nombre no puede estar vacío.";
+    if (!email) errors.email = "El email no puede estar vacío.";
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
     try {
       setSaving(true);
@@ -76,7 +76,10 @@ export default function EditUserDialog({ isOpen, user, onClose, onSave }) {
               value={form.name}
               onChange={handleChange}
               disabled={saving}
+              aria-invalid={!!fieldErrors.name}
+              aria-describedby={fieldErrors.name ? "edit-name-error" : undefined}
             />
+            <FieldError id="edit-name-error">{fieldErrors.name}</FieldError>
           </div>
 
           <div className="space-y-2">
@@ -88,7 +91,10 @@ export default function EditUserDialog({ isOpen, user, onClose, onSave }) {
               value={form.email}
               onChange={handleChange}
               disabled={saving}
+              aria-invalid={!!fieldErrors.email}
+              aria-describedby={fieldErrors.email ? "edit-email-error" : undefined}
             />
+            <FieldError id="edit-email-error">{fieldErrors.email}</FieldError>
           </div>
 
           <div className="space-y-2">
