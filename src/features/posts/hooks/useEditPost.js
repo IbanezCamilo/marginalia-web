@@ -31,7 +31,7 @@ export function useEditPost(id, navigate) {
 
         // Post mapping to match the expected structure in the editor
         const mappedPost = {
-          title: postData.title,
+          title: postData.title ?? "",
           content: postData.content,
           categoryId: postData.categoryId,
           status: postData.status,
@@ -92,7 +92,7 @@ export function useEditPost(id, navigate) {
     const postData = {
       title: post.title.trim(),
       content: post.content,
-      categoryId: Number(post.categoryId),
+      categoryId: post.categoryId ? Number(post.categoryId) : null,
       status: statusToSave,
     };
 

@@ -77,7 +77,7 @@ export function useCreatePost() {
     const postData = {
       title: post.title.trim(),
       content: post.content,
-      categoryId: post.categoryId,
+      categoryId: post.categoryId ? Number(post.categoryId) : null,
       status: initialStatus,
     };
 
