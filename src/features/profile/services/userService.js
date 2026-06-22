@@ -51,4 +51,7 @@ export const userService = {
     deleteProfileImage: () =>
         apiClient.delete(`${BASE_ENDPOINT}/image`),
 
+    changePassword: (currentPassword, newPassword) =>
+        apiClient.put(`${BASE_ENDPOINT}/password`, { currentPassword, newPassword }),
+
 };

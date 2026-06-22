@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { BookOpen, Camera, Mail, PenLine, RefreshCw, Shield } from "lucide-react";
+import { BookOpen, Camera, KeyRound, Mail, PenLine, RefreshCw, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProfileImageUpload from "../components/ProfileImageUpload";
 import ProfileEditDialog from "../components/ProfileEditDialog";
+import ChangePasswordDialog from "../components/ChangePasswordDialog";
 import { useMyProfile } from "../hooks/useMyProfile";
 
 const ROLE_LABELS = {
@@ -14,6 +15,7 @@ const ROLE_LABELS = {
 export default function ProfilePage() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const { user, loading, error, deleting, loadProfile, handleImageUpdate, handleImageDelete, handleDataUpdate } =
     useMyProfile();
 
@@ -108,7 +110,7 @@ export default function ProfilePage() {
               </p>
             )}
 
-            <div className="mt-6 flex justify-center sm:justify-start">
+            <div className="mt-6 flex flex-wrap justify-center gap-3 sm:justify-start">
               <Button
                 onClick={() => setEditModalOpen(true)}
                 variant="outline"
@@ -116,6 +118,14 @@ export default function ProfilePage() {
               >
                 <PenLine size={15} />
                 Editar perfil
+              </Button>
+              <Button
+                onClick={() => setPasswordModalOpen(true)}
+                variant="outline"
+                className="border-border bg-transparent"
+              >
+                <KeyRound size={15} />
+                Cambiar contraseña
               </Button>
             </div>
           </div>
@@ -135,6 +145,10 @@ export default function ProfilePage() {
         onSave={handleDataUpdate}
         isOpen={editModalOpen}
         onClose={() => setEditModalOpen(false)}
+      />
+      <ChangePasswordDialog
+        isOpen={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
       />
     </div>
   );
