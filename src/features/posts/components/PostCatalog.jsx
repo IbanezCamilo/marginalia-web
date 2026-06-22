@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { BookOpen, ChevronDown, Loader2, RefreshCw } from "lucide-react";
+import { BookOpen, ChevronDown, Loader2 } from "lucide-react";
 import PostCard from "@/features/posts/components/PostCard";
 import { useCatalogPosts } from "@/features/posts/hooks/useCatalogPosts";
 import { usePublicCategories } from "@/features/categories/hooks/usePublicCategories";
+import { PageError } from "@/shared/components/PageError";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -99,21 +100,15 @@ export default function PostCatalog({ lockedCategorySlug = null }) {
 
   if (error) {
     return (
-      <div className="flex min-h-[40vh] flex-col items-center justify-center text-center">
-        <BookOpen size={42} strokeWidth={1.5} className="text-rose-700" aria-hidden="true" />
-        <h2 className="mt-6 font-serif text-3xl text-stone-950 dark:text-stone-50">
-          No pudimos cargar el catálogo
-        </h2>
-        <p className="mt-4 max-w-xl text-stone-600 dark:text-stone-400">{error}</p>
-        <button
-          type="button"
-          onClick={reload}
-          className="mt-8 inline-flex h-11 items-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-semibold text-white transition hover:bg-rose-800 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-100"
-        >
-          <RefreshCw size={16} aria-hidden="true" />
-          Reintentar
-        </button>
-      </div>
+      <PageError
+        tone="public"
+        as="h2"
+        icon={BookOpen}
+        title="No pudimos cargar el catálogo"
+        message={error}
+        onRetry={reload}
+        className="min-h-[40vh]"
+      />
     );
   }
 

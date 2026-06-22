@@ -1,9 +1,10 @@
-import { ArrowLeft, BookOpen, RefreshCw } from "lucide-react";
+import { ArrowLeft, BookOpen } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { usePublicPost } from "@/features/posts/hooks/usePublicPost";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import PostCard from "@/features/posts/components/PostCard";
+import { PageError } from "@/shared/components/PageError";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
 import {
@@ -118,28 +119,15 @@ export default function PostPage() {
       {loading ? (
         <PostSkeleton />
       ) : error ? (
-        <main id="main-content" className="mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center px-5 text-center">
-          <BookOpen size={42} strokeWidth={1.5} className="text-rose-700" aria-hidden="true" />
-          <h1 className="mt-6 font-serif text-4xl text-stone-950 dark:text-stone-50">
-            No encontramos esta lectura
-          </h1>
-          <p className="mt-4 max-w-xl text-stone-600 dark:text-stone-400">{error}</p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={reload}
-              className="inline-flex h-11 items-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-semibold text-white transition hover:bg-rose-800 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-100"
-            >
-              <RefreshCw size={16} aria-hidden="true" />
-              Reintentar
-            </button>
-            <Link
-              to="/"
-              className="inline-flex h-11 items-center rounded-md border border-stone-300 px-4 text-sm font-semibold text-stone-900 transition hover:bg-stone-100 dark:border-stone-600 dark:text-stone-100 dark:hover:bg-stone-800"
-            >
-              Volver al inicio
-            </Link>
-          </div>
+        <main id="main-content">
+          <PageError
+            tone="public"
+            icon={BookOpen}
+            title="No encontramos esta lectura"
+            message={error}
+            onRetry={reload}
+            secondaryAction={{ label: "Volver al inicio", to: "/" }}
+          />
         </main>
       ) : (
         <main id="main-content" className="bg-stone-50/40 dark:bg-stone-950">

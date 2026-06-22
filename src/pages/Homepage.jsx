@@ -1,9 +1,11 @@
-import { ArrowRight, BookOpen, RefreshCw } from "lucide-react";
+import { ArrowRight, BookOpen, Folder } from "lucide-react";
 import { Link } from "react-router-dom";
 import PostCard from "@/features/posts/components/PostCard";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import CategoryBox from "../features/categories/components/CategoryBox";
 import { usePublicCategories } from "@/features/categories/hooks/usePublicCategories";
+import { PageError } from "@/shared/components/PageError";
+import { EmptyState } from "@/shared/components/EmptyState";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
 import { editorContentToText } from "@/features/posts/utils/editorContent";
@@ -82,20 +84,14 @@ export default function Homepage() {
       {postsLoading ? (
         <HomeSkeleton />
       ) : postsError ? (
-        <main id="main-content" className="mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center px-5 text-center">
-          <BookOpen size={40} strokeWidth={1.5} className="text-rose-700" aria-hidden="true" />
-          <h1 className="mt-6 font-serif text-4xl text-stone-950 dark:text-stone-50">
-            No pudimos abrir la biblioteca
-          </h1>
-          <p className="mt-4 max-w-xl text-stone-600 dark:text-stone-400">{postsError}</p>
-          <button
-            type="button"
-            onClick={reloadPosts}
-            className="mt-8 inline-flex h-11 items-center gap-2 rounded-md bg-stone-950 px-4 text-sm font-semibold text-white transition hover:bg-rose-800 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-100"
-          >
-            <RefreshCw size={16} aria-hidden="true" />
-            Reintentar
-          </button>
+        <main id="main-content">
+          <PageError
+            tone="public"
+            icon={BookOpen}
+            title="No pudimos abrir la biblioteca"
+            message={postsError}
+            onRetry={reloadPosts}
+          />
         </main>
       ) : (
         <main id="main-content" className="bg-stone-50/40 dark:bg-stone-950">
@@ -135,13 +131,13 @@ export default function Homepage() {
 
           {posts.length === 0 ? (
             <section className="mx-auto flex min-h-[42vh] max-w-3xl flex-col items-center justify-center px-5 pb-20 text-center">
-              <BookOpen size={42} strokeWidth={1.5} className="text-stone-400 dark:text-stone-600" aria-hidden="true" />
-              <h2 className="mt-6 font-serif text-4xl text-stone-950 dark:text-stone-50">
-                Aun no hay publicaciones
-              </h2>
-              <p className="mt-4 text-stone-600 dark:text-stone-400">
-                Cuando un autor publique su primer texto, aparecera aqui como lectura destacada.
-              </p>
+              <EmptyState
+                variant="plain"
+                icon={BookOpen}
+                headingClassName="text-4xl"
+                title="Aun no hay publicaciones"
+                description="Cuando un autor publique su primer texto, aparecera aqui como lectura destacada."
+              />
             </section>
           ) : (
             <>
@@ -256,13 +252,22 @@ export default function Homepage() {
                   ))}
                 </div>
               ) : categoriesError ? (
-                <p className="text-sm text-stone-500 dark:text-stone-400">
-                  No pudimos cargar las categorias en este momento.
-                </p>
+                <EmptyState
+                  variant="plain"
+                  icon={Folder}
+                  iconSize={32}
+                  headingClassName="text-xl"
+                  title="No pudimos cargar las categorias"
+                  description="Intenta de nuevo en un momento."
+                />
               ) : categories.length === 0 ? (
-                <p className="text-sm text-stone-500 dark:text-stone-400">
-                  Aun no hay categorias creadas.
-                </p>
+                <EmptyState
+                  variant="plain"
+                  icon={Folder}
+                  iconSize={32}
+                  headingClassName="text-xl"
+                  title="Aun no hay categorias creadas"
+                />
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
                   {categories.map((category) => (
