@@ -33,6 +33,10 @@ export function useCreateCategory( onSave, isOpen, onClose ){
       toast.error("El nombre no puede estar vacío.");
       return;
     }
+    if (trimmed.length < 2) {
+      toast.error("El nombre debe tener al menos 2 caracteres.");
+      return;
+    }
     if (trimmed.length > 100) {
       toast.error("El nombre no puede superar los 100 caracteres.");
       return;
