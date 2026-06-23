@@ -55,13 +55,14 @@ export function AuthProvider({ children }) {
   const isAdmin = user?.role === "ADMIN";
   const isModerator = user?.role === "MODERATOR";
   const isAuthor = user?.role === "AUTHOR";
+  const isOwner = user?.role === "OWNER";
 
   return (
     <AuthContext
       value={{
         state: { user, loading },
         actions: { logout, refreshUser },
-        meta: { isAdmin, isModerator, isAuthor, isAuthenticated: !!user },
+        meta: { isAdmin, isModerator, isAuthor, isOwner, isAuthenticated: !!user },
       }}
     >
       {children}

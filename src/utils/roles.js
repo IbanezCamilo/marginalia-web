@@ -1,1 +1,1 @@
-export const ROLE_LEVEL = { READER: 0, AUTHOR: 1, MODERATOR: 2, ADMIN: 3 };
+export const ROLE_LEVEL = { READER: 0, AUTHOR: 1, MODERATOR: 2, ADMIN: 3, OWNER: 4 };
