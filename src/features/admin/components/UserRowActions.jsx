@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
-export default function UserRowActions({ onEdit, onDelete, disableDelete }) {
+export default function UserRowActions({ onEdit, onDelete, disableDelete, disableEdit }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,6 +23,7 @@ export default function UserRowActions({ onEdit, onDelete, disableDelete }) {
         <DropdownMenuItem
           className="flex cursor-pointer items-center gap-2 text-foreground"
           onClick={onEdit}
+          disabled={disableEdit}
         >
           <Pencil size={16} />
           Editar
