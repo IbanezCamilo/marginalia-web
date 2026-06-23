@@ -26,7 +26,7 @@ const ROLE_TABS = [
 ];
 
 export default function AdminUsers() {
-  const { state: { user: currentUser } } = useAuth();
+  const { state: { user: currentUser }, meta: { isOwner } } = useAuth();
   const {
     users,
     totalElements,
@@ -78,6 +78,7 @@ export default function AdminUsers() {
         isOpen={createOpen}
         onClose={() => setCreateOpen(false)}
         onSave={submitCreate}
+        isOwnerActor={isOwner}
       />
 
       <EditUserDialog
@@ -85,6 +86,7 @@ export default function AdminUsers() {
         user={editState.user}
         onClose={closeEdit}
         onSave={submitEdit}
+        isOwnerActor={isOwner}
       />
 
       <ConfirmDialog
@@ -188,15 +190,22 @@ export default function AdminUsers() {
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-border">
-                {users.map((user) => (
-                  <UserRow
-                    key={user.id}
-                    user={user}
-                    onEdit={() => openEdit(user)}
-                    onDelete={() => requestDelete(user.id)}
-                    disableDelete={user.id === currentUser?.id}
-                  />
-                ))}
+                {users.map((user) => {
+                  const isSelf = user.id === currentUser?.id;
+                  const targetRole = user.role?.name;
+                  const targetIsAdminOrOwner = targetRole === "ADMIN" || targetRole === "OWNER";
+                  const blockedByRoleGuard = targetIsAdminOrOwner && !isOwner;
+                  return (
+                    <UserRow
+                      key={user.id}
+                      user={user}
+                      onEdit={() => openEdit(user)}
+                      onDelete={() => requestDelete(user.id)}
+                      disableDelete={isSelf || targetRole === "OWNER" || blockedByRoleGuard}
+                      disableEdit={targetRole === "OWNER" || blockedByRoleGuard}
+                    />
+                  );
+                })}
               </TableBody>
             </Table>
           </div>
