@@ -13,14 +13,16 @@ import { ComboBox } from "@/components/ui/comboBox";
 import { FieldError } from "@/shared/components/FieldError";
 import { getErrorMessage } from "@/lib/apiError";
 
-const ROLE_OPTIONS = [
-  { id: "ADMIN", name: "Administrador" },
+const ROLE_OPTIONS_BASE = [
   { id: "AUTHOR", name: "Autor" },
   { id: "MODERATOR", name: "Moderador" },
   { id: "READER", name: "Lector" },
 ];
 
-export default function EditUserDialog({ isOpen, user, onClose, onSave }) {
+const ADMIN_OPTION = { id: "ADMIN", name: "Administrador" };
+
+export default function EditUserDialog({ isOpen, user, onClose, onSave, isOwnerActor }) {
+  const roleOptions = isOwnerActor ? [ADMIN_OPTION, ...ROLE_OPTIONS_BASE] : ROLE_OPTIONS_BASE;
   const [form, setForm] = useState({ name: "", email: "", roleName: "READER" });
   const [saving, setSaving] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
@@ -100,7 +102,7 @@ export default function EditUserDialog({ isOpen, user, onClose, onSave }) {
           <div className="space-y-2">
             <ComboBox
               label="Rol"
-              items={ROLE_OPTIONS}
+              items={roleOptions}
               value={form.roleName}
               onChange={(val) => setForm((prev) => ({ ...prev, roleName: val }))}
               valueKey="id"
