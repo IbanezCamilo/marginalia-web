@@ -27,7 +27,7 @@ export function getErrorMessage(error, fallback = "Ocurrió un error inesperado.
     case 400:
       return backendMessage || "Los datos enviados no son válidos.";
     case 401:
-      return "Tu sesión ha expirado. Inicia sesión nuevamente.";
+      return backendMessage || "Tu sesión ha expirado. Inicia sesión nuevamente.";
     case 403:
       return "No tienes permiso para realizar esta acción.";
     case 404:

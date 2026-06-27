@@ -47,6 +47,25 @@ async function request(endpoint, options = {}) {
             throw new ApiError({ kind: 'http', status: 401, message: 'Session expired' });
         }
 
+        // Public, pre-auth endpoints: a 401 here means bad credentials, not an
+        // expired access token — surface the backend's response as-is instead
+        // of attempting a token refresh.
+        if (endpoint === '/auth/login' || endpoint === '/auth/register') {
+            const errorText = await response.text();
+            let body = null;
+            try {
+                body = errorText ? JSON.parse(errorText) : null;
+            } catch {
+                body = null;
+            }
+            throw new ApiError({
+                kind: 'http',
+                status: response.status,
+                body,
+                message: errorText || `Request failed with status ${response.status}`,
+            });
+        }
+
         if (isRefreshing) {
             return new Promise((resolve, reject) =>
                 pendingQueue.push({ resolve, reject })
