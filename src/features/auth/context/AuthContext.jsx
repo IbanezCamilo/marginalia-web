@@ -47,8 +47,11 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(async () => {
-    await userService.logout();
-    setUser(null);
+    try {
+      await userService.logout();
+    } finally {
+      setUser(null);
+    }
   }, []);
 
   // Derived booleans — consumers subscribe to stable booleans, not the raw role string

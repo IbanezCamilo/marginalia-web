@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { userService } from "@/features/profile/services/userService";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { getErrorMessage } from "@/lib/apiError";
 
 export function useChangePassword(isOpen, onClose) {
+  const { actions: { logout } } = useAuth();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -42,8 +44,10 @@ export function useChangePassword(isOpen, onClose) {
     try {
       setSaving(true);
       await userService.changePassword(currentPassword, newPassword);
-      toast.success("Contraseña actualizada correctamente");
+      toast.success("Contraseña actualizada. Inicia sesión nuevamente.");
       onClose();
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await logout();
     } catch (err) {
       toast.error(getErrorMessage(err, "No se pudo cambiar la contraseña."));
     } finally {
