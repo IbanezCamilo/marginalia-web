@@ -24,7 +24,7 @@ export const editorExtensions = [
     },
   }),
   Placeholder.configure({
-    placeholder: "Empieza a escribir tu proxima historia...",
+    placeholder: "Empieza a escribir tu próxima historia...",
   }),
   CharacterCount,
   TextAlign.configure({

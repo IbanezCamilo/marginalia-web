@@ -18,7 +18,7 @@ export function useCoverImageUpload(onChange) {
     }
 
     if (file.size > MAX_SIZE) {
-      toast.warning("La imagen es muy grande. Máximo 5MB");
+      toast.error("La imagen es muy grande. Máximo 5MB.");
       return;
     }
 
