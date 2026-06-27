@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { userService } from "@/features/profile/services/userService";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { toast } from "sonner";
 import { getErrorMessage } from "@/lib/apiError";
 
 export function useMyProfile(){
+    const { actions: { refreshUser } } = useAuth();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -45,6 +47,7 @@ export function useMyProfile(){
   const handleImageUpdate = async (imageFile) => {
     const response = await userService.uploadProfileImage(imageFile);
     setUser((prev) => ({ ...prev, image: response.imageUrl }));
+    refreshUser();
     toast.success("Imagen actualizada correctamente");
   };
 
@@ -56,6 +59,7 @@ export function useMyProfile(){
     try {
       await userService.deleteProfileImage();
       await loadProfile();
+      refreshUser();
       toast.success("Foto de perfil eliminada");
     } finally {
       deletingRef.current = false;
@@ -73,6 +77,7 @@ export function useMyProfile(){
         name: updatedUser.name,
         description: updatedUser.description || "",
       }));
+      refreshUser();
       toast.success("Perfil actualizado correctamente");
     } catch (error) {
       setError(getErrorMessage(error, "No se pudo editar el perfil."));
