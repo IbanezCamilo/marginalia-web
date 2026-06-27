@@ -38,7 +38,7 @@ const hasChanged = (prev, next) =>
   Object.keys(next).some((key) => prev[key] !== next[key]);
 
 export function useEditorState(editor) {
-  const [state, setState] = useState({});
+  const [state, setState] = useState(() => getEditorState(editor));
   const stateRef = useRef(state);
 
   useEffect(() => {
