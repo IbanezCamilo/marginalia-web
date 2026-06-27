@@ -17,6 +17,8 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
     setCurrentPassword,
     newPassword,
     setNewPassword,
+    confirmNewPassword,
+    setConfirmNewPassword,
     showCurrentPassword,
     toggleShowCurrentPassword,
     showNewPassword,
@@ -91,6 +93,35 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
               </button>
             </div>
             <FieldError id="newPassword-error">{fieldErrors.newPassword}</FieldError>
+          </div>
+
+          {/* Confirmar nueva contraseña */}
+          <div className="space-y-2">
+            <Label htmlFor="confirmNewPassword">Confirmar nueva contraseña</Label>
+            <div className="relative">
+              <Input
+                id="confirmNewPassword"
+                type={showNewPassword ? "text" : "password"}
+                autoComplete="new-password"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                placeholder="Repite la nueva contraseña"
+                disabled={saving}
+                aria-invalid={!!fieldErrors.confirmNewPassword}
+                aria-describedby={fieldErrors.confirmNewPassword ? "confirmNewPassword-error" : undefined}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={toggleShowNewPassword}
+                tabIndex={-1}
+                aria-label={showNewPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {showNewPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+              </button>
+            </div>
+            <FieldError id="confirmNewPassword-error">{fieldErrors.confirmNewPassword}</FieldError>
           </div>
 
           {/* Botones */}

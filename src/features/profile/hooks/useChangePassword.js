@@ -7,6 +7,7 @@ export function useChangePassword(isOpen, onClose) {
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -16,6 +17,7 @@ export function useChangePassword(isOpen, onClose) {
     if (isOpen) {
       setCurrentPassword("");
       setNewPassword("");
+      setConfirmNewPassword("");
       setShowCurrentPassword(false);
       setShowNewPassword(false);
       setFieldErrors({});
@@ -28,6 +30,11 @@ export function useChangePassword(isOpen, onClose) {
     if (!newPassword.trim()) errors.newPassword = "Ingresa una nueva contraseña.";
     else if (newPassword.length < 8) {
       errors.newPassword = "La nueva contraseña debe tener al menos 8 caracteres.";
+    }
+    if (!confirmNewPassword.trim()) {
+      errors.confirmNewPassword = "Confirma tu nueva contraseña.";
+    } else if (newPassword !== confirmNewPassword) {
+      errors.confirmNewPassword = "Las contraseñas no coinciden.";
     }
     setFieldErrors(errors);
     if (Object.keys(errors).length > 0) return;
@@ -53,6 +60,8 @@ export function useChangePassword(isOpen, onClose) {
     setCurrentPassword,
     newPassword,
     setNewPassword,
+    confirmNewPassword,
+    setConfirmNewPassword,
     showCurrentPassword,
     toggleShowCurrentPassword: () => setShowCurrentPassword((v) => !v),
     showNewPassword,
