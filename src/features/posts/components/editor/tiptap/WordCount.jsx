@@ -24,7 +24,7 @@ export default function WordCount({ editor }) {
   }, [editor]);
 
   return (
-    <footer className="flex flex-wrap items-center justify-end gap-3 border-t border-border bg-muted px-4 py-2 text-xs text-muted-foreground">
+    <footer className="sticky bottom-0 z-20 flex flex-wrap items-center justify-end gap-3 rounded-b-md border-t border-border bg-muted px-4 py-2 text-xs text-muted-foreground">
       <span>{stats.words} palabras</span>
       <span className="text-muted-foreground">/</span>
       <span>{stats.characters} caracteres</span>
