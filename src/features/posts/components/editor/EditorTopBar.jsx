@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ChevronLeft, Lock, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,8 +9,12 @@ export default function EditorTopbar({
   submitting,
   hasChanges,
   readOnly = false,
+  status = "DRAFT", // create flow passes no status → treat as a fresh, publishable draft
 }) {
   const navigate = useNavigate();
+  const saveDraftLabel =
+    status === "PUBLISHED" ? "Mover a borrador y guardar cambios" : "Guardar Borrador";
+  const canPublish = status === "DRAFT";
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border mb-2">
       <div className="h-16 px-6 gap-4 flex items-center justify-between">
@@ -81,16 +86,36 @@ export default function EditorTopbar({
                 className="font-medium min-h-[44px]"
               >
                 <Save size={16} className="flex justify-center md:mr-2 shrink-0" aria-hidden="true" />
-                <span className="hidden sm:inline text-sm">Guardar Borrador</span>
+                <span className="hidden sm:inline text-sm">{saveDraftLabel}</span>
               </Button>
-              <Button
-                size="sm"
-                onClick={onPublish}
-                disabled={submitting}
-                className="bg-rose-700 hover:bg-rose-800 text-white font-semibold px-6 min-h-[44px]"
-              >
-                {submitting ? "Publicando…" : "Publicar"}
-              </Button>
+              {canPublish ? (
+                <Button
+                  size="sm"
+                  onClick={onPublish}
+                  disabled={submitting}
+                  className="bg-rose-700 hover:bg-rose-800 text-white font-semibold px-6 min-h-[44px]"
+                >
+                  {submitting ? "Publicando…" : "Publicar"}
+                </Button>
+              ) : (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {/* Wrapper span keeps hover/focus events alive while the button is disabled */}
+                    <span tabIndex={0} className="inline-flex">
+                      <Button
+                        size="sm"
+                        disabled
+                        className="bg-rose-700 text-white font-semibold px-6 min-h-[44px] pointer-events-none"
+                      >
+                        Publicar
+                      </Button>
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Guárdalo como borrador primero para poder publicarlo de nuevo.
+                  </TooltipContent>
+                </Tooltip>
+              )}
             </>
           )}
         </div>

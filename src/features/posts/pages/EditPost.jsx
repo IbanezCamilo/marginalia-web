@@ -73,6 +73,7 @@ export default function EditPost() {
         submitting={submitting}
         hasChanges={hasChanges}
         readOnly={isArchived}
+        status={post?.status}
       />
 
       {/* Main Layout: Editor + SideBar */}

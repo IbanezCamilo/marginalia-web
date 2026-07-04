@@ -89,6 +89,8 @@ export function useEditPost(id, navigate) {
       return;
     }
 
+    const wasStatus = post.status; // capture before any optimistic mutation
+
     const postData = {
       title: post.title.trim(),
       content: post.content,
@@ -106,11 +108,28 @@ export function useEditPost(id, navigate) {
         await postService.deleteCoverImage(Number(id));
       }
 
+      // Saving a PUBLISHED/REJECTED post always moves it back to DRAFT: stay on the
+      // page and flip the local status optimistically so "Publicar" re-enables in-session.
+      // Only the DRAFT flows (save-as-draft, publish) navigate back to the list.
+      if (wasStatus === "PUBLISHED" || wasStatus === "REJECTED") {
+        setPost((prev) => ({ ...prev, status: "DRAFT" }));
+        // Reset the dirty-check baseline (same shape/types as on load) so the
+        // "unsaved changes" indicator clears.
+        setOriginalPost({
+          title: post.title,
+          content: post.content,
+          categoryId: post.categoryId,
+        });
+        setImage(null);
+        setImageDeleted(false);
+        toast.success("Movido a borrador. Ya puedes editarlo y publicarlo de nuevo.");
+      } else {
         toast.success(`Post ${
-        statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
+          statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
         } exitosamente!`,)
 
-      navigate("/user/posts"); // Volver a la lista tras guardar
+        navigate("/user/posts"); // Volver a la lista tras guardar
+      }
     } catch (error) {
       const msg = getErrorMessage(error, "No se pudo actualizar el post.");
       setSubmitError(msg);
