@@ -42,6 +42,7 @@ const renderMarks = (text, marks = []) => {
     if (mark.type === "italic") return `<em>${current}</em>`;
     if (mark.type === "strike") return `<s>${current}</s>`;
     if (mark.type === "underline") return `<u>${current}</u>`;
+    if (mark.type === "code") return `<code>${current}</code>`;
     if (mark.type === "link") {
       const href = escapeHtml(mark.attrs?.href ?? "#");
       return `<a href="${href}" target="_blank" rel="noopener noreferrer">${current}</a>`;
@@ -90,7 +91,13 @@ const renderNode = (node) => {
   }
 
   if (node.type === "orderedList") {
-    return `<ol>${(node.content ?? []).map(renderListItem).join("")}</ol>`;
+    const start = Number(node.attrs?.start ?? 1);
+    const startAttr = start !== 1 ? ` start="${start}"` : "";
+    return `<ol${startAttr}>${(node.content ?? []).map(renderListItem).join("")}</ol>`;
+  }
+
+  if (node.type === "codeBlock") {
+    return `<pre><code>${renderChildren(node)}</code></pre>`;
   }
 
   if (node.type === "listItem") return renderListItem(node);
