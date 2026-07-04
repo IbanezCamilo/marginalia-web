@@ -10,9 +10,9 @@ export default function TiptapEditor({ content, onChange, editable = true }) {
   if (!editor) return null;
 
   return (
-    <section className="w-full overflow-hidden rounded-md border border-border bg-card shadow-sm">
+    <section className="w-full rounded-md border border-border bg-card shadow-sm">
       {editable && <EditorToolbar editor={editor} />}
-      <div className="max-h-[640px] w-full overflow-auto bg-card">
+      <div className="w-full rounded-t-md bg-card">
         <EditorContent editor={editor} />
       </div>
       <WordCount editor={editor} />
