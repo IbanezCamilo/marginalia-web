@@ -332,6 +332,14 @@
   padding-left: 1.5rem;
 }
 
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
 .prose li {
   margin: 0.3rem 0;
   padding-left: 0.2rem;
@@ -357,4 +365,32 @@
 
 .prose ::selection {
   background: var(--prose-selection-bg);
+}
+
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875em;
+  background: var(--prose-blockquote-bg);
+  border-radius: 0.25rem;
+  padding: 0.15em 0.35em;
+  color: var(--prose-strong);
+}
+
+.prose pre {
+  background: var(--prose-blockquote-bg);
+  border-radius: 0.375rem;
+  color: var(--prose-body);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin: 1.4rem 0;
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+}
+
+.prose pre code {
+  background: none;
+  border-radius: 0;
+  font-size: inherit;
+  padding: 0;
 }
