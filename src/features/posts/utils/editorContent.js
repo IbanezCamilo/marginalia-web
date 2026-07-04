@@ -53,8 +53,12 @@ const renderMarks = (text, marks = []) => {
 const renderChildren = (node) =>
   (node.content ?? []).map((child) => renderNode(child)).join("");
 
+const VALID_ALIGNMENTS = new Set(["left", "center", "right", "justify"]);
+
 const alignmentStyle = (attrs = {}) =>
-  attrs.textAlign ? ` style="text-align: ${escapeHtml(attrs.textAlign)}"` : "";
+  VALID_ALIGNMENTS.has(attrs.textAlign)
+    ? ` style="text-align: ${attrs.textAlign}"`
+    : "";
 
 const renderListItem = (node) => `<li>${renderChildren(node)}</li>`;
 
