@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { BookOpen } from "lucide-react";
 import { editorContentToText } from "@/features/posts/utils/editorContent";
+import { focalToObjectPosition } from "@/utils/imageUtils";
 
 const getExcerpt = (content, maxLength = 140) => {
   const text = editorContentToText(content);
@@ -35,6 +36,7 @@ export default function PostCard({ post, hideAuthor = false, headingAs = "h2" })
             <img
               src={imageSrc}
               alt={post.title}
+              style={{ objectPosition: focalToObjectPosition(post.focalX, post.focalY) }}
               className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
               loading="lazy"
             />

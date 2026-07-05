@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import PostRowActions from "./PostRowActions";
 import { getPostStatusConfig } from "@/features/posts/utils/postStatus";
+import { focalToObjectPosition } from "@/utils/imageUtils";
 
 const truncate = (str, max = 90) =>
   str && str.length > max ? str.slice(0, max) + "…" : (str ?? "");
@@ -12,6 +13,8 @@ export default function PostListItemCard({
   onDelete,
   onToggleStatus,
   imageUrl,
+  focalX,
+  focalY,
   author,
   title,
   status,
@@ -34,6 +37,7 @@ export default function PostListItemCard({
           <img
             src={resolvedImage}
             alt={title}
+            style={{ objectPosition: focalToObjectPosition(focalX, focalY) }}
             className="aspect-video h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
           />
         ) : (

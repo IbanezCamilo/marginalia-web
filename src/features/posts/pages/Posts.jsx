@@ -96,6 +96,8 @@ export default function Posts() {
               key={post.id}
               postId={post.id}
               imageUrl={post.coverImage}
+              focalX={post.focalX}
+              focalY={post.focalY}
               author={post.authorName}
               title={post.title}
               status={post.status}

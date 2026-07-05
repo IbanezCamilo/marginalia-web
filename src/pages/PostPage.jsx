@@ -11,6 +11,7 @@ import {
   editorContentToHtml,
   editorContentToText,
 } from "@/features/posts/utils/editorContent";
+import { focalToObjectPosition } from "@/utils/imageUtils";
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -182,6 +183,7 @@ export default function PostPage() {
                 <img
                   src={imageSrc}
                   alt={post.title}
+                  style={{ objectPosition: focalToObjectPosition(post.focalX, post.focalY) }}
                   className="aspect-[16/9] w-full object-cover"
                 />
               </figure>

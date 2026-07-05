@@ -9,6 +9,7 @@ import { EmptyState } from "@/shared/components/EmptyState";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
 import { editorContentToText } from "@/features/posts/utils/editorContent";
+import { focalToObjectPosition } from "@/utils/imageUtils";
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -188,6 +189,7 @@ export default function Homepage() {
                         <img
                           src={featuredImage}
                           alt=""
+                          style={{ objectPosition: focalToObjectPosition(featuredPost.focalX, featuredPost.focalY) }}
                           className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
                         />
                       ) : (
