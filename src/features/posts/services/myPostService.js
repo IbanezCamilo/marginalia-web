@@ -15,6 +15,8 @@ export const postService = {
         content: data.content,
         categoryId: data.categoryId,
         status: data.status,
+        focalX: data.focalX,
+        focalY: data.focalY,
       });
 
     //Image exist
@@ -34,6 +36,8 @@ export const postService = {
           content:    data.content,
           categoryId: data.categoryId,
           status:     data.status,
+          focalX:     data.focalX,
+          focalY:     data.focalY,
       });
 
       if (imageFile) {

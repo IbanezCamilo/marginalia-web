@@ -37,6 +37,8 @@ export function useEditPost(id, navigate) {
           status: postData.status,
           image: postData.coverImage ?? "",
           previewUrl: postData.coverImage ?? "",
+          focalX: postData.focalX ?? 0.5,
+          focalY: postData.focalY ?? 0.5,
           updatedAt: postData.updatedAt,
           createdAt: postData.createdAt,
           moderationNote: postData.moderationNote,
@@ -53,6 +55,8 @@ export function useEditPost(id, navigate) {
           title: postData.title,
           content: postData.content,
           categoryId: postData.categoryId,
+          focalX: postData.focalX ?? 0.5,
+          focalY: postData.focalY ?? 0.5,
         });
 
         setCategories(
@@ -96,6 +100,8 @@ export function useEditPost(id, navigate) {
       content: post.content,
       categoryId: post.categoryId ? Number(post.categoryId) : null,
       status: statusToSave,
+      focalX: post.focalX,
+      focalY: post.focalY,
     };
 
     try {
@@ -119,6 +125,8 @@ export function useEditPost(id, navigate) {
           title: post.title,
           content: post.content,
           categoryId: post.categoryId,
+          focalX: post.focalX,
+          focalY: post.focalY,
         });
         setImage(null);
         setImageDeleted(false);

@@ -12,6 +12,8 @@ const INITIAL_POST = {
   categoryId: "",
   image: "",
   previewUrl: "",
+  focalX: 0.5,
+  focalY: 0.5,
 };
 
 export function useCreatePost() {
@@ -79,6 +81,8 @@ export function useCreatePost() {
       content: post.content,
       categoryId: post.categoryId ? Number(post.categoryId) : null,
       status: initialStatus,
+      focalX: post.focalX,
+      focalY: post.focalY,
     };
 
     //Sending to Service

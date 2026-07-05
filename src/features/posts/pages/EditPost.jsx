@@ -46,6 +46,8 @@ export default function EditPost() {
     (post?.title !== originalPost.title ||
       post?.content !== originalPost.content ||
       post?.categoryId !== originalPost.categoryId ||
+      post?.focalX !== originalPost.focalX ||
+      post?.focalY !== originalPost.focalY ||
       image !== null);
 
   const isArchived = post?.status === "ARCHIVED";
