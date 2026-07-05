@@ -1,8 +1,17 @@
 import { useState } from "react";
 import { useCoverImageUpload } from "../../hooks/editor/useCoverImageUpload";
-import { Upload, X, ImageIcon } from "lucide-react";
+import { ImageIcon } from "lucide-react";
+import { focalToObjectPosition } from "@/utils/imageUtils";
+import FocalPointPicker from "./FocalPointPicker";
 
-export default function CoverImageUpload({ previewUrl, imageSrc, onChange, readOnly = false }) {
+export default function CoverImageUpload({
+  previewUrl,
+  imageSrc,
+  focalX = 0.5,
+  focalY = 0.5,
+  onChange,
+  readOnly = false,
+}) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const {
     inputFileRef,
@@ -49,52 +58,42 @@ export default function CoverImageUpload({ previewUrl, imageSrc, onChange, readO
     );
   }
 
-  return (
-    <div className="relative mb-8 group">
-      <div className="relative w-full h-96 rounded-xl overflow-hidden bg-muted">
-        <img
-          src={previewUrl || imageSrc}
-          alt="Imagen de portada"
-          onLoad={() => setImgLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
-        />
-      </div>
+  const src = previewUrl || imageSrc;
 
-      {!readOnly && (
-        <>
-          <div className="absolute inset-0 flex items-end justify-start gap-2 bg-gradient-to-t from-black/30 p-4">
-            <button
-              type="button"
-              onClick={triggerFileSelect}
-              className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
-                           font-medium text-sm text-stone-900 hover:bg-white transition-colors shadow-lg
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <Upload size={16} />
-              Cambiar
-            </button>
-
-            <button
-              type="button"
-              onClick={handleRemoveImage}
-              className="flex items-center gap-2 px-4 py-2 bg-white/95 backdrop-blur-sm rounded-lg
-                           font-medium text-sm text-rose-700 hover:bg-white transition-colors shadow-lg
-                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <X size={16} />
-              Eliminar
-            </button>
-          </div>
-
-          <input
-            ref={inputFileRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageSelect}
-            className="hidden"
+  // Read-only (moderation / preview): honor the saved focal point, no controls.
+  if (readOnly) {
+    return (
+      <div className="relative mb-8">
+        <div className="relative w-full h-96 rounded-xl overflow-hidden bg-muted">
+          <img
+            src={src}
+            alt="Imagen de portada"
+            onLoad={() => setImgLoaded(true)}
+            style={{ objectPosition: focalToObjectPosition(focalX, focalY) }}
+            className={`w-full h-full object-cover transition-opacity duration-300 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
           />
-        </>
-      )}
-    </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <FocalPointPicker
+        src={src}
+        focalX={focalX}
+        focalY={focalY}
+        onChange={onChange}
+        onChangeImage={triggerFileSelect}
+        onRemoveImage={handleRemoveImage}
+      />
+      <input
+        ref={inputFileRef}
+        type="file"
+        accept="image/*"
+        onChange={handleImageSelect}
+        className="hidden"
+      />
+    </>
   );
 }

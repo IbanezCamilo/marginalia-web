@@ -8,6 +8,8 @@ export default function PostEditor({ post, onChange, readOnly = false }) {
       <CoverImageUpload
         previewUrl={post.previewUrl}
         imageSrc={post.image}
+        focalX={post.focalX}
+        focalY={post.focalY}
         onChange={onChange}
         readOnly={readOnly}
       />
