@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { BASE_URL } from "@/lib/config"
-import { toCoverImageUrl, toProfileImageUrl } from "./imageUtils"
+import { focalToObjectPosition, toCoverImageUrl, toProfileImageUrl } from "./imageUtils"
 
 describe("toCoverImageUrl", () => {
   it("builds an image URL from a filename", () => {
@@ -15,6 +15,25 @@ describe("toCoverImageUrl", () => {
     expect(toCoverImageUrl(null)).toBeNull()
     expect(toCoverImageUrl(undefined)).toBeNull()
     expect(toCoverImageUrl("")).toBeNull()
+  })
+})
+
+describe("focalToObjectPosition", () => {
+  it("maps normalized coordinates to percentages", () => {
+    expect(focalToObjectPosition(0, 0)).toBe("0% 0%")
+    expect(focalToObjectPosition(0.5, 0.5)).toBe("50% 50%")
+    expect(focalToObjectPosition(0.25, 0.75)).toBe("25% 75%")
+    expect(focalToObjectPosition(1, 1)).toBe("100% 100%")
+  })
+
+  it("clamps out-of-range coordinates into [0,1]", () => {
+    expect(focalToObjectPosition(-0.2, 1.4)).toBe("0% 100%")
+  })
+
+  it("centers when a coordinate is missing or invalid", () => {
+    expect(focalToObjectPosition(undefined, undefined)).toBe("50% 50%")
+    expect(focalToObjectPosition(null, 0.2)).toBe("50% 20%")
+    expect(focalToObjectPosition(NaN, "x")).toBe("50% 50%")
   })
 })
 
