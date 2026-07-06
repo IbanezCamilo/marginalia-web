@@ -47,29 +47,6 @@ export default function AboutPage() {
             </p>
           </div>
         </section>
-
-        <section className="border-t border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900">
-          <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8">
-            <h2 className="font-serif text-3xl text-stone-950 dark:text-stone-50">
-              Quién está detrás
-            </h2>
-
-            <div className="mt-8 flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-              <div className="flex size-24 shrink-0 items-center justify-center rounded-full border-4 border-white bg-stone-950 font-serif text-2xl text-white shadow-md dark:border-stone-800 dark:bg-stone-800">
-                N
-              </div>
-              <div>
-                <h3 className="font-serif text-2xl text-stone-950 dark:text-stone-50">
-                  [Nombre del fundador]
-                </h3>
-                <p className="mt-3 max-w-xl text-base leading-7 text-stone-600 dark:text-stone-400">
-                  [Bio del fundador — dos o tres frases sobre su relación con la
-                  escritura y por qué creó Marginalia.]
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
     </>
