@@ -22,7 +22,7 @@ export default function AboutPage() {
             Sobre Marginalia
           </p>
           <h1 className="mt-3 font-serif text-5xl leading-tight text-stone-950 sm:text-6xl dark:text-stone-50">
-            Un lugar para leer con calma
+            Para quienes se atreven a escribir
           </h1>
 
           <img
@@ -31,19 +31,29 @@ export default function AboutPage() {
             className="mt-10 w-full rounded-2xl"
           />
 
-          <div className="mt-8 space-y-6 text-base leading-8 text-stone-600 dark:text-stone-400">
+          <div className="mt-8 space-y-6 text-base leading-8 text-stone-600 text-justify dark:text-stone-400">
             <p>
-              Marginalia nació de una idea simple: la lectura merece un espacio que no
-              compita por tu atención. Nada de ventanas que interrumpen, nada de
-              contadores que premian la prisa. Aquí el texto manda: el diseño existe
-              para que las palabras se lean bien, no para llamar la atención sobre sí
-              mismo.
+              Marginalia nació de una carencia, no de una idea de negocio: la falta de
+              plataformas pensadas para la escritura real y formal. Demasiados espacios
+              tratan la escritura como contenido desechable — optimizado para el scroll,
+              no para ser leído con atención. Quisimos algo distinto: un lugar donde
+              quien se toma la escritura en serio encuentre, por fin, un espacio que la
+              tome en serio también.
             </p>
             <p>
-              Escribimos y leemos con la misma intención. Si eres de quienes subraya
-              frases y vuelve a ellas días después, este sitio está pensado para ti.
-              Si escribes, esperamos que sientas la misma calidez en el editor que un
-              lector siente en la pantalla.
+              Sabemos lo que significa publicar en otros lugares y sentir que la voz
+              se diluye: entre algoritmos que premian lo viral por encima de lo bien
+              escrito, plantillas que no distinguen un ensayo de un anuncio y
+              comunidades donde lo formal apenas tiene lugar. Marginalia existe para
+              ofrecer lo contrario: un espacio donde la escritura cuidada no sea una
+              excepción, sino el punto de partida.
+            </p>
+            <p>
+              Aquí se escribe y se lee con la misma intención: prestar atención.
+              Marginalia es para quienes subrayan una frase y vuelven a ella días
+              después, y para quienes escriben esperando encontrar al otro lado una
+              lectura igual de cuidadosa. Porque leer y escribir, al final, comparten
+              un mismo gesto: darle tiempo a las palabras.
             </p>
           </div>
         </section>
