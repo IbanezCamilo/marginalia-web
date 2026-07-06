@@ -1,5 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import aboutIlustration from "@/assets/about-ilustration.webp";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
 
@@ -23,6 +24,12 @@ export default function AboutPage() {
           <h1 className="mt-3 font-serif text-5xl leading-tight text-stone-950 sm:text-6xl dark:text-stone-50">
             Un lugar para leer con calma
           </h1>
+
+          <img
+            src={aboutIlustration}
+            alt="Ilustración de un libro abierto con anotaciones, una taza de café, una pluma y una persona escribiendo"
+            className="mt-10 w-full rounded-2xl"
+          />
 
           <div className="mt-8 space-y-6 text-base leading-8 text-stone-600 dark:text-stone-400">
             <p>
