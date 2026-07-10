@@ -1,0 +1,28 @@
+node_modules
+dist
+dist-ssr
+.git
+.gitignore
+.env
+.env.*
+*.local
+
+# Logs
+*.log
+logs
+
+# Editor / tooling
+.vscode
+.idea
+.claude
+.agents
+
+# Docs, screenshots, scratch notes — not needed in the image
+docs
+*.md
+!README.md
+refero_playBook.txt
+TIPTAP_PLAYBOOK.txt
+cls
+Dockerfile
+.dockerignore
