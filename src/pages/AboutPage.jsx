@@ -21,9 +21,6 @@ export default function AboutPage() {
           <p className="mt-10 text-xs font-semibold uppercase tracking-[0.28em] text-rose-700 dark:text-rose-500">
             Sobre Marginalia
           </p>
-          <h1 className="mt-3 font-serif text-5xl leading-tight text-stone-950 sm:text-6xl dark:text-stone-50">
-            Para quienes se atreven a escribir
-          </h1>
 
           <img
             src={aboutIlustration}
@@ -31,6 +28,9 @@ export default function AboutPage() {
             className="mt-10 w-full rounded-2xl"
           />
 
+          <h1 className="mt-3 font-serif text-5xl leading-tight text-stone-950 sm:text-6xl dark:text-stone-50">
+            Para quienes se atreven a escribir
+          </h1>
           <div className="mt-8 space-y-6 text-base leading-8 text-stone-600 text-justify dark:text-stone-400">
             <p>
               Marginalia nació de una carencia, no de una idea de negocio: la falta de
