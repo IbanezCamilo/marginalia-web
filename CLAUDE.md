@@ -19,10 +19,9 @@ Copy `.env.sample` → `.env`:
 
 | Variable | Description |
 |---|---|
-| `VITE_API_URL` | Backend API base, e.g. `http://localhost:8080/api` |
-| `VITE_BASE_URL` | Backend base URL used to construct image URLs |
+| `VITE_API_URL` | Backend origin **without** `/api` (config.js appends it), e.g. `http://localhost:8080`. Also used to build image URLs. |
 
-Both are read through `src/lib/config.js` and should never be hardcoded elsewhere.
+Read through `src/lib/config.js` (`API_URL` = `VITE_API_URL` + `/api`, `BASE_URL` = `VITE_API_URL`) and never hardcoded elsewhere. Vite inlines it at **build time**; for Docker/Dokploy it must be a build `ARG`, not a runtime env var (see `Dockerfile`). Prod: `https://api.readmarginalia.net`.
 
 ## Architecture
 
@@ -75,7 +74,7 @@ Call this before any submit; it returns `{ isValid, errors[] }`.
 
 ### Image Handling
 
-Cover images are uploaded separately from post data. `useCoverImageUpload` manages the preview + file state; the service sends a `multipart/form-data` request via `apiClient.postForm()`. `src/utils/imageUtils.js` has validation helpers. Image URLs are constructed using `VITE_BASE_URL`.
+Cover images are uploaded separately from post data. `useCoverImageUpload` manages the preview + file state; the service sends a `multipart/form-data` request via `apiClient.postForm()`. `src/utils/imageUtils.js` has validation helpers. Image URLs are constructed using `BASE_URL` from `config.js` (i.e. `VITE_API_URL`).
 
 ### UI Components
 

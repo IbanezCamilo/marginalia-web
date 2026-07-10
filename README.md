@@ -52,7 +52,7 @@ src/
 ├── panel/layout/      # Panel shell: AdminLayout, SidebarCollapsible, TopBar
 ├── lib/
 │   ├── apiClient.js   # Fetch wrapper: sends credentials so the browser attaches the HttpOnly session cookie, detects FormData/JSON, handles 401
-│   └── config.js      # Reads env vars (VITE_API_URL, VITE_BASE_URL)
+│   └── config.js      # Reads env var (VITE_API_URL)
 ├── components/ui/     # shadcn/ui primitives
 ├── shared/            # Shared components and pages (Navbar, Footer, 404…)
 ├── utils/             # Utilities: imageUtils, postValidation, editorContent
@@ -64,7 +64,7 @@ Pages import hooks only. Hooks call services. Services use `apiClient`. Nothing 
 ## Getting Started
 
 ### Requirements
-- Node.js 18+
+- Node.js 20+ (Vite 7 requirement; the Docker image builds on Node 22)
 - Backend running — see [backend repository](https://github.com/IbanezCamilo/blog-literario-backend)
 
 ### Steps
@@ -86,10 +86,11 @@ Copy `.env.sample` → `.env` and fill in your values:
 
 | Variable | Description | Example |
 |---|---|---|
-| `VITE_API_URL` | Backend base URL (without `/api`) | `http://localhost:8080` |
-| `VITE_BASE_URL` | Base URL used to construct image URLs | `http://localhost:8080` |
+| `VITE_API_URL` | Backend origin, **without** `/api` (the app appends it). Also used to build image URLs. | `http://localhost:8080` |
 
-Both variables are consumed exclusively through `src/lib/config.js`. Do not use them directly in components or services.
+Consumed exclusively through `src/lib/config.js` (`API_URL` = `VITE_API_URL` + `/api`, `BASE_URL` = `VITE_API_URL`). Do not read it directly in components or services.
+
+> **Build-time only:** Vite inlines `VITE_*` into the bundle during `npm run build`, not at runtime. For a Docker/Dokploy deploy, `VITE_API_URL` must be set as a **build-time variable** (a Docker `ARG`), not a runtime container env var — see the `Dockerfile`. Prod value: `https://api.readmarginalia.net`.
 
 > `.env` and `.env.local` are in `.gitignore` and must never be committed.
 
