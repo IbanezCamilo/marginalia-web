@@ -10,6 +10,7 @@ import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
 import { editorContentToText } from "@/features/posts/utils/editorContent";
 import { focalToObjectPosition } from "@/utils/imageUtils";
+import relaxedReading from "@/assets/undraw_relaxed-reading_rose.svg";
 
 const formatDate = (date) => {
   if (!date) return "";
@@ -119,6 +120,12 @@ export default function Homepage() {
                 </div>
 
                 <div className="border-l border-stone-200 pl-6 text-sm leading-7 text-stone-600 dark:border-stone-700 dark:text-stone-400">
+                  <img
+                    src={relaxedReading}
+                    alt="Ilustración de una persona leyendo de forma relajada"
+                    className="mb-6 w-full max-w-xs"
+                    loading="lazy"
+                  />
                   <p className="font-medium text-stone-950 dark:text-stone-100">
                     {totalElements} publicaciones disponibles
                   </p>
