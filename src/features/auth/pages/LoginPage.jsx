@@ -65,6 +65,7 @@ export default function LoginPage() {
                 aria-invalid={!!fieldErrors.email}
                 aria-describedby={fieldErrors.email ? "email-error" : undefined}
                 className="h-10 bg-stone-900 border-stone-700 text-white placeholder:text-stone-600
+                           selection:bg-rose-500/30 selection:text-white
                            focus-visible:border-stone-500 focus-visible:ring-stone-500/20"
               />
               <FieldError id="email-error">{fieldErrors.email}</FieldError>
@@ -86,6 +87,7 @@ export default function LoginPage() {
                   aria-invalid={!!fieldErrors.password}
                   aria-describedby={fieldErrors.password ? "password-error" : undefined}
                   className="h-10 bg-stone-900 border-stone-700 text-white placeholder:text-stone-600
+                             selection:bg-rose-500/30 selection:text-white
                              pr-10 focus-visible:border-stone-500 focus-visible:ring-stone-500/20"
                 />
                 <button
