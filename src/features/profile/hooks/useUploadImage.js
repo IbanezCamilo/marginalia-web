@@ -10,8 +10,7 @@ export function useUploadImage(
   const [preview, setPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  
-  //clean state when dialog opens
+
   useEffect(() => {
     setPreview(null);
     setSelectedFile(null);
@@ -20,7 +19,6 @@ export function useUploadImage(
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
 
-    // If there is no file (cancel)
     if (!file) return;
 
     if (!(file instanceof File)) {
@@ -47,7 +45,6 @@ export function useUploadImage(
     reader.readAsDataURL(file);
   };
 
-  // Upload Image to server
   const handleUpload = async () => {
     if (!selectedFile) return;
 
@@ -55,7 +52,6 @@ export function useUploadImage(
       setUploading(true);
       await onImageUpdated(selectedFile);
 
-      // Clean and close
       setPreview(null);
       setSelectedFile(null);
       onClose();
@@ -66,7 +62,6 @@ export function useUploadImage(
     }
   };
 
-  //    Clean and cancel
   const handleCancel = () => {
     setPreview(null);
     setSelectedFile(null);

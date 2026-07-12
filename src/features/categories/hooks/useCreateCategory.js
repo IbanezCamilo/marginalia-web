@@ -19,7 +19,6 @@ export function useCreateCategory( onSave, isOpen, onClose ){
     }
   }, [isOpen]);
 
-  // Handle input and changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewCategory((prev) => ({
@@ -28,7 +27,6 @@ export function useCreateCategory( onSave, isOpen, onClose ){
     }));
   };
 
-  // Save changes
   const handleSave = async () => {
     const trimmed = newCategory.name.trim();
     if (!trimmed) {
@@ -57,7 +55,6 @@ export function useCreateCategory( onSave, isOpen, onClose ){
     }
   };
 
-  // Cancel
   const handleCancel = () => {
     setNewCategory({
       name: "",

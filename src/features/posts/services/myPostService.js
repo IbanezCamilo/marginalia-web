@@ -19,12 +19,10 @@ export const postService = {
         focalY: data.focalY,
       });
 
-    //Image exist
     if (imageFile) {
       const formData = new FormData();
       formData.append("image", imageFile);
 
-      //Use apiClient to handle auth and content-type automatically
       return apiClient.postForm(`${BASE_ENDPOINT}/${created.id}/cover-image`, formData);
     }
     return created;

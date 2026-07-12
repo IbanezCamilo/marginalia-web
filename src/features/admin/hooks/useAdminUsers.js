@@ -66,7 +66,6 @@ export function useAdminUsers() {
     setDebouncedSearch("");
   };
 
-  // Create
   const submitCreate = async (data) => {
     await adminUserService.create(data);
     toast.success("Usuario creado correctamente.");
@@ -74,7 +73,6 @@ export function useAdminUsers() {
     await load(0);
   };
 
-  // Edit
   const openEdit = (user) => setEditState({ open: true, user });
   const closeEdit = () => setEditState(INITIAL_EDIT);
 
@@ -85,7 +83,6 @@ export function useAdminUsers() {
     closeEdit();
   };
 
-  // Delete
   const requestDelete = (userId) => setConfirmDeleteState({ open: true, userId });
   const closeDelete = () => setConfirmDeleteState(INITIAL_DELETE);
 

@@ -26,7 +26,6 @@ export function useCreatePost() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  //Categories load
   useEffect(() => {
     loadCategories();
   }, []);
@@ -57,12 +56,9 @@ export function useCreatePost() {
     setPost((prev) => ({ ...prev, [field]: value }));
   };
 
-  //Uploading Post
   const handleOnSubmit = async (e, initialStatus) => {
-    //Prevent default form submit
     e?.preventDefault?.();
 
-    //Form Validation
     const validation = validatePost(post, initialStatus);
 
     if (!validation.isValid) {
@@ -75,7 +71,6 @@ export function useCreatePost() {
       return;
     }
 
-    //Data Preparing
     const postData = {
       title: post.title.trim(),
       content: post.content,
@@ -85,7 +80,6 @@ export function useCreatePost() {
       focalY: post.focalY,
     };
 
-    //Sending to Service
     try {
       setSubmitting(true);
       setSubmitError(null);
@@ -96,7 +90,6 @@ export function useCreatePost() {
           initialStatus === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
         } exitosamente!`,)
 
-      //Form reset
       setPost(INITIAL_POST);
       setImage(null);
 

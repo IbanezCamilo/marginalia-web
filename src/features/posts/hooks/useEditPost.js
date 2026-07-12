@@ -136,7 +136,7 @@ export function useEditPost(id, navigate) {
           statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
         } exitosamente!`,)
 
-        navigate("/user/posts"); // Volver a la lista tras guardar
+        navigate("/user/posts"); // Back to the list after saving
       }
     } catch (error) {
       const msg = getErrorMessage(error, "No se pudo actualizar el post.");

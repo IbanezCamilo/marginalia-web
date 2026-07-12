@@ -7,7 +7,7 @@ export const MAX_SIZE = 5 * 1024 * 1024;
 export function useCoverImageUpload(onChange) {
 
   const inputFileRef = useRef(null);
-  //Execute when an archive is selected
+
   const handleImageSelect = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -22,10 +22,8 @@ export function useCoverImageUpload(onChange) {
       return;
     }
 
-    //1. Provide the archive to the parent
     onChange("image", file);
 
-    //2. Generate preview(base64) and pass it to the parent too
     const reader = new FileReader();
     reader.onload = () => {
       onChange("previewUrl", reader.result);
@@ -33,7 +31,6 @@ export function useCoverImageUpload(onChange) {
     reader.readAsDataURL(file);
   };
 
-  //Remove Image
   const handleRemoveImage = () => {
     onChange("image", null);
     onChange("previewUrl", "");
@@ -42,7 +39,6 @@ export function useCoverImageUpload(onChange) {
     }
   };
 
-  //Allows to open the file on click in the overlay or button
   const triggerFileSelect = () => {
     inputFileRef.current?.click();
   };

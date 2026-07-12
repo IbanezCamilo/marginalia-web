@@ -21,7 +21,6 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
     }
   }, [isOpen, user]);
 
-  // Handle input and changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedData((prev) => ({
@@ -30,7 +29,6 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
     }));
   };
 
-  // Save changes
   const handleSave = async () => {
     if (!editedData.name.trim()) {
       setFieldErrors({ name: "El nombre no puede estar vacío." });
@@ -57,7 +55,6 @@ export function useEditProfile( user, onSave, isOpen, onClose ){
     }
   };
 
-  // Cancel
   const handleCancel = () => {
     setEditedData({
       name: user.name,

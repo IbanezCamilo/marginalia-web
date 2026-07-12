@@ -12,7 +12,6 @@ export function useMyProfile(){
     const [deleting, setDeleting] = useState(false);
     const deletingRef = useRef(false);
 
-  //   Load profile on mount
   useEffect(() => {
     loadProfile();
   }, []);
@@ -22,10 +21,8 @@ export function useMyProfile(){
       setLoading(true);
       setError(null);
 
-      //call service
       const data = await userService.getProfile();
 
-      // Mapping backend response
       const mappedUser = {
         id: data.userId,
         name: data.name,
@@ -37,13 +34,12 @@ export function useMyProfile(){
       setUser(mappedUser);
     } catch (err) {
       setError(getErrorMessage(err, "No se pudo cargar el perfil."));
-      throw err; // Re-throw to allow further handling if needed
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle image upload
   const handleImageUpdate = async (imageFile) => {
     const response = await userService.uploadProfileImage(imageFile);
     setUser((prev) => ({ ...prev, image: response.imageUrl }));
@@ -51,7 +47,6 @@ export function useMyProfile(){
     toast.success("Imagen actualizada correctamente");
   };
 
-  // Handle image deletion
   const handleImageDelete = async () => {
     if (deletingRef.current) return;
     deletingRef.current = true;
@@ -67,7 +62,6 @@ export function useMyProfile(){
     }
   };
 
-  // Handle data update
   const handleDataUpdate = async (updatedData) => {
     try {
       const updatedUser = await userService.updateProfile(updatedData);
@@ -81,7 +75,7 @@ export function useMyProfile(){
       toast.success("Perfil actualizado correctamente");
     } catch (error) {
       setError(getErrorMessage(error, "No se pudo editar el perfil."));
-      throw error; // Re-throw to allow further handling if needed
+      throw error;
     }
   };
 

@@ -26,9 +26,6 @@ export function useMyPosts(currentPage) {
     useEffect(() => {
         loadPosts(currentPage);
     }, [currentPage]);
-    
-    //Confirm dialog State
-
 
   const loadPosts = async (page) => {
     try {
@@ -82,7 +79,6 @@ export function useMyPosts(currentPage) {
       return; // If it's a delete action, we don't need to continue to toggle status logic
     }
 
-    //initialize variables
     let newStatus = null;
     let previousPosts = null;
 
