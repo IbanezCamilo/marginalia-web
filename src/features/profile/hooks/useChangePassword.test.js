@@ -4,6 +4,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { userService } from "@/features/profile/services/userService"
 import { useChangePassword } from "./useChangePassword"
 
+vi.mock(import("@/features/auth/hooks/useAuth"), () => ({
+  useAuth: () => ({ actions: { logout: vi.fn() } }),
+}))
+
 vi.mock(import("@/features/profile/services/userService"), () => ({
   userService: { changePassword: vi.fn() },
 }))
@@ -113,7 +117,7 @@ describe("useChangePassword", () => {
     })
 
     expect(userService.changePassword).toHaveBeenCalledWith("oldpass1", "newpass1")
-    expect(toast.success).toHaveBeenCalledWith("Contraseña actualizada correctamente")
+    expect(toast.success).toHaveBeenCalledWith("Contraseña actualizada. Inicia sesión nuevamente.")
     expect(onClose).toHaveBeenCalled()
     expect(result.current.saving).toBe(false)
   })

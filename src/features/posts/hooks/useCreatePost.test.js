@@ -114,7 +114,7 @@ describe("useCreatePost", () => {
     })
 
     expect(postService.create).toHaveBeenCalledWith(
-      { title: "My Title", content: FILLED_CONTENT, categoryId: 1, status: "PUBLISHED" },
+      { title: "My Title", content: FILLED_CONTENT, categoryId: 1, status: "PUBLISHED", focalX: 0.5, focalY: 0.5 },
       null,
     )
     expect(toast.success).toHaveBeenCalledWith("Post Publicado exitosamente!")
@@ -140,7 +140,7 @@ describe("useCreatePost", () => {
     })
 
     expect(postService.create).toHaveBeenCalledWith(
-      { title: "Draft title", content: "", categoryId: null, status: "DRAFT" },
+      { title: "Draft title", content: "", categoryId: null, status: "DRAFT", focalX: 0.5, focalY: 0.5 },
       null,
     )
     expect(toast.success).toHaveBeenCalledWith("Post Guardado como borrador exitosamente!")
