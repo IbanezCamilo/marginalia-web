@@ -1,5 +1,5 @@
 <h1>
-  <img src="src/shared/components/Icons/marginalia.svg" alt="Marginalia logo" width="48" height="48" style="vertical-align:middle; margin-right:10px;">
+  <img src="src/assets/logo-source.svg" alt="Marginalia logo" width="48" height="48" style="vertical-align:middle; margin-right:10px;">
   Marginalia — Literary Blog · Frontend
 </h1>
 
@@ -26,6 +26,8 @@ User interface for **Marginalia**, a literary blogging platform. Includes a publ
 - Individual post page with rich content (sanitized HTML)
 - Author profile page with their publications
 - Browse by category
+- Unified catalog page
+- About page
 
 **Admin panel** (`/user/*`)
 - Login / register with cookie-based session (HttpOnly cookie set by the backend)
@@ -35,6 +37,8 @@ User interface for **Marginalia**, a literary blogging platform. Includes a publ
 - Draft ↔ published status toggle with Optimistic Update
 - Category management (ADMIN only)
 - Author role request management (ADMIN only)
+- User management (ADMIN only)
+- Post moderation (MODERATOR and above)
 - Editable profile: name, bio, and profile photo
 - Role system: `READER → AUTHOR → MODERATOR → ADMIN`
 
@@ -97,10 +101,12 @@ Consumed exclusively through `src/lib/config.js` (`API_URL` = `VITE_API_URL` + `
 ## Scripts
 
 ```bash
-npm run dev      # Dev server at localhost:5173
-npm run build    # Production build → dist/
-npm run preview  # Preview the production build locally
-npm run lint     # ESLint (flat config v9)
+npm run dev         # Dev server at localhost:5173
+npm run build       # Production build → dist/
+npm run preview     # Preview the production build locally
+npm run lint        # ESLint (flat config v9)
+npm run test        # Vitest, single run
+npm run test:watch  # Vitest in watch mode
 ```
 
 ## Routes
@@ -111,6 +117,8 @@ npm run lint     # ESLint (flat config v9)
 | `/post/:slug` | Public | Individual post |
 | `/author/:authorId` | Public | Public author profile |
 | `/categoria/:slug` | Public | Posts by category |
+| `/catalog` | Public | Unified catalog |
+| `/about` | Public | About page |
 | `/auth/login` | Public | Sign in |
 | `/auth/register` | Public | Sign up |
 | `/user/dashboard` | AUTHOR+ | Post statistics |
@@ -119,8 +127,10 @@ npm run lint     # ESLint (flat config v9)
 | `/user/edit-post/:id` | AUTHOR+ | Edit existing post |
 | `/user/profile` | All | Profile and photo |
 | `/user/author-request` | READER | Request author role |
+| `/user/moderacion` | MODERATOR+ | Post moderation |
 | `/user/categories` | ADMIN | Category management |
 | `/user/solicitudes` | ADMIN | Author request management |
+| `/user/usuarios` | ADMIN | User management |
 
 ## Screenshots
 
