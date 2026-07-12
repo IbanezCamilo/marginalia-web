@@ -1,14 +1,10 @@
 # Product
 
-## Register
-
-both
-
 ## Users
 
-**Lectores literarios** — people with genuine interest in literature who read carefully, save texts, and return. They arrive with intention, not by accident. They notice typography, appreciate unhurried layout, and expect the reading experience to honor the writing.
+**Literary readers** — people with genuine interest in literature who read carefully, save texts, and return. They arrive with intention, not by accident. They notice typography, appreciate unhurried layout, and expect the reading experience to honor the writing.
 
-**Escritores/autores** — writers who publish their work through the admin panel. They spend real time inside the editor: drafting, revising, categorizing, managing their archive. The authoring workspace must feel as considered as the reading side, not like a utility bolted on.
+**Writers/authors** — writers who publish their work through the admin panel. They spend real time inside the editor: drafting, revising, categorizing, managing their archive. The authoring workspace must feel as considered as the reading side, not like a utility bolted on.
 
 Both groups share a context: they are comfortable with language, attentive to craft, and would notice if the product felt careless.
 
@@ -20,7 +16,7 @@ Success looks like: a writer feeling proud to share their Marginalia URL; a read
 
 ## Brand Personality
 
-Cálido, curioso, accesible.
+Warm, curious, accessible.
 
 Warm but never cozy-kitsch. Curious in the sense of a reader who underlines passages. Accessible meaning literature should feel inviting, not exclusive — this is not a site for gatekeepers.
 
@@ -34,15 +30,15 @@ Generic WordPress blog aesthetics — sidebar layouts, widget stacks, post-count
 
 ## Design Principles
 
-**El texto manda.** Typography carries the experience. Every layout decision defers to readability and rhythm. Decorative elements exist only when they serve the writing, never the other way around.
+**The text rules.** Typography carries the experience. Every layout decision defers to readability and rhythm. Decorative elements exist only when they serve the writing, never the other way around.
 
-**Leer y escribir comparten ADN.** The public reading experience and the authoring workspace share the same visual language. Writers should feel the same warmth in the editor that readers feel on the blog. No jarring context switch.
+**Reading and writing share DNA.** The public reading experience and the authoring workspace share the same visual language. Writers should feel the same warmth in the editor that readers feel on the blog. No jarring context switch.
 
-**Luz y sombra en equilibrio.** Neither light nor dark mode is the default aesthetic. Both are designed with equal intention — light for the day reader who wants clarity and warmth, dark for the night reader who wants immersion. Neither is a fallback of the other.
+**Light and shadow in balance.** Neither light nor dark mode is the default aesthetic. Both are designed with equal intention — light for the day reader who wants clarity and warmth, dark for the night reader who wants immersion. Neither is a fallback of the other.
 
-**Accesible sin renunciar a la calidad.** WCAG AA is the baseline, not a constraint. High contrast, readable type, and keyboard navigability make the experience better for everyone, not just users with specific needs.
+**Accessible without sacrificing quality.** WCAG AA is the baseline, not a constraint. High contrast, readable type, and keyboard navigability make the experience better for everyone, not just users with specific needs.
 
-**La plataforma desaparece.** Marginalia should feel invisible when it's working. No chrome competing with the content, no affordances demanding attention. The writer's words are the product.
+**The platform disappears.** Marginalia should feel invisible when it's working. No chrome competing with the content, no affordances demanding attention. The writer's words are the product.
 
 ## Accessibility & Inclusion
 
