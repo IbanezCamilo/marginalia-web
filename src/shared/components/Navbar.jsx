@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { LogIn, LogOut, Menu, PenSquare, UserRound, X } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import Logo from "./logo";
+import Logo from "./Logo";
 import AccountMenu from "./AccountMenu";
 import ThemeToggle from "./ThemeToggle";
 
@@ -35,11 +35,9 @@ export default function Navbar() {
           className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8"
         >
           <div className="flex items-center gap-6">
-            <Link to="/" className="group flex items-center gap-3">
-              <span className="grid size-9 place-items-center rounded-md border border-stone-300 bg-stone-950 text-white dark:border-stone-600 dark:bg-stone-800">
-                <Logo size={30} aria-hidden="true" />
-              </span>
-              <span className="font-serif text-xl text-stone-950 transition-colors group-hover:text-rose-800 dark:text-stone-50 dark:group-hover:text-rose-400">
+            <Link to="/" className="group flex items-center gap-2">
+              <Logo size={40} aria-hidden="true" className="shrink-0 text-[#be163d] transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400" />
+              <span className="font-serif text-xl text-[#be163d] transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400">
                 Marginalia
               </span>
             </Link>
@@ -48,10 +46,11 @@ export default function Navbar() {
               <li>
                 <NavLink
                   to="/"
+                  end
                   className={({ isActive }) =>
                     `text-sm font-medium transition-colors ${
                       isActive
-                        ? "text-rose-800 dark:text-rose-400"
+                        ? "text-stone-950 underline underline-offset-6 decoration-[1.5px] decoration-rose-500 dark:text-stone-100 dark:decoration-rose-400"
                         : "text-stone-600 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-100"
                     }`
                   }
@@ -60,12 +59,18 @@ export default function Navbar() {
                 </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to="/catalog"
-                  className="text-sm font-medium text-stone-600 transition-colors hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-100"
+                  className={({ isActive }) =>
+                    `text-sm font-medium transition-colors ${
+                      isActive
+                        ? "text-stone-950 underline underline-offset-6 decoration-[1.5px] decoration-rose-500 dark:text-stone-100 dark:decoration-rose-400"
+                        : "text-stone-600 hover:text-stone-950 dark:text-stone-400 dark:hover:text-stone-100"
+                    }`
+                  }
                 >
                   Catálogo
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -101,7 +106,6 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Mobile nav overlay */}
       {mobileOpen && (
         <div
           className="fixed inset-0 z-50 md:hidden"
@@ -135,11 +139,12 @@ export default function Navbar() {
               <li>
                 <NavLink
                   to="/"
+                  end
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
                     `block rounded-md px-4 py-3 text-sm font-medium transition-colors ${
                       isActive
-                        ? "bg-stone-100 text-rose-800 dark:bg-stone-800 dark:text-rose-400"
+                        ? "bg-stone-100 text-stone-950 dark:bg-stone-800 dark:text-stone-50"
                         : "text-stone-700 hover:bg-stone-50 hover:text-stone-950 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-50"
                     }`
                   }
@@ -148,13 +153,19 @@ export default function Navbar() {
                 </NavLink>
               </li>
               <li>
-                <Link
+                <NavLink
                   to="/catalog"
                   onClick={() => setMobileOpen(false)}
-                  className="block rounded-md px-4 py-3 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50 hover:text-stone-950 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-50"
+                  className={({ isActive }) =>
+                    `block rounded-md px-4 py-3 text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-stone-100 text-stone-950 dark:bg-stone-800 dark:text-stone-50"
+                        : "text-stone-700 hover:bg-stone-50 hover:text-stone-950 dark:text-stone-300 dark:hover:bg-stone-800 dark:hover:text-stone-50"
+                    }`
+                  }
                 >
                   Catálogo
-                </Link>
+                </NavLink>
               </li>
             </ul>
 

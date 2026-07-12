@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Logo from "@/shared/components/logo";
+import Logo from "@/shared/components/Logo";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { ROLE_LEVEL } from "@/utils/roles";
 
@@ -82,11 +82,9 @@ export default function SidebarCollapsible({
       >
         <div className="flex h-16 items-center justify-between border-b border-stone-200 dark:border-stone-800 px-3">
           {!isCollapsed && (
-            <Link to="/" className="group flex items-center gap-3 p-2">
-              <span className="grid size-9 place-items-center rounded-md border border-stone-300 dark:border-stone-600 bg-stone-950 dark:bg-stone-800 text-white transition-colors group-hover:bg-rose-900">
-                <Logo size={30} />
-              </span>
-              <span className="font-serif text-xl text-stone-950 dark:text-stone-50">
+            <Link to="/" className="group flex items-center gap-2 p-2">
+              <Logo size={40} className="shrink-0 text-[#be163d] transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400" />
+              <span className="font-serif text-xl text-[#be163d] transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400">
                 Marginalia
               </span>
             </Link>
@@ -131,11 +129,9 @@ export default function SidebarCollapsible({
         }`}
       >
         <div className="flex h-16 items-center justify-between border-b border-stone-200 dark:border-stone-800 px-4">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="grid size-9 place-items-center rounded-md border border-stone-300 dark:border-stone-600 bg-stone-950 dark:bg-stone-800 text-white">
-              <Logo size={30} />
-            </span>
-            <span className="font-serif text-xl text-stone-950 dark:text-stone-50">
+          <Link to="/" className="group flex items-center gap-2">
+            <Logo size={40} className="shrink-0 text-[#be163d] transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400" />
+            <span className="font-serif text-xl text-[#be163d] transition-colors group-hover:text-rose-800 dark:group-hover:text-rose-400">
               Marginalia
             </span>
           </Link>
