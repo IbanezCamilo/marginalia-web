@@ -23,7 +23,6 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          {/* Nombre */}
           <div className="space-y-2">
             <Label htmlFor="name">Nombre completo</Label>
             <Input
@@ -39,7 +38,6 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
             <FieldError id="name-error">{fieldErrors.name}</FieldError>
           </div>
 
-          {/* Email (solo lectura) */}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -53,7 +51,6 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
             </p>
           </div>
 
-          {/* Biografía */}
           <div className="space-y-2">
             <Label htmlFor="description">Biografía</Label>
             <Textarea
@@ -71,7 +68,6 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
             </p>
           </div>
 
-          {/* Botones */}
           <div className="flex gap-3 pt-4">
             <Button
               onClick={handleSave}

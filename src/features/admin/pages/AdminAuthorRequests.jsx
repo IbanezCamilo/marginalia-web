@@ -84,7 +84,6 @@ export default function AdminAuthorRequests() {
   return (
     <div className="mx-auto max-w-6xl">
 
-      {/* Resolve dialog */}
       <Dialog open={resolveState.open} onOpenChange={(open) => !open && closeResolve()}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -154,7 +153,6 @@ export default function AdminAuthorRequests() {
         </DialogContent>
       </Dialog>
 
-      {/* Header */}
       <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -172,7 +170,6 @@ export default function AdminAuthorRequests() {
             </p>
           </div>
 
-          {/* Filter tabs */}
           <div className="flex gap-2">
             <Button
               size="sm"
@@ -200,7 +197,6 @@ export default function AdminAuthorRequests() {
         </div>
       </div>
 
-      {/* Empty state */}
       {requests.length === 0 ? (
         <EmptyState
           icon={ClipboardList}
@@ -291,7 +287,6 @@ export default function AdminAuthorRequests() {
             </Table>
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
               <span>

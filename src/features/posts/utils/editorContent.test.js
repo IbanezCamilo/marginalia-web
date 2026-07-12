@@ -9,7 +9,6 @@ import {
 
 const EMPTY_DOC = { type: "doc", content: [{ type: "paragraph" }] };
 
-// helpers
 const doc = (...nodes) => ({ type: "doc", content: nodes });
 const p = (children = []) => ({ type: "paragraph", content: children });
 const pText = (text) => p([{ type: "text", text }]);
@@ -30,8 +29,6 @@ const orderedList = (startNum, ...items) => ({
   attrs: { start: startNum },
   content: items,
 });
-
-// ─── parseEditorContent ─────────────────────────────────────────────────────
 
 describe("parseEditorContent", () => {
   it("returns EMPTY_DOCUMENT for null", () => {
@@ -66,16 +63,12 @@ describe("parseEditorContent", () => {
   });
 });
 
-// ─── serializeEditorContent ─────────────────────────────────────────────────
-
 describe("serializeEditorContent", () => {
   it("returns JSON-stringified result of editor.getJSON()", () => {
     const editorMock = { getJSON: () => ({ type: "doc", content: [] }) };
     expect(serializeEditorContent(editorMock)).toBe('{"type":"doc","content":[]}');
   });
 });
-
-// ─── editorContentToHtml ────────────────────────────────────────────────────
 
 describe("editorContentToHtml", () => {
   describe("edge cases", () => {
@@ -266,8 +259,6 @@ describe("editorContentToHtml", () => {
   });
 });
 
-// ─── editorContentToText ────────────────────────────────────────────────────
-
 describe("editorContentToText", () => {
   it("extracts plain text from a JSON doc", () => {
     expect(editorContentToText(doc(pText("Hello world")))).toBe("Hello world");
@@ -291,8 +282,6 @@ describe("editorContentToText", () => {
     expect(editorContentToText(null)).toBe("");
   });
 });
-
-// ─── isEditorContentEmpty ───────────────────────────────────────────────────
 
 describe("isEditorContentEmpty", () => {
   it("returns true for null", () => {

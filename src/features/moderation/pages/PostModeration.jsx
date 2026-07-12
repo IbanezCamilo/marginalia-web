@@ -270,7 +270,6 @@ export default function PostModeration() {
         variant="destructive"
       />
 
-      {/* Header */}
       <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -288,7 +287,6 @@ export default function PostModeration() {
             </p>
           </div>
 
-          {/* Filter tabs */}
           <div className="flex flex-wrap gap-2">
             {FILTER_TABS.filter((tab) => !tab.adminOnly || isAdmin).map((tab) => (
               <Button
@@ -308,7 +306,6 @@ export default function PostModeration() {
         </div>
       </div>
 
-      {/* Empty state */}
       {posts.length === 0 ? (
         <EmptyState
           icon={ShieldCheck}
@@ -400,7 +397,6 @@ export default function PostModeration() {
             </Table>
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
               <span>

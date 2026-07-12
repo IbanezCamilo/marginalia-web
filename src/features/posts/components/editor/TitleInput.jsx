@@ -3,7 +3,7 @@ import { useRef, useEffect } from "react";
 export default function TitleInput({ value, onChange, readOnly = false }) {
   const textareaRef = useRef(null);
 
-  //Auto-resize while writing
+  // Auto-resize the textarea to fit its content as the title grows
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {

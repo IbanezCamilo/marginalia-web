@@ -51,7 +51,6 @@ export default function AuthorRequestPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6 p-6">
 
-      {/* Header */}
       <div className="rounded-xl border border-stone-200 bg-surface-warm p-6 sm:p-8 dark:border-stone-800">
         <div className="flex items-start gap-4">
           <span className="grid size-12 shrink-0 place-items-center rounded-lg border border-stone-200 bg-stone-50 dark:border-stone-800 dark:bg-stone-800">
@@ -71,7 +70,6 @@ export default function AuthorRequestPage() {
         </div>
       </div>
 
-      {/* PENDING state */}
       {isPending && (
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 dark:border-amber-900 dark:bg-amber-950">
           <div className="flex items-start gap-3">
@@ -105,7 +103,6 @@ export default function AuthorRequestPage() {
         </div>
       )}
 
-      {/* REJECTED notice */}
       {isRejected && (
         <div className="rounded-xl border border-rose-200 bg-rose-50 p-6 dark:border-rose-900 dark:bg-rose-950">
           <div className="flex items-start gap-3">
@@ -130,7 +127,6 @@ export default function AuthorRequestPage() {
         </div>
       )}
 
-      {/* Form */}
       {showForm && (
         <div className="rounded-xl border border-stone-200 bg-white p-6 sm:p-8 dark:border-stone-800 dark:bg-stone-900">
           <div className="space-y-5">
@@ -190,7 +186,6 @@ export default function AuthorRequestPage() {
         </div>
       )}
 
-      {/* History */}
       {history.length > 0 && (
         <div className="rounded-xl border border-stone-200 bg-white p-6 sm:p-8 dark:border-stone-800 dark:bg-stone-900">
           <h2 className="font-serif text-xl text-stone-950 dark:text-stone-50">Historial de solicitudes</h2>

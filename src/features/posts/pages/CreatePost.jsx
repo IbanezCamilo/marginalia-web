@@ -37,7 +37,6 @@ export default function CreatePost() {
     );
   }
 
-  // Error al cargar categorías
   if (loadError) {
     return (
       <div className="max-w-6xl mx-auto p-4">
@@ -53,20 +52,16 @@ export default function CreatePost() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/**Fixed Header */}
       <EditorTopbar
         onSaveDraft={(e) => handleOnSubmit(e, "DRAFT")}
         onPublish={(e) => handleOnSubmit(e, "PUBLISHED")}
         submitting={submitting}
         hasChanges={Boolean(post.title) || !isEditorContentEmpty(post.content)}
       />
-      {/**Main Layout: Editor + SideBar */}
       <div className="flex flex-col lg:flex-row pt-16 gap-8">
-        {/**"Main container */}
         <main className="flex-1 max-w-4xl mx-auto px-8 py-6 bg-card p-6 rounded-sm shadow-sm">
           <PostEditor post={post} onChange={handleChange} />
 
-          {/* Error message if exist */}
           {submitError && (
             <div className="mt-4 p-3 bg-destructive/10 border border-destructive/30 rounded-lg">
               <p className="text-destructive text-sm whitespace-pre-line">
@@ -76,7 +71,6 @@ export default function CreatePost() {
           )}
         </main>
 
-        {/* Fixed Right Sidebar */}
         <aside
           className="
         lg:w-80 bg-card border-t lg:border-t-0 lg:border-l border-border rounded-sm lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] overflow-y-auto"

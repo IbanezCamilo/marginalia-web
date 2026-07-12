@@ -103,7 +103,6 @@ export default function AdminUsers() {
         variant="destructive"
       />
 
-      {/* Header */}
       <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -131,7 +130,6 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {/* Filters */}
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="relative max-w-sm">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -161,7 +159,6 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {/* Empty state */}
       {users.length === 0 ? (
         <EmptyState
           icon={UserCog}
@@ -210,7 +207,6 @@ export default function AdminUsers() {
             </Table>
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
               <span>

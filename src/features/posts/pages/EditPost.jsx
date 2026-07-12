@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useEditPost } from "@/features/posts/hooks/useEditPost";
 
 export default function EditPost() {
-  const { id } = useParams(); //Extract the :id from URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const {
     post,
@@ -67,8 +67,6 @@ export default function EditPost() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Fixed Header */}
-
       <EditorHeader
         onSaveDraft={(e) => handleOnSubmit(e, "DRAFT")}
         onPublish={(e) => handleOnSubmit(e, "PUBLISHED")}
@@ -78,13 +76,10 @@ export default function EditPost() {
         status={post?.status}
       />
 
-      {/* Main Layout: Editor + SideBar */}
       <div className="flex flex-col lg:flex-row pt-16 gap-8">
-        {/* Main container */}
         <main className="flex-1 max-w-4xl mx-auto px-8 py-6 bg-card p-6 rounded-sm shadow-sm">
           <PostEditor key={id} post={post} onChange={handleChange} readOnly={isArchived} />
 
-          {/* Error de submit */}
           {submitError && (
             <div className="mt-4 p-3 bg-destructive/10 border border-destructive/30 rounded-lg">
               <p className="text-destructive text-sm whitespace-pre-line">
@@ -94,7 +89,6 @@ export default function EditPost() {
           )}
         </main>
 
-        {/* Fixed Right Sidebar */}
         <aside className="lg:w-80 bg-card border-t lg:border-t-0 lg:border-l border-border rounded-sm lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] overflow-y-auto">
           <SideBarSettings
             categories={categories}

@@ -4,25 +4,22 @@ import Navbar from "@/shared/components/Navbar";
 import Footer from "@/shared/components/Footer";
 
 export default function NotFoundPage() {
-  // useRouteError permite capturar tanto errores de rutas (404)
-  // como errores de carga de datos (loaders). Si no hay error de ruta
-  // (uso directo del componente), simplemente muestra el 404.
+  // useRouteError captures both route errors (404) and data-loading errors
+  // (loaders). If there is no route error (component used directly), it simply
+  // shows the 404.
   return (
     <>
       <Navbar />
 
       <main className="flex min-h-[calc(100vh-4rem-1px)] flex-col items-center justify-center bg-stone-50/40 px-5 py-24 text-center">
-        {/* Número grande decorativo */}
         <p className="font-serif text-[9rem] font-bold leading-none text-stone-100 select-none sm:text-[12rem]">
           404
         </p>
 
-        {/* Icono editorial */}
         <div className="-mt-10 mb-6 grid size-14 place-items-center rounded-md border border-stone-300 bg-stone-950 text-white sm:-mt-14">
           <PenLine size={22} strokeWidth={1.6} />
         </div>
 
-        {/* Título y descripción */}
         <h1 className="font-serif text-4xl text-stone-950 sm:text-5xl">
           Página no encontrada
         </h1>
@@ -33,7 +30,6 @@ export default function NotFoundPage() {
           blanco del archivo.
         </p>
 
-        {/* Acciones */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
           <Link
             to="/"

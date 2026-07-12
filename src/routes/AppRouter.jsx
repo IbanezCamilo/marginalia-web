@@ -29,10 +29,8 @@ export const router = createBrowserRouter([
     // without changing any existing path.
     errorElement: <ErrorPage />,
     children: [
-      //Public home route
       { path: "/", element: <App /> },
 
-      //Auth routes
       {
         path: "/auth",
         children: [
@@ -41,37 +39,31 @@ export const router = createBrowserRouter([
         ],
       },
 
-      //Public post page
       {
         path: "/post/:slug",
         element: <PostPage />,
       },
 
-      //Public author page
       {
         path: "/author/:authorId",
         element: <AuthorPage/>,
       },
 
-      // Public category page
       {
         path: "/categoria/:slug",
         element: <CategoryPage />,
       },
 
-      // Public unified catalog
       {
         path: "/catalog",
         element: <CatalogPage />,
       },
 
-      // Public about page
       {
         path: "/about",
         element: <AboutPage />,
       },
 
-      //Private routes
       {
         path: "/user",
         element: <PrivateRoute />,
@@ -104,7 +96,6 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // Catch-all 404
       {
         path: "*",
         element: <NotFoundPage />,

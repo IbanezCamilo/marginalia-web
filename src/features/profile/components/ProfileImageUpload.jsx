@@ -33,7 +33,6 @@ export default function ProfileImageUpload({
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {/* Preview de la imagen */}
           <div className="flex justify-center">
             <div className="relative">
               <img
@@ -42,7 +41,6 @@ export default function ProfileImageUpload({
                 className="w-48 h-48 rounded-full object-cover border-4 border-border shadow-lg"
               />
 
-              {/* Botón de selección superpuesto */}
               <label
                 htmlFor="image-upload-input"
                 className="absolute inset-0 flex items-center justify-center rounded-full transition-all cursor-pointer group hover:bg-black/40"

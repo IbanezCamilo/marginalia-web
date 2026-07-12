@@ -37,7 +37,6 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
         </DialogHeader>
 
         <div className="space-y-4 py-4">
-          {/* Contraseña actual */}
           <div className="space-y-2">
             <Label htmlFor="currentPassword">Contraseña actual</Label>
             <div className="relative">
@@ -66,7 +65,6 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
             <FieldError id="currentPassword-error">{fieldErrors.currentPassword}</FieldError>
           </div>
 
-          {/* Nueva contraseña */}
           <div className="space-y-2">
             <Label htmlFor="newPassword">Nueva contraseña</Label>
             <div className="relative">
@@ -95,7 +93,6 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
             <FieldError id="newPassword-error">{fieldErrors.newPassword}</FieldError>
           </div>
 
-          {/* Confirmar nueva contraseña */}
           <div className="space-y-2">
             <Label htmlFor="confirmNewPassword">Confirmar nueva contraseña</Label>
             <div className="relative">
@@ -124,7 +121,6 @@ export default function ChangePasswordDialog({ isOpen, onClose }) {
             <FieldError id="confirmNewPassword-error">{fieldErrors.confirmNewPassword}</FieldError>
           </div>
 
-          {/* Botones */}
           <div className="flex gap-3 pt-4">
             <Button
               onClick={handleSave}

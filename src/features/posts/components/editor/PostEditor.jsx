@@ -13,7 +13,6 @@ export default function PostEditor({ post, onChange, readOnly = false }) {
         onChange={onChange}
         readOnly={readOnly}
       />
-      {/* Title */}
       <TitleInput
         value={post.title}
         onChange={(value) => onChange("title", value)}
