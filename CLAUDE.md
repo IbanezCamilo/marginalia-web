@@ -9,9 +9,11 @@ npm run dev          # dev server at http://localhost:5173
 npm run build        # production build → dist/
 npm run lint         # ESLint (flat config, no --fix by default)
 npm run preview      # preview production build locally
+npm run test         # Vitest, single run (vitest run)
+npm run test:watch   # Vitest in watch mode
 ```
 
-No test runner is configured. ESLint uses the v9 flat config format (`eslint.config.js`).
+Tests run on **Vitest** with Testing Library + jsdom (config lives in the `test` block of `vite.config.js`; global setup in `src/test/setup.js`). ESLint uses the v9 flat config format (`eslint.config.js`).
 
 ## Environment Variables
 
@@ -25,7 +27,7 @@ Read through `src/lib/config.js` (`API_URL` = `VITE_API_URL` + `/api`, `BASE_URL
 
 ## Architecture
 
-**Feature-based** structure under `src/features/` (auth, posts, categories, dashboard, profile, authors). Each feature owns its pages, components, services, and hooks. Public top-level pages live in `src/pages/`.
+**Feature-based** structure under `src/features/` (admin, auth, authorRequest, authors, categories, dashboard, moderation, posts, profile). Each feature owns its pages, components, services, and hooks. Public top-level pages live in `src/pages/`.
 
 Path alias `@` maps to `src/`.
 
