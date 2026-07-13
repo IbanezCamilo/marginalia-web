@@ -330,6 +330,9 @@ export default function PostModeration() {
                   <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground md:table-cell">
                     Moderado por
                   </TableHead>
+                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground md:table-cell">
+                    Nota
+                  </TableHead>
                   <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:table-cell">
                     Creado
                   </TableHead>
@@ -373,6 +376,13 @@ export default function PostModeration() {
                             <div>{post.moderatedByName}</div>
                             <div className="text-xs text-muted-foreground">{formatDate(post.moderatedAt)}</div>
                           </>
+                        ) : (
+                          "—"
+                        )}
+                      </TableCell>
+                      <TableCell className="hidden max-w-xs px-6 py-4 text-sm text-muted-foreground md:table-cell">
+                        {post.moderationNote ? (
+                          <span className="block whitespace-pre-line break-words">{post.moderationNote}</span>
                         ) : (
                           "—"
                         )}

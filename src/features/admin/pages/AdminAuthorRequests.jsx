@@ -225,6 +225,9 @@ export default function AdminAuthorRequests() {
                   <TableHead className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
                     Estado
                   </TableHead>
+                  <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground lg:table-cell">
+                    Nota
+                  </TableHead>
                   <TableHead className="hidden px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:table-cell">
                     Fecha
                   </TableHead>
@@ -254,6 +257,13 @@ export default function AdminAuthorRequests() {
                       >
                         {STATUS_LABEL[req.status] ?? req.status}
                       </span>
+                    </TableCell>
+                    <TableCell className="hidden max-w-xs px-6 py-4 text-sm text-muted-foreground lg:table-cell">
+                      {req.adminNote ? (
+                        <span className="block whitespace-pre-line break-words">{req.adminNote}</span>
+                      ) : (
+                        "—"
+                      )}
                     </TableCell>
                     <TableCell className="hidden px-6 py-4 text-sm text-muted-foreground sm:table-cell">
                       {formatDate(req.createdAt)}
