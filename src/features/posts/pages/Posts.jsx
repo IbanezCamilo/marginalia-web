@@ -2,7 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Plus } from "lucide-react";
 import PostListItemCard from "@/features/posts/components/PostListItemCard.jsx";
+import PostListItemSkeleton from "@/features/posts/components/PostListItemSkeleton.jsx";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { PageError } from "@/shared/components/PageError";
 import { EmptyState } from "@/shared/components/EmptyState";
@@ -25,19 +27,6 @@ export default function Posts() {
     handleConfirm,
     loadPosts,
   } = useMyPosts(currentPage);
-
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-5xl space-y-4">
-        {[1, 2, 3].map((item) => (
-          <div
-            key={item}
-            className="h-36 animate-pulse rounded-md border border-border bg-card"
-          />
-        ))}
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -69,8 +58,13 @@ export default function Posts() {
             <h1 className="mt-2 font-serif text-4xl text-foreground">
               Mis Posts
             </h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {totalElements} publicaciones creadas en tu cuenta.
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
+              {loading ? (
+                <Skeleton className="h-4 w-6 rounded" />
+              ) : (
+                totalElements
+              )}{" "}
+              publicaciones creadas en tu cuenta.
             </p>
           </div>
           <Button asChild className="bg-rose-700 hover:bg-rose-800">
@@ -82,7 +76,13 @@ export default function Posts() {
         </div>
       </div>
 
-      {posts.length === 0 ? (
+      {loading ? (
+        <div className="flex flex-col gap-4">
+          {[1, 2, 3].map((item) => (
+            <PostListItemSkeleton key={item} />
+          ))}
+        </div>
+      ) : posts.length === 0 ? (
         <EmptyState
           icon={FileText}
           title="Aun no tienes posts"

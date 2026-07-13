@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/table";
 import { PageError } from "@/shared/components/PageError";
 import { EmptyState } from "@/shared/components/EmptyState";
+import { TableSkeleton } from "@/shared/components/TableSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAdminAuthorRequests } from "@/features/admin/hooks/useAdminAuthorRequests";
 
 const STATUS_BADGE = {
@@ -32,6 +34,16 @@ const STATUS_LABEL = {
   APPROVED: "Aprobado",
   REJECTED: "Rechazado",
 };
+
+const SKELETON_COLUMNS = [
+  { label: "Solicitante", barClass: "h-4 w-28" },
+  { label: "Email", barClass: "h-4 w-40" },
+  { label: "Motivación", responsive: "hidden lg:table-cell", barClass: "h-4 w-32" },
+  { label: "Estado", barClass: "h-6 w-16 rounded-full" },
+  { label: "Nota", responsive: "hidden lg:table-cell", barClass: "h-4 w-24" },
+  { label: "Fecha", responsive: "hidden sm:table-cell", barClass: "h-4 w-20" },
+  { label: "Acciones", barClass: "h-7 w-24" },
+];
 
 const formatDate = (dateStr) =>
   dateStr
@@ -61,14 +73,6 @@ export default function AdminAuthorRequests() {
     confirmResolve,
     setResolveState,
   } = useAdminAuthorRequests();
-
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-6xl">
-        <div className="h-80 animate-pulse rounded-md border border-border bg-card" />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -162,7 +166,7 @@ export default function AdminAuthorRequests() {
             <h1 className="mt-2 font-serif text-4xl text-foreground">
               Solicitudes de autoría
               <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                {totalElements}
+                {loading ? <Skeleton className="h-4 w-5 rounded-full" /> : totalElements}
               </span>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -197,7 +201,9 @@ export default function AdminAuthorRequests() {
         </div>
       </div>
 
-      {requests.length === 0 ? (
+      {loading ? (
+        <TableSkeleton columns={SKELETON_COLUMNS} rows={6} />
+      ) : requests.length === 0 ? (
         <EmptyState
           icon={ClipboardList}
           title={statusFilter === "PENDING" ? "No hay solicitudes pendientes" : "No hay solicitudes"}

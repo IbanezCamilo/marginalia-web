@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { PageError } from "@/shared/components/PageError";
 import { EmptyState } from "@/shared/components/EmptyState";
+import { TableSkeleton } from "@/shared/components/TableSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useAdminUsers } from "@/features/admin/hooks/useAdminUsers";
 import CreateUserDialog from "@/features/admin/components/CreateUserDialog";
@@ -23,6 +25,14 @@ const ROLE_TABS = [
   { value: "AUTHOR", label: "Autores" },
   { value: "MODERATOR", label: "Moderadores" },
   { value: "READER", label: "Lectores" },
+];
+
+const SKELETON_COLUMNS = [
+  { label: "Nombre", barClass: "h-4 w-32" },
+  { label: "Email", barClass: "h-4 w-40" },
+  { label: "Rol", barClass: "h-6 w-16 rounded-full" },
+  { label: "Creado", barClass: "h-4 w-20" },
+  { label: "", barClass: "h-8 w-8" },
 ];
 
 export default function AdminUsers() {
@@ -52,14 +62,6 @@ export default function AdminUsers() {
     closeDelete,
     confirmDelete,
   } = useAdminUsers();
-
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-6xl">
-        <div className="h-80 animate-pulse rounded-md border border-border bg-card" />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -112,7 +114,7 @@ export default function AdminUsers() {
             <h1 className="mt-2 font-serif text-4xl text-foreground">
               Usuarios
               <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                {totalElements}
+                {loading ? <Skeleton className="h-4 w-5 rounded-full" /> : totalElements}
               </span>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -159,7 +161,9 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {users.length === 0 ? (
+      {loading ? (
+        <TableSkeleton columns={SKELETON_COLUMNS} rows={6} />
+      ) : users.length === 0 ? (
         <EmptyState
           icon={UserCog}
           title="No se encontraron usuarios"

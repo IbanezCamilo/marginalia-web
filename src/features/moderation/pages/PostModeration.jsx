@@ -20,6 +20,8 @@ import {
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { PageError } from "@/shared/components/PageError";
 import { EmptyState } from "@/shared/components/EmptyState";
+import { TableSkeleton } from "@/shared/components/TableSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getPostStatusConfig } from "@/features/posts/utils/postStatus";
 import { usePostModeration } from "@/features/moderation/hooks/usePostModeration";
 import PostModerationRowActions from "@/features/moderation/components/PostModerationRowActions";
@@ -29,6 +31,16 @@ const FILTER_TABS = [
   { value: "PUBLISHED", label: "Publicado" },
   { value: "REJECTED", label: "Rechazado" },
   { value: "ARCHIVED", label: "Archivado", adminOnly: true },
+];
+
+const SKELETON_COLUMNS = [
+  { label: "Título", barClass: "h-5 w-40" },
+  { label: "Autor", barClass: "h-4 w-28" },
+  { label: "Categoría", responsive: "hidden lg:table-cell" },
+  { label: "Moderado por", responsive: "hidden md:table-cell" },
+  { label: "Nota", responsive: "hidden md:table-cell", barClass: "h-4 w-32" },
+  { label: "Creado", responsive: "hidden sm:table-cell", barClass: "h-4 w-20" },
+  { label: "Acciones", barClass: "h-8 w-16" },
 ];
 
 const MODERATION_COPY = {
@@ -104,14 +116,6 @@ export default function PostModeration() {
     closeDelete,
     confirmDelete,
   } = usePostModeration();
-
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-6xl">
-        <div className="h-80 animate-pulse rounded-md border border-border bg-card" />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -279,7 +283,7 @@ export default function PostModeration() {
             <h1 className="mt-2 font-serif text-4xl text-foreground">
               Revisión de posts
               <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                {totalElements}
+                {loading ? <Skeleton className="h-4 w-5 rounded-full" /> : totalElements}
               </span>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -306,7 +310,9 @@ export default function PostModeration() {
         </div>
       </div>
 
-      {posts.length === 0 ? (
+      {loading ? (
+        <TableSkeleton columns={SKELETON_COLUMNS} rows={6} />
+      ) : posts.length === 0 ? (
         <EmptyState
           icon={ShieldCheck}
           title="No hay posts en esta categoría"

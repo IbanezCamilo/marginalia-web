@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/shared/components/ConfirmDialog";
 import { PageError } from "@/shared/components/PageError";
 import { EmptyState } from "@/shared/components/EmptyState";
+import { TableSkeleton } from "@/shared/components/TableSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useCategories } from "../hooks/useCategories";
 import CreateCategoryDialog from "../components/CreateCategory";
 import CategoryRow from "../components/CategoryRow";
@@ -14,6 +16,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
+const SKELETON_COLUMNS = [
+  { label: "Nombre", barClass: "h-4 w-32" },
+  { label: "Slug", barClass: "h-5 w-24 rounded-full" },
+  { label: "Creado", barClass: "h-4 w-20" },
+  { label: "", barClass: "h-8 w-8" },
+];
 
 export default function Categories() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -29,14 +38,6 @@ export default function Categories() {
     handleConfirmDelete,
     loadCategories,
   } = useCategories();
-
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-6xl">
-        <div className="h-80 animate-pulse rounded-md border border-border bg-card" />
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -73,7 +74,7 @@ export default function Categories() {
             <h1 className="mt-2 font-serif text-4xl text-foreground">
               Categorias
               <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                {categories.length}
+                {loading ? <Skeleton className="h-4 w-5 rounded-full" /> : categories.length}
               </span>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -91,7 +92,9 @@ export default function Categories() {
         </div>
       </div>
 
-      {categories.length === 0 ? (
+      {loading ? (
+        <TableSkeleton columns={SKELETON_COLUMNS} rows={6} />
+      ) : categories.length === 0 ? (
         <EmptyState
           icon={Folder}
           title="Aun no hay categorias"
