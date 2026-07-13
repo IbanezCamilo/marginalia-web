@@ -122,7 +122,7 @@ export default function VerifyEmailPage() {
             <div className="space-y-5">
               <p className="flex items-center gap-2 text-sm text-muted-foreground">
                 <CheckCircle2 size={15} className="text-rose-600 shrink-0" />
-                Ya puedes iniciar sesión con tu cuenta.
+                Ya puedes iniciar sesión. Te llevaremos allí en unos segundos.
               </p>
               <Button
                 asChild
