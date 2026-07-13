@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService } from "@/features/profile/services/userService";
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { getErrorMessage } from "@/lib/apiError";
 
 export function useRegister() {
@@ -13,7 +12,6 @@ export function useRegister() {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
-  const { actions: { refreshUser } } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,9 +26,10 @@ export function useRegister() {
 
     setLoading(true);
     try {
+      // Registration no longer opens a session: the account stays blocked
+      // until the emailed verification link is clicked.
       await userService.register({ name, email, password });
-      await refreshUser();
-      navigate("/user/author-request");
+      navigate("/auth/check-email", { state: { email } });
     } catch (err) {
       setError(getErrorMessage(err, "Error de conexión con el servidor."));
     } finally {

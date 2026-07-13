@@ -1,7 +1,6 @@
 import { act, renderHook } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { userService } from "@/features/profile/services/userService"
-import { useAuth } from "@/features/auth/hooks/useAuth"
 import { useRegister } from "./useRegister"
 
 const navigateMock = vi.fn()
@@ -15,18 +14,11 @@ vi.mock(import("@/features/profile/services/userService"), () => ({
   userService: { register: vi.fn() },
 }))
 
-vi.mock(import("@/features/auth/hooks/useAuth"), () => ({
-  useAuth: vi.fn(),
-}))
-
 const submitEvent = { preventDefault: vi.fn() }
 
 describe("useRegister", () => {
-  let refreshUser
-
   beforeEach(() => {
-    refreshUser = vi.fn().mockResolvedValue({ id: 1 })
-    useAuth.mockReturnValue({ actions: { refreshUser } })
+    vi.clearAllMocks()
   })
 
   it("requires name, email, and password independently", async () => {
@@ -44,7 +36,7 @@ describe("useRegister", () => {
     expect(userService.register).not.toHaveBeenCalled()
   })
 
-  it("registers, refreshes the session, and navigates to the author-request page on success", async () => {
+  it("registers and navigates to the check-email page without opening a session", async () => {
     userService.register.mockResolvedValueOnce({})
     const { result } = renderHook(() => useRegister())
 
@@ -63,8 +55,7 @@ describe("useRegister", () => {
       email: "a@b.com",
       password: "secret",
     })
-    expect(refreshUser).toHaveBeenCalled()
-    expect(navigateMock).toHaveBeenCalledWith("/user/author-request")
+    expect(navigateMock).toHaveBeenCalledWith("/auth/check-email", { state: { email: "a@b.com" } })
     expect(result.current.loading).toBe(false)
   })
 

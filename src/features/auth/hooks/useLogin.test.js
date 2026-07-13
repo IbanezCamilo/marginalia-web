@@ -2,6 +2,7 @@ import { act, renderHook } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { userService } from "@/features/profile/services/userService"
 import { useAuth } from "@/features/auth/hooks/useAuth"
+import { ApiError } from "@/lib/apiError"
 import { useLogin } from "./useLogin"
 
 const navigateMock = vi.fn()
@@ -78,6 +79,47 @@ describe("useLogin", () => {
     expect(result.current.error).toBe("Error de conexión con el servidor.")
     expect(navigateMock).not.toHaveBeenCalled()
     expect(result.current.loading).toBe(false)
+  })
+
+  it("flags unverified accounts from the email-not-verified ProblemDetail", async () => {
+    userService.login.mockRejectedValueOnce(new ApiError({
+      message: "forbidden",
+      status: 403,
+      body: {
+        type: "https://blog-literario.com/errors/email-not-verified",
+        detail: "Debes verificar tu correo electrónico antes de iniciar sesión",
+      },
+    }))
+    const { result } = renderHook(() => useLogin())
+
+    act(() => {
+      result.current.setEmail("a@b.com")
+      result.current.setPassword("secret")
+    })
+
+    await act(async () => {
+      await result.current.handleSubmit(submitEvent)
+    })
+
+    expect(result.current.needsVerification).toBe(true)
+    expect(result.current.error).toBe("Debes verificar tu correo electrónico antes de iniciar sesión.")
+    expect(navigateMock).not.toHaveBeenCalled()
+  })
+
+  it("does not flag a generic 403 as unverified", async () => {
+    userService.login.mockRejectedValueOnce(new ApiError({ message: "forbidden", status: 403, body: {} }))
+    const { result } = renderHook(() => useLogin())
+
+    act(() => {
+      result.current.setEmail("a@b.com")
+      result.current.setPassword("secret")
+    })
+
+    await act(async () => {
+      await result.current.handleSubmit(submitEvent)
+    })
+
+    expect(result.current.needsVerification).toBe(false)
   })
 
   it("toggles password visibility", () => {

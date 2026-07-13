@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App.jsx";
 import LoginPage from "@/features/auth/pages/LoginPage.jsx";
 import RegisterPage from "@/features/auth/pages/RegisterPage.jsx";
+import CheckEmailPage from "@/features/auth/pages/CheckEmailPage.jsx";
+import VerifyEmailPage from "@/features/auth/pages/VerifyEmailPage.jsx";
 import CreatePost from "../features/posts/pages/CreatePost.jsx";
 import EditPost from "../features/posts/pages/EditPost.jsx";
 import DashBoard from "../features/dashboard/pages/Dashboard.jsx";
@@ -34,9 +36,16 @@ export const router = createBrowserRouter([
       {
         path: "/auth",
         children: [
-          { path: "login",    element: <LoginPage /> },
-          { path: "register", element: <RegisterPage /> },
+          { path: "login",       element: <LoginPage /> },
+          { path: "register",    element: <RegisterPage /> },
+          { path: "check-email", element: <CheckEmailPage /> },
         ],
+      },
+
+      {
+        // Top-level: the backend builds the emailed link as {frontend.url}/verify-email?token=...
+        path: "/verify-email",
+        element: <VerifyEmailPage />,
       },
 
       {

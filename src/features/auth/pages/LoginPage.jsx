@@ -18,6 +18,7 @@ export default function LoginPage() {
     loading,
     error,
     fieldErrors,
+    needsVerification,
     handleSubmit,
   } = useLogin();
 
@@ -98,10 +99,19 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2
+              <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2
                             text-sm text-destructive">
-                {error}
-              </p>
+                <p>{error}</p>
+                {needsVerification && (
+                  <Link
+                    to="/auth/check-email"
+                    state={{ email }}
+                    className="mt-1 inline-block underline underline-offset-2 transition-colors hover:text-destructive/80"
+                  >
+                    Reenviar correo de verificación
+                  </Link>
+                )}
+              </div>
             )}
 
             <Button

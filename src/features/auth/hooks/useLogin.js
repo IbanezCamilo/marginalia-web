@@ -2,7 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService } from "@/features/profile/services/userService";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { getErrorMessage } from "@/lib/apiError";
+import { ApiError, getErrorMessage } from "@/lib/apiError";
+
+function isEmailNotVerified(err) {
+  return (
+    err instanceof ApiError &&
+    err.status === 403 &&
+    (err.body?.type ?? "").includes("email-not-verified")
+  );
+}
 
 export function useLogin() {
   const [email, setEmail] = useState("");
@@ -11,12 +19,14 @@ export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+  const [needsVerification, setNeedsVerification] = useState(false);
   const navigate = useNavigate();
   const { actions: { refreshUser } } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setNeedsVerification(false);
 
     const errors = {};
     if (!email.trim()) errors.email = "Ingresa tu correo electrónico.";
@@ -30,7 +40,12 @@ export function useLogin() {
       await refreshUser();
       navigate("/user/dashboard");
     } catch (err) {
-      setError(getErrorMessage(err, "Error de conexión con el servidor."));
+      if (isEmailNotVerified(err)) {
+        setNeedsVerification(true);
+        setError("Debes verificar tu correo electrónico antes de iniciar sesión.");
+      } else {
+        setError(getErrorMessage(err, "Error de conexión con el servidor."));
+      }
     } finally {
       setLoading(false);
     }
@@ -46,6 +61,7 @@ export function useLogin() {
     loading,
     error,
     fieldErrors,
+    needsVerification,
     handleSubmit,
   };
 }
