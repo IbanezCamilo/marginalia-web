@@ -4,6 +4,7 @@ import PostCard from "@/features/posts/components/PostCard";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import CategoryBox from "../features/categories/components/CategoryBox";
 import { usePublicCategories } from "@/features/categories/hooks/usePublicCategories";
+import { useQuoteOfTheDay } from "@/features/quotes/hooks/useQuoteOfTheDay";
 import { PageError } from "@/shared/components/PageError";
 import { EmptyState } from "@/shared/components/EmptyState";
 import Footer from "../shared/components/Footer";
@@ -60,9 +61,9 @@ export default function Homepage() {
     posts,
     loading: postsLoading,
     error: postsError,
-    totalElements,
     reload: reloadPosts,
   } = usePublicPosts(0, 10);
+  const { quote, loading: quoteLoading } = useQuoteOfTheDay();
   const {
     categories,
     loading: categoriesLoading,
@@ -126,12 +127,31 @@ export default function Homepage() {
                     className="mb-6 w-full max-w-xs"
                     loading="lazy"
                   />
-                  <p className="font-medium text-stone-950 dark:text-stone-100">
-                    {totalElements} publicaciones disponibles
-                  </p>
-                  <p className="mt-2">
-                    Un catálogo vivo que crece al ritmo de la buena escritura.
-                  </p>
+                  {quoteLoading ? (
+                    <div className="animate-pulse" aria-hidden="true">
+                      <div className="h-4 rounded bg-stone-200 dark:bg-stone-700" />
+                      <div className="mt-2 h-4 w-3/4 rounded bg-stone-200 dark:bg-stone-700" />
+                      <div className="mt-3 h-3 w-1/2 rounded bg-stone-100 dark:bg-stone-800" />
+                    </div>
+                  ) : quote ? (
+                    <blockquote>
+                      <p className="font-serif text-base font-medium leading-7 text-stone-950 dark:text-stone-100">
+                        “{quote.text}”
+                      </p>
+                      <footer className="mt-2">
+                        — {quote.authorName}
+                        {quote.sourceWork && (
+                          <>
+                            , <cite>{quote.sourceWork}</cite>
+                          </>
+                        )}
+                      </footer>
+                    </blockquote>
+                  ) : (
+                    <p>
+                      Un catálogo vivo que crece al ritmo de la buena escritura.
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
