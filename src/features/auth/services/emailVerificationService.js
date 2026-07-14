@@ -10,4 +10,8 @@ export const emailVerificationService = {
   resend: (email) =>
     apiClient.post("/auth/resend-verification", { email }),
 
+  // Resolves { verified: boolean }; unknown emails answer false, never 404.
+  getVerificationStatus: (email) =>
+    apiClient.get(`/auth/verification-status?email=${encodeURIComponent(email)}`),
+
 };

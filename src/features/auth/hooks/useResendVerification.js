@@ -30,16 +30,21 @@ export function useResendVerification() {
     }, 1000);
   };
 
+  // Resolves true only when the request went through, so callers can react
+  // (e.g. start polling for the submitted email); ignored or failed sends
+  // resolve false.
   const resend = async (email) => {
-    if (!email?.trim() || sending || cooldown > 0) return;
+    if (!email?.trim() || sending || cooldown > 0) return false;
 
     setSending(true);
     try {
       await emailVerificationService.resend(email.trim());
       toast.success("Si el correo está registrado, recibirás un nuevo enlace de verificación.");
       startCooldown();
+      return true;
     } catch (err) {
       toast.error(getErrorMessage(err, "No se pudo reenviar el correo."));
+      return false;
     } finally {
       setSending(false);
     }

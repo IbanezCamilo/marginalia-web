@@ -6,16 +6,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Logo from "@/shared/components/Logo";
 import { useResendVerification } from "@/features/auth/hooks/useResendVerification";
+import {
+  PENDING_VERIFICATION_EMAIL_KEY,
+  useVerificationStatusPoll,
+} from "@/features/auth/hooks/useVerificationStatusPoll";
 
 export default function CheckEmailPage() {
   const location = useLocation();
-  const knownEmail = location.state?.email ?? "";
+  const knownEmail =
+    location.state?.email ?? sessionStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY) ?? "";
   const [email, setEmail] = useState(knownEmail);
+  // Polls until the account is verified (possibly from another device) and
+  // then redirects to login. Starts empty when the user landed here cold;
+  // a successful resend adopts the typed email as the one being awaited.
+  const [pollEmail, setPollEmail] = useState(knownEmail);
   const { resend, sending, cooldown } = useResendVerification();
+  useVerificationStatusPoll(pollEmail);
 
-  const handleResend = (e) => {
+  const handleResend = async (e) => {
     e.preventDefault();
-    resend(email);
+    const sent = await resend(email);
+    if (sent) {
+      sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email.trim());
+      setPollEmail(email.trim());
+    }
   };
 
   return (

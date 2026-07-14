@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userService } from "@/features/profile/services/userService";
+import { PENDING_VERIFICATION_EMAIL_KEY } from "@/features/auth/hooks/useVerificationStatusPoll";
 import { getErrorMessage } from "@/lib/apiError";
 
 export function useRegister() {
@@ -29,6 +30,9 @@ export function useRegister() {
       // Registration no longer opens a session: the account stays blocked
       // until the emailed verification link is clicked.
       await userService.register({ name, email, password });
+      // Survives a refresh of the check-email page, which otherwise loses the
+      // email (and with it the verification polling) with the router state.
+      sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email.trim());
       navigate("/auth/check-email", { state: { email } });
     } catch (err) {
       setError(getErrorMessage(err, "Error de conexión con el servidor."));

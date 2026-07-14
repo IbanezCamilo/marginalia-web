@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { userService } from "@/features/profile/services/userService"
+import { PENDING_VERIFICATION_EMAIL_KEY } from "./useVerificationStatusPoll"
 import { useRegister } from "./useRegister"
 
 const navigateMock = vi.fn()
@@ -19,6 +20,7 @@ const submitEvent = { preventDefault: vi.fn() }
 describe("useRegister", () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    sessionStorage.clear()
   })
 
   it("requires name, email, and password independently", async () => {
@@ -57,6 +59,8 @@ describe("useRegister", () => {
     })
     expect(navigateMock).toHaveBeenCalledWith("/auth/check-email", { state: { email: "a@b.com" } })
     expect(result.current.loading).toBe(false)
+    // Persisted so the check-email page can keep polling after a refresh.
+    expect(sessionStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY)).toBe("a@b.com")
   })
 
   it("sets an error and does not navigate on failure", async () => {
@@ -75,6 +79,7 @@ describe("useRegister", () => {
 
     expect(result.current.error).toBe("Error de conexión con el servidor.")
     expect(navigateMock).not.toHaveBeenCalled()
+    expect(sessionStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY)).toBeNull()
   })
 
   it("toggles password visibility", () => {

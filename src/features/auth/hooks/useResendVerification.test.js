@@ -64,6 +64,39 @@ describe("useResendVerification", () => {
     expect(emailVerificationService.resend).not.toHaveBeenCalled()
   })
 
+  it("reports success so callers can react to a delivered resend", async () => {
+    emailVerificationService.resend.mockResolvedValueOnce(null)
+    const { result } = renderHook(() => useResendVerification())
+
+    let outcome
+    await act(async () => {
+      outcome = await result.current.resend("a@b.com")
+    })
+    expect(outcome).toBe(true)
+
+    // Ignored while the cooldown is active.
+    await act(async () => {
+      outcome = await result.current.resend("a@b.com")
+    })
+    expect(outcome).toBe(false)
+  })
+
+  it("reports failure when the request is rejected or the email is blank", async () => {
+    emailVerificationService.resend.mockRejectedValueOnce(new Error("offline"))
+    const { result } = renderHook(() => useResendVerification())
+
+    let outcome
+    await act(async () => {
+      outcome = await result.current.resend("   ")
+    })
+    expect(outcome).toBe(false)
+
+    await act(async () => {
+      outcome = await result.current.resend("a@b.com")
+    })
+    expect(outcome).toBe(false)
+  })
+
   it("shows an error toast and skips the cooldown on failure", async () => {
     emailVerificationService.resend.mockRejectedValueOnce(new Error("offline"))
     const { result } = renderHook(() => useResendVerification())
