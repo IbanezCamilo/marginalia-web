@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PostCard from "@/features/posts/components/PostCard";
 import { usePublicPosts } from "@/features/posts/hooks/usePublicPosts";
 import CategoryBox from "../features/categories/components/CategoryBox";
+import ViewAllCategoriesTile from "../features/categories/components/ViewAllCategoriesTile";
 import { usePublicCategories } from "@/features/categories/hooks/usePublicCategories";
 import { useQuoteOfTheDay } from "@/features/quotes/hooks/useQuoteOfTheDay";
 import { PageError } from "@/shared/components/PageError";
@@ -21,6 +22,8 @@ const formatDate = (date) => {
     year: "numeric",
   }).format(new Date(date));
 };
+
+const FEATURED_CATEGORY_COUNT = 7;
 
 const getExcerpt = (content, maxLength = 210) => {
   const text = editorContentToText(content);
@@ -69,6 +72,9 @@ export default function Homepage() {
     loading: categoriesLoading,
     error: categoriesError,
   } = usePublicCategories();
+
+  const visibleCategories = categories.slice(0, FEATURED_CATEGORY_COUNT);
+  const remainingCount = categories.length - visibleCategories.length;
 
   const featuredPost = posts[0];
   const secondaryPosts = posts.slice(1);
@@ -299,12 +305,15 @@ export default function Homepage() {
                 />
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-                  {categories.map((category) => (
+                  {visibleCategories.map((category) => (
                     <CategoryBox
                       key={category.id ?? category.slug}
                       category={category}
                     />
                   ))}
+                  {categories.length > FEATURED_CATEGORY_COUNT && (
+                    <ViewAllCategoriesTile remainingCount={remainingCount} />
+                  )}
                 </div>
               )}
             </div>
