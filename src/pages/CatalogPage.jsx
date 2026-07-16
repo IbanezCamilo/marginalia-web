@@ -15,7 +15,7 @@ export default function CatalogPage() {
             Todas las publicaciones
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-stone-600 dark:text-stone-400">
-            Filtra por categoria y orden para encontrar tu proxima lectura.
+            Combina categoría, tiempo de lectura, autor y búsqueda para encontrar tu proxima lectura.
           </p>
         </section>
 
