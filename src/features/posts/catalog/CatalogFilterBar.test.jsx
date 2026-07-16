@@ -95,4 +95,28 @@ describe("CatalogFilterBar", () => {
       { timeout: 1000 },
     );
   });
+
+  it("a parent re-render mid-typing does not reset the search debounce", async () => {
+    const user = userEvent.setup();
+    const setFacet = vi.fn();
+    const clearAll = vi.fn();
+    const baseProps = {
+      values: { category: null, time: null, author: null, sort: "featured", q: "" },
+      setFacet,
+      clearAll,
+      anyActive: false,
+      locked: {},
+    };
+    const { rerender } = render(<CatalogFilterBar {...baseProps} />);
+
+    await user.type(screen.getByLabelText(/buscar/i), "borges");
+    // simulate an unrelated parent re-render (new prop identities, same values)
+    rerender(<CatalogFilterBar {...baseProps} />);
+
+    await waitFor(
+      () => expect(setFacet).toHaveBeenCalledWith("q", "borges", { replace: true }),
+      { timeout: 1000 },
+    );
+    expect(setFacet).toHaveBeenCalledTimes(1);
+  });
 });

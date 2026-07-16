@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import {
   DropdownMenu,
@@ -48,6 +48,12 @@ function SelectFacet({ facet, value, onSelect }) {
 
 function SearchFacet({ facet, value, onSelect }) {
   const [draft, setDraft] = useState(value ?? "");
+  const onSelectRef = useRef(onSelect);
+
+  // Keep the latest onSelect in the ref.
+  useEffect(() => {
+    onSelectRef.current = onSelect;
+  });
 
   // URL is the source of truth: re-sync when it changes externally (back button, clear).
   useEffect(() => {
@@ -58,9 +64,9 @@ function SearchFacet({ facet, value, onSelect }) {
   // respects the API rate budget while typing).
   useEffect(() => {
     if ((draft ?? "") === (value ?? "")) return undefined;
-    const timer = setTimeout(() => onSelect(draft, { replace: true }), 350);
+    const timer = setTimeout(() => onSelectRef.current(draft, { replace: true }), 350);
     return () => clearTimeout(timer);
-  }, [draft, value, onSelect]);
+  }, [draft, value]);
 
   const inputId = `facet-${facet.key}`;
 
