@@ -22,7 +22,8 @@ export function useCatalogFilters({ locked = {}, facets = CATALOG_FACETS } = {})
         continue;
       }
       const raw = searchParams.get(facet.param);
-      const normalized = raw != null && facet.normalize ? facet.normalize(raw) : raw;
+      const present = raw != null && raw !== "";
+      const normalized = present && facet.normalize ? facet.normalize(raw) : present ? raw : null;
       result[facet.key] = normalized ?? facet.defaultValue;
     }
     return result;

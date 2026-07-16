@@ -93,4 +93,15 @@ describe("useCatalogFilters", () => {
       q: "borges",
     });
   });
+
+  it("explicit empty URL params count as inactive, not as empty-string values", () => {
+    const { result } = renderHook(() => useHarness(), {
+      wrapper: makeWrapper("?category=&author=&q="),
+    });
+
+    expect(result.current.filters.values.category).toBeNull();
+    expect(result.current.filters.values.author).toBeNull();
+    expect(result.current.filters.values.q).toBe("");
+    expect(result.current.filters.anyActive).toBe(false);
+  });
 });
