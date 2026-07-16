@@ -7,10 +7,7 @@ import PostCard from "@/features/posts/components/PostCard";
 import { PageError } from "@/shared/components/PageError";
 import Footer from "../shared/components/Footer";
 import Navbar from "../shared/components/Navbar";
-import {
-  editorContentToHtml,
-  editorContentToText,
-} from "@/features/posts/utils/editorContent";
+import { editorContentToHtml } from "@/features/posts/utils/editorContent";
 import { focalToObjectPosition } from "@/utils/imageUtils";
 
 const formatDate = (date) => {
@@ -20,11 +17,6 @@ const formatDate = (date) => {
     month: "long",
     year: "numeric",
   }).format(new Date(date));
-};
-
-const readingTime = (content = "") => {
-  const words = editorContentToText(content).split(" ").filter(Boolean).length;
-  return Math.max(1, Math.ceil(words / 200));
 };
 
 function PostSkeleton() {
@@ -159,7 +151,7 @@ export default function PostPage() {
                 ) : null}
                 <span className="text-stone-300 dark:text-stone-600" aria-hidden="true">/</span>
                 <span className="text-stone-400 dark:text-stone-500">
-                  {readingTime(post.content)} min de lectura
+                  {post.readingMinutes ?? 1} min de lectura
                 </span>
               </div>
 
