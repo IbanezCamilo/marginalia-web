@@ -42,6 +42,13 @@ describe("catalogFacets registry", () => {
     expect(facet("sort").normalize("bogus")).toBeNull();
   });
 
+  it("time facet normalizes case-insensitively, matching the API's ReadingTimeBucket.from", () => {
+    expect(facet("time").normalize("Short")).toBe("short");
+    expect(facet("time").normalize("MEDIUM")).toBe("medium");
+    expect(facet("time").normalize("long")).toBe("long");
+    expect(facet("time").normalize("bogus")).toBeNull();
+  });
+
   it("sort is not clearable; the rest are", () => {
     expect(facet("sort").clearable).toBe(false);
     for (const key of ["category", "time", "author", "q"]) {

@@ -71,7 +71,10 @@ export const CATALOG_FACETS = [
     allLabel: "cualquiera",
     defaultValue: null,
     clearable: true,
-    normalize: (raw) => (TIME_OPTIONS.some((o) => o.value === raw) ? raw : null),
+    normalize: (raw) => {
+      const lowered = raw?.toLowerCase();
+      return TIME_OPTIONS.some((o) => o.value === lowered) ? lowered : null;
+    },
     useOptions: useTimeOptions,
     toApiParams: (value) => (value ? { time: value } : {}),
   },

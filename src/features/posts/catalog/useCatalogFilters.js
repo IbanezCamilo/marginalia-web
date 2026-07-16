@@ -2,6 +2,10 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CATALOG_FACETS } from "./catalogFacets";
 
+// Stable empty-locks default: an inline `{}` default parameter would be a fresh
+// object every render, breaking the useMemo identities below for bare callers.
+const NO_LOCKS = {};
+
 /**
  * Generic URL-synced state for the catalog facets. Iterates the registry — knows
  * nothing about any specific facet, so new facets need no changes here.
@@ -11,7 +15,7 @@ import { CATALOG_FACETS } from "./catalogFacets";
  * apiParams. Callers must pass a referentially stable object (useMemo it).
  * `facets` is injectable for tests only; production always uses CATALOG_FACETS.
  */
-export function useCatalogFilters({ locked = {}, facets = CATALOG_FACETS } = {}) {
+export function useCatalogFilters({ locked = NO_LOCKS, facets = CATALOG_FACETS } = {}) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const values = useMemo(() => {

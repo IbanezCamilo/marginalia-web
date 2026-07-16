@@ -104,4 +104,22 @@ describe("useCatalogFilters", () => {
     expect(result.current.filters.values.q).toBe("");
     expect(result.current.filters.anyActive).toBe(false);
   });
+
+  it("time facet normalization is case-insensitive, matching the API", () => {
+    const { result } = renderHook(() => useHarness(), {
+      wrapper: makeWrapper("?time=Short"),
+    });
+
+    expect(result.current.filters.values.time).toBe("short");
+  });
+
+  it("calling the hook with no arguments does not cause unstable apiParams across rerenders", () => {
+    const { result, rerender } = renderHook(() => useCatalogFilters(), {
+      wrapper: makeWrapper(),
+    });
+
+    const first = result.current.apiParams;
+    rerender();
+    expect(result.current.apiParams).toBe(first);
+  });
 });
