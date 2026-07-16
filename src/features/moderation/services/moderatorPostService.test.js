@@ -34,4 +34,12 @@ describe("moderatorPostService", () => {
       moderationNote: null,
     })
   })
+
+  it("setFeatured sends the featured flag to the featured endpoint", async () => {
+    await moderatorPostService.setFeatured(1, true)
+    expect(apiClient.put).toHaveBeenCalledWith(`${BASE}/1/featured`, { featured: true })
+
+    await moderatorPostService.setFeatured(2, false)
+    expect(apiClient.put).toHaveBeenCalledWith(`${BASE}/2/featured`, { featured: false })
+  })
 })

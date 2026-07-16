@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Star } from "lucide-react";
 import { editorContentToText } from "@/features/posts/utils/editorContent";
 import { focalToObjectPosition } from "@/utils/imageUtils";
 
@@ -55,6 +55,15 @@ export default function PostCard({ post, hideAuthor = false, headingAs = "h2" })
               <time dateTime={isoDate} className="text-stone-500 dark:text-stone-400">
                 {formatDate(post.createdAt)}
               </time>
+            ) : null}
+            {post.featured ? (
+              <>
+                <span className="text-stone-300 dark:text-stone-600" aria-hidden="true">/</span>
+                <span className="inline-flex items-center gap-1">
+                  <Star size={12} className="fill-current" aria-hidden="true" />
+                  Destacado
+                </span>
+              </>
             ) : null}
           </div>
 

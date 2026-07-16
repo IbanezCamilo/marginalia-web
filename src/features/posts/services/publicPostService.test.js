@@ -9,10 +9,10 @@ vi.mock(import("@/lib/apiClient"), () => ({
 const BASE = "/public/posts"
 
 describe("publicPostService", () => {
-  it("getAll uses default pagination and sort", async () => {
+  it("getAll uses default pagination and the featured-first sort", async () => {
     await publicPostService.getAll()
 
-    expect(apiClient.get).toHaveBeenCalledWith(`${BASE}?page=0&size=9&sort=createdAt,desc`)
+    expect(apiClient.get).toHaveBeenCalledWith(`${BASE}?page=0&size=9&sort=featured`)
   })
 
   it("getBySlug fetches a single post by slug", async () => {
@@ -21,19 +21,19 @@ describe("publicPostService", () => {
     expect(apiClient.get).toHaveBeenCalledWith(`${BASE}/my-post`)
   })
 
-  it("getCatalog defaults sort/page/size and omits categoryId when not given", async () => {
+  it("getCatalog defaults to the featured sort and omits categoryId when not given", async () => {
     await publicPostService.getCatalog()
 
     expect(apiClient.get).toHaveBeenCalledWith(
-      `${BASE}?sort=createdAt%2Cdesc&page=0&size=12`,
+      `${BASE}?sort=featured&page=0&size=12`,
     )
   })
 
-  it("getCatalog includes categoryId when given", async () => {
-    await publicPostService.getCatalog({ categoryId: 3, sort: "title,asc", page: 1, size: 6 })
+  it("getCatalog includes categoryId and passes an explicit sort key through", async () => {
+    await publicPostService.getCatalog({ categoryId: 3, sort: "title_asc", page: 1, size: 6 })
 
     expect(apiClient.get).toHaveBeenCalledWith(
-      `${BASE}?categoryId=3&sort=title%2Casc&page=1&size=6`,
+      `${BASE}?categoryId=3&sort=title_asc&page=1&size=6`,
     )
   })
 })

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { publicPostService } from "@/features/posts/services/publicPostService";
 import { getErrorMessage } from "@/lib/apiError";
 
-export function useCatalogPosts({ categoryId, sort = "createdAt,desc", size = 12 } = {}) {
+export function useCatalogPosts({ categoryId, sort = "featured", size = 12 } = {}) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);

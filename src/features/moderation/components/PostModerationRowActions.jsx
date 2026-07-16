@@ -11,6 +11,8 @@ import {
   MoreHorizontal,
   RefreshCw,
   RotateCcw,
+  Star,
+  StarOff,
   Trash2,
   X,
 } from "lucide-react";
@@ -18,10 +20,12 @@ import {
 export default function PostModerationRowActions({
   status,
   isPermanentlyBlocked,
+  featured,
   isAdmin,
   onModerate,
   onReset,
   onDelete,
+  onToggleFeatured,
 }) {
   return (
     <DropdownMenu>
@@ -52,6 +56,26 @@ export default function PostModerationRowActions({
               Rechazar
             </DropdownMenuItem>
           </>
+        )}
+
+        {status === "PUBLISHED" && !featured && (
+          <DropdownMenuItem
+            className="flex cursor-pointer items-center gap-2 text-foreground data-[highlighted]:bg-amber-50 data-[highlighted]:text-amber-700 dark:data-[highlighted]:bg-amber-950 dark:data-[highlighted]:text-amber-400"
+            onClick={() => onToggleFeatured(true)}
+          >
+            <Star size={16} />
+            Destacar
+          </DropdownMenuItem>
+        )}
+
+        {featured && (
+          <DropdownMenuItem
+            className="flex cursor-pointer items-center gap-2 text-foreground"
+            onClick={() => onToggleFeatured(false)}
+          >
+            <StarOff size={16} />
+            Quitar destacado
+          </DropdownMenuItem>
         )}
 
         {status === "PUBLISHED" && (

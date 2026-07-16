@@ -15,7 +15,7 @@ vi.mock(import("@/features/moderation/services/adminPostService"), () => ({
 }))
 
 vi.mock(import("@/features/moderation/services/moderatorPostService"), () => ({
-  moderatorPostService: { list: vi.fn(), updateStatus: vi.fn() },
+  moderatorPostService: { list: vi.fn(), updateStatus: vi.fn(), setFeatured: vi.fn() },
 }))
 
 vi.mock(import("sonner"), () => ({
@@ -121,6 +121,38 @@ describe("usePostModeration", () => {
 
     expect(adminPostService.reset).toHaveBeenCalledWith(1, "")
     expect(toast.success).toHaveBeenCalledWith("Post restablecido a borrador.")
+  })
+
+  describe("toggleFeatured", () => {
+    it("optimistically flips the row and always uses moderatorPostService, even for admins", async () => {
+      useAuth.mockReturnValue({ meta: { isAdmin: true } })
+      moderatorPostService.setFeatured.mockResolvedValueOnce(undefined)
+      const { result } = renderHook(() => usePostModeration())
+      await waitFor(() => expect(result.current.loading).toBe(false))
+
+      await act(async () => {
+        await result.current.toggleFeatured(1, true)
+      })
+
+      expect(moderatorPostService.setFeatured).toHaveBeenCalledWith(1, true)
+      expect(result.current.posts[0].featured).toBe(true)
+      expect(toast.success).toHaveBeenCalledWith("Post destacado.")
+    })
+
+    it("reverts the optimistic update and shows an error toast when the request fails", async () => {
+      useAuth.mockReturnValue({ meta: { isAdmin: false } })
+      moderatorPostService.setFeatured.mockRejectedValueOnce(new Error("409"))
+      const { result } = renderHook(() => usePostModeration())
+      await waitFor(() => expect(result.current.loading).toBe(false))
+
+      await act(async () => {
+        await result.current.toggleFeatured(1, true)
+      })
+
+      expect(result.current.posts[0].featured).toBe(false)
+      expect(toast.error).toHaveBeenCalled()
+      expect(toast.success).not.toHaveBeenCalled()
+    })
   })
 
   it("confirmDelete always uses adminPostService regardless of role and removes the row", async () => {

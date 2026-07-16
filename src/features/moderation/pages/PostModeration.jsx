@@ -115,6 +115,7 @@ export default function PostModeration() {
     requestDelete,
     closeDelete,
     confirmDelete,
+    toggleFeatured,
   } = usePostModeration();
 
   if (error) {
@@ -365,6 +366,11 @@ export default function PostModeration() {
                               Bloqueado
                             </span>
                           )}
+                          {post.featured && (
+                            <span className="rounded-full border border-amber-300 bg-amber-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-400">
+                              Destacado
+                            </span>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell className="px-6 py-4 text-sm text-muted-foreground">
@@ -400,10 +406,12 @@ export default function PostModeration() {
                         <PostModerationRowActions
                           status={post.status}
                           isPermanentlyBlocked={post.isPermanentlyBlocked}
+                          featured={post.featured}
                           isAdmin={isAdmin}
                           onModerate={(type) => openModeration(type, post.id)}
                           onReset={() => openReset(post.id)}
                           onDelete={() => requestDelete(post.id)}
+                          onToggleFeatured={(next) => toggleFeatured(post.id, next)}
                         />
                       </TableCell>
                     </TableRow>

@@ -126,6 +126,24 @@ export function usePostModeration() {
     }
   };
 
+  // Featured toggle (editorial curation). Always goes through moderatorPostService:
+  // there is no admin endpoint — /api/moderator/posts/{id}/featured already allows
+  // MODERATOR, ADMIN and OWNER.
+  const toggleFeatured = async (postId, nextFeatured) => {
+    setPosts((prev) =>
+      prev.map((p) => (p.id === postId ? { ...p, featured: nextFeatured } : p)),
+    );
+    try {
+      await moderatorPostService.setFeatured(postId, nextFeatured);
+      toast.success(nextFeatured ? "Post destacado." : "Se quitó el destacado.");
+    } catch (err) {
+      setPosts((prev) =>
+        prev.map((p) => (p.id === postId ? { ...p, featured: !nextFeatured } : p)),
+      );
+      toast.error(getErrorMessage(err, "No se pudo actualizar el destacado."));
+    }
+  };
+
   const confirmDeletePostTitle = posts.find((p) => p.id === confirmDeleteState.postId)?.title;
 
   return {
@@ -156,5 +174,6 @@ export function usePostModeration() {
     requestDelete,
     closeDelete,
     confirmDelete,
+    toggleFeatured,
   };
 }

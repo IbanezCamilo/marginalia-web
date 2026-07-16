@@ -8,4 +8,7 @@ export const moderatorPostService = {
 
   updateStatus: (id, status, moderationNote) =>
     apiClient.put(`${BASE}/${id}/status`, { status, moderationNote: moderationNote || null }),
+
+  setFeatured: (id, featured) =>
+    apiClient.put(`${BASE}/${id}/featured`, { featured }),
 };

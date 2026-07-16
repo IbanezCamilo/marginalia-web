@@ -13,13 +13,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const SORT_LABELS = {
-  "createdAt,desc": "Mas recientes",
-  "createdAt,asc": "Mas antiguas",
-  "title,asc": "Titulo A-Z",
-  "title,desc": "Titulo Z-A",
+  featured: "Destacados",
+  recent: "Mas recientes",
+  oldest: "Mas antiguas",
+  title_asc: "Titulo A-Z",
+  title_desc: "Titulo Z-A",
 };
 
-const DEFAULT_SORT = "createdAt,desc";
+// Raw Spring Data sort strings we used to write to the URL; old bookmarks still carry them.
+const LEGACY_SORTS = {
+  "createdAt,desc": "recent",
+  "createdAt,asc": "oldest",
+  "title,asc": "title_asc",
+  "title,desc": "title_desc",
+};
+
+const DEFAULT_SORT = "featured";
 
 function FilterTrigger({ children }) {
   return (
@@ -59,7 +68,8 @@ export default function PostCatalog({ lockedCategorySlug = null }) {
   const { categories } = usePublicCategories();
 
   const categorySlug = isLocked ? lockedCategorySlug : searchParams.get("category");
-  const sort = isLocked ? lockedSort : searchParams.get("sort") ?? DEFAULT_SORT;
+  const rawSort = isLocked ? lockedSort : searchParams.get("sort");
+  const sort = SORT_LABELS[rawSort] ? rawSort : LEGACY_SORTS[rawSort] ?? DEFAULT_SORT;
 
   const selectedCategory = useMemo(
     () => categories.find((c) => c.slug === categorySlug) ?? null,
