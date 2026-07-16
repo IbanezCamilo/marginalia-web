@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { publicPostService } from "@/features/posts/services/publicPostService";
 import { getErrorMessage } from "@/lib/apiError";
 
-export function useCatalogPosts({ categoryId, sort = "featured", size = 12 } = {}) {
+export function useCatalogPosts({ apiParams = {}, size = 12 } = {}) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -16,7 +16,7 @@ export function useCatalogPosts({ categoryId, sort = "featured", size = 12 } = {
       setLoading(true);
       setError(null);
       setPage(0);
-      const data = await publicPostService.getCatalog({ categoryId, sort, page: 0, size });
+      const data = await publicPostService.getCatalog({ ...apiParams, page: 0, size });
       setPosts(data.content ?? []);
       setTotalElements(data.page?.totalElements ?? 0);
       setTotalPages(data.page?.totalPages ?? 0);
@@ -25,7 +25,7 @@ export function useCatalogPosts({ categoryId, sort = "featured", size = 12 } = {
     } finally {
       setLoading(false);
     }
-  }, [categoryId, sort, size]);
+  }, [apiParams, size]);
 
   useEffect(() => {
     load();
@@ -36,7 +36,7 @@ export function useCatalogPosts({ categoryId, sort = "featured", size = 12 } = {
     if (nextPage >= totalPages) return;
     try {
       setLoadingMore(true);
-      const data = await publicPostService.getCatalog({ categoryId, sort, page: nextPage, size });
+      const data = await publicPostService.getCatalog({ ...apiParams, page: nextPage, size });
       setPosts((prev) => [...prev, ...(data.content ?? [])]);
       setPage(nextPage);
       setTotalElements(data.page?.totalElements ?? totalElements);
@@ -46,7 +46,7 @@ export function useCatalogPosts({ categoryId, sort = "featured", size = 12 } = {
     } finally {
       setLoadingMore(false);
     }
-  }, [categoryId, sort, size, page, totalPages, totalElements]);
+  }, [apiParams, size, page, totalPages, totalElements]);
 
   return {
     posts,
