@@ -55,6 +55,17 @@ export default function AboutPage() {
               lectura igual de cuidadosa. Porque leer y escribir, al final, comparten
               un mismo gesto: darle tiempo a las palabras.
             </p>
+            <p>
+              Si quieres saber más sobre el proyecto — o simplemente conversar
+              sobre lectura y escritura — nos encantará leerte. Escríbenos a{" "}
+              <a
+                href="mailto:contacto@readmarginalia.net"
+                className="font-semibold text-rose-700 transition hover:text-rose-800 dark:text-rose-500 dark:hover:text-rose-400"
+              >
+                contacto@readmarginalia.net
+              </a>
+              .
+            </p>
           </div>
         </section>
       </main>

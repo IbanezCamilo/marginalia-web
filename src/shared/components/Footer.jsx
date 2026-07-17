@@ -11,6 +11,15 @@ export default function Footer() {
           <p className="mt-4 max-w-xl text-sm leading-6 text-stone-400">
             Un espacio dedicado al rescate de la lectura.
           </p>
+          <p className="mt-2 text-sm text-stone-400">
+            Escríbenos a{" "}
+            <a
+              href="mailto:contacto@readmarginalia.net"
+              className="transition hover:text-white"
+            >
+              contacto@readmarginalia.net
+            </a>
+          </p>
         </div>
 
         <nav aria-label="Pie de página" className="flex flex-wrap gap-5 text-sm md:justify-end">
