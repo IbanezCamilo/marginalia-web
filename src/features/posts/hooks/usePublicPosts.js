@@ -18,7 +18,7 @@ export function usePublicPosts(page = 0, size = 9) {
       setTotalPages(data.page?.totalPages ?? 0);
       setTotalElements(data.page?.totalElements ?? 0);
     } catch (err) {
-      setError(getErrorMessage(err, "Error al cargar los articulos."));
+      setError(getErrorMessage(err, "Error al cargar los artículos."));
     } finally {
       setLoading(false);
     }

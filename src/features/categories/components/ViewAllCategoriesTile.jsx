@@ -14,10 +14,10 @@ export default function ViewAllCategoriesTile({ remainingCount = 0 }) {
         aria-hidden="true"
       />
       <span className="mt-6 text-sm font-semibold text-stone-900 transition-colors group-hover:text-rose-800 dark:text-stone-100 dark:group-hover:text-rose-400">
-        Ver todas las categorias
+        Ver todas las categorías
         {remainingCount > 0 && (
           <span className="ml-2 font-normal text-stone-500 dark:text-stone-400">
-            +{remainingCount} categorias
+            +{remainingCount} categorías
           </span>
         )}
       </span>

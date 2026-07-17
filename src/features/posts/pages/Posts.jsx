@@ -85,8 +85,8 @@ export default function Posts() {
       ) : posts.length === 0 ? (
         <EmptyState
           icon={FileText}
-          title="Aun no tienes posts"
-          description="Empieza con un borrador y publicalo cuando el texto ya tenga forma."
+          title="Aún no tienes posts"
+          description="Empieza con un borrador y publícalo cuando el texto ya tenga forma."
           action={{ label: "Crear primer post", icon: ArrowRight, to: "/user/create-post" }}
         />
       ) : (
@@ -116,7 +116,7 @@ export default function Posts() {
       {totalPages > 1 && (
         <div className="mt-6 flex items-center justify-between rounded-md border border-border bg-card p-3">
           <span className="text-sm text-muted-foreground">
-            Pagina {currentPage + 1} de {totalPages}
+            Página {currentPage + 1} de {totalPages}
           </span>
           <div className="flex gap-2">
             <Button

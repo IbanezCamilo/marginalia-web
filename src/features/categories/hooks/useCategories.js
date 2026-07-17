@@ -48,9 +48,9 @@ export function useCategories(){
       try {
         await categoryService.delete(categoryId);
         setCategories((prev) => prev.filter((c) => c.id != categoryId));
-        toast.success("Categoria eliminada correctamente");
+        toast.success("Categoría eliminada correctamente");
       } catch (err) {
-        toast.error(getErrorMessage(err, "Error al eliminar la categoria"));
+        toast.error(getErrorMessage(err, "Error al eliminar la categoría"));
       }
       return; // If it's a delete action, we don't need to continue to toggle status logic
   }

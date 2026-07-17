@@ -33,7 +33,7 @@ export default function Footer() {
             Acerca de
           </Link>
           <Link to="/auth/login" className="transition hover:text-white">
-            Iniciar sesion
+            Iniciar sesión
           </Link>
         </nav>
       </div>

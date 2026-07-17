@@ -19,18 +19,18 @@ export default function CreateCategory({ onSave, isOpen, onClose }) {
       <DialogContent className="max-w-md rounded-md border-border">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">
-            Crear Categoria
+            Crear Categoría
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Nombre de la categoria</Label>
+            <Label htmlFor="name">Nombre de la categoría</Label>
             <Input
               id="name"
               name="name"
               value={newCategory.name}
               onChange={handleChange}
-              placeholder="Ej: Ensayo, Poesia, Resenas"
+              placeholder="Ej: Ensayo, Poesía, Reseñas"
               maxLength={100}
               disabled={saving}
               aria-invalid={!!fieldErrors.name}

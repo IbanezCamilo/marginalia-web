@@ -54,7 +54,7 @@ export default function PostListItemCard({
       >
         <div className="flex flex-wrap items-center gap-2">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-rose-700 dark:text-rose-400">
-            {categoryName ?? "Sin categoria"}
+            {categoryName ?? "Sin categoría"}
           </p>
 
           <span

@@ -115,12 +115,12 @@ export default function Homepage() {
                     Ideas que demandan tiempo en un mundo que corre.
                   </h1>
                   <p className="mt-6 max-w-2xl text-base leading-8 text-stone-600 sm:text-lg dark:text-stone-400">
-                    Una seleccion de publicaciones recientes, organizada para leer con calma y descubrir nuevas voces.{" "}
+                    Una selección de publicaciones recientes, organizada para leer con calma y descubrir nuevas voces.{" "}
                     <Link
                       to="/about"
                       className="font-medium text-stone-900 underline decoration-stone-300 underline-offset-4 transition hover:text-rose-800 hover:decoration-rose-300 dark:text-stone-100 dark:decoration-stone-600 dark:hover:text-rose-400"
                     >
-                      Conoce mas sobre Marginalia
+                      Conoce más sobre Marginalia
                     </Link>
                     .
                   </p>
@@ -169,8 +169,8 @@ export default function Homepage() {
                 variant="plain"
                 icon={BookOpen}
                 headingClassName="text-4xl"
-                title="Aun no hay publicaciones"
-                description="Cuando un autor publique su primer texto, aparecera aqui como lectura destacada."
+                title="Aún no hay publicaciones"
+                description="Cuando un autor publique su primer texto, aparecerá aquí como lectura destacada."
               />
             </section>
           ) : (
@@ -242,7 +242,7 @@ export default function Homepage() {
                       Archivo
                     </p>
                     <h2 className="mt-2 font-serif text-4xl text-stone-950 dark:text-stone-50">
-                      Ultimas publicaciones
+                      Últimas publicaciones
                     </h2>
                   </div>
 
@@ -292,7 +292,7 @@ export default function Homepage() {
                   icon={Folder}
                   iconSize={32}
                   headingClassName="text-xl"
-                  title="No pudimos cargar las categorias"
+                  title="No pudimos cargar las categorías"
                   description="Intenta de nuevo en un momento."
                 />
               ) : categories.length === 0 ? (
@@ -301,7 +301,7 @@ export default function Homepage() {
                   icon={Folder}
                   iconSize={32}
                   headingClassName="text-xl"
-                  title="Aun no hay categorias creadas"
+                  title="Aún no hay categorías creadas"
                 />
               ) : (
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">

@@ -14,19 +14,19 @@ describe("ViewAllCategoriesTile", () => {
   it("renders a link to the catalog", () => {
     renderTile({ remainingCount: 12 })
 
-    const link = screen.getByRole("link", { name: /ver todas las categorias/i })
+    const link = screen.getByRole("link", { name: /ver todas las categorías/i })
     expect(link).toHaveAttribute("href", "/catalog")
   })
 
   it("shows how many more categories there are", () => {
     renderTile({ remainingCount: 12 })
 
-    expect(screen.getByText("+12 categorias")).toBeInTheDocument()
+    expect(screen.getByText("+12 categorías")).toBeInTheDocument()
   })
 
   it("omits the count when there are no remaining categories", () => {
     renderTile({ remainingCount: 0 })
 
-    expect(screen.queryByText(/\+\d+ categorias/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/\+\d+ categorías/)).not.toBeInTheDocument()
   })
 })

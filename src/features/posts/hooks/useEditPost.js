@@ -132,9 +132,11 @@ export function useEditPost(id, navigate) {
         setImageDeleted(false);
         toast.success("Movido a borrador. Ya puedes editarlo y publicarlo de nuevo.");
       } else {
-        toast.success(`Post ${
-          statusToSave === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
-        } exitosamente!`,)
+        toast.success(
+          statusToSave === "PUBLISHED"
+            ? "¡Post publicado exitosamente!"
+            : "Borrador guardado exitosamente",
+        )
 
         navigate("/user/posts"); // Back to the list after saving
       }

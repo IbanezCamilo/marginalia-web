@@ -74,7 +74,7 @@ export function RecentPostsList({
               >
                 <div>
                   <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    <span>{post.categoryName ?? "Sin categoria"}</span>
+                    <span>{post.categoryName ?? "Sin categoría"}</span>
                     <span className="text-muted-foreground">/</span>
                     <time>{formatDate(post.createdAt)}</time>
                   </div>

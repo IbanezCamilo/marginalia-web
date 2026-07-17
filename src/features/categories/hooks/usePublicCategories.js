@@ -14,7 +14,7 @@ export function usePublicCategories() {
       const data = await categoryService.getAll();
       setCategories(data ?? []);
     } catch (err) {
-      setError(getErrorMessage(err, "Error al cargar las categorias."));
+      setError(getErrorMessage(err, "Error al cargar las categorías."));
     } finally {
       setLoading(false);
     }

@@ -117,7 +117,7 @@ describe("useCreatePost", () => {
       { title: "My Title", content: FILLED_CONTENT, categoryId: 1, status: "PUBLISHED", focalX: 0.5, focalY: 0.5 },
       null,
     )
-    expect(toast.success).toHaveBeenCalledWith("Post Publicado exitosamente!")
+    expect(toast.success).toHaveBeenCalledWith("¡Post publicado exitosamente!")
     expect(result.current.post.title).toBe("")
     expect(navigateMock).not.toHaveBeenCalled()
 
@@ -143,7 +143,7 @@ describe("useCreatePost", () => {
       { title: "Draft title", content: "", categoryId: null, status: "DRAFT", focalX: 0.5, focalY: 0.5 },
       null,
     )
-    expect(toast.success).toHaveBeenCalledWith("Post Guardado como borrador exitosamente!")
+    expect(toast.success).toHaveBeenCalledWith("Borrador guardado exitosamente")
   })
 
   it("surfaces an error and does not redirect when the create call fails", async () => {

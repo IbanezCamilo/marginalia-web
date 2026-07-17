@@ -13,7 +13,7 @@ import {
 export function ConfirmDialog({
   open,
   onOpenChange,
-  title = "¿Estas seguro?",
+  title = "¿Estás seguro?",
   description = "Esta acción no se puede deshacer",
   confirmLabel = "Confirmar",
   cancelLabel = "Cancelar",

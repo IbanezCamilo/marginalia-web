@@ -29,7 +29,7 @@ describe("validatePost", () => {
       )
 
       expect(result.isValid).toBe(false)
-      expect(result.errors).toContain("El titulo es obligatorio para publicar")
+      expect(result.errors).toContain("El título es obligatorio para publicar")
     })
 
     it("treats a whitespace-only title as missing", () => {
@@ -38,7 +38,7 @@ describe("validatePost", () => {
         "PUBLISHED",
       )
 
-      expect(result.errors).toContain("El titulo es obligatorio para publicar")
+      expect(result.errors).toContain("El título es obligatorio para publicar")
     })
 
     it("requires the title to be at least 5 characters", () => {
@@ -48,7 +48,7 @@ describe("validatePost", () => {
       )
 
       expect(result.isValid).toBe(false)
-      expect(result.errors).toContain("El titulo debe tener al menos 5 caracteres")
+      expect(result.errors).toContain("El título debe tener al menos 5 caracteres")
     })
 
     it("requires content", () => {
@@ -68,7 +68,7 @@ describe("validatePost", () => {
       )
 
       expect(result.isValid).toBe(false)
-      expect(result.errors).toContain("Debes seleccionar una categoria")
+      expect(result.errors).toContain("Debes seleccionar una categoría")
     })
 
     it("collects every missing-field error at once", () => {
@@ -83,7 +83,7 @@ describe("validatePost", () => {
       const result = validatePost({ title: "", content: EMPTY_CONTENT }, "DRAFT")
 
       expect(result.isValid).toBe(false)
-      expect(result.errors).toContain("Un borrador debe tener al menos titulo o contenido")
+      expect(result.errors).toContain("Un borrador debe tener al menos título o contenido")
     })
 
     it("is valid with only a title", () => {

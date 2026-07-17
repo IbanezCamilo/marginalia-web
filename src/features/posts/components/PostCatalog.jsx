@@ -27,7 +27,7 @@ function EmptyState({ activeFacets, onRemoveFacet, onClearAll }) {
     <div className="flex flex-col items-center py-20 text-center">
       <BookOpen size={40} strokeWidth={1.5} className="text-stone-300 dark:text-stone-600" aria-hidden="true" />
       <p className="mt-6 font-serif text-2xl text-stone-400 dark:text-stone-500">
-        No hay publicaciones con estos filtros todavia
+        No hay publicaciones con estos filtros todavía
       </p>
       {activeFacets.length > 0 ? (
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -73,7 +73,7 @@ export default function PostCatalog({ lockedCategorySlug = null }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-stone-500 dark:text-stone-400">
-          {loading ? "…" : `${totalElements} ${totalElements === 1 ? "publicacion" : "publicaciones"}`}
+          {loading ? "…" : `${totalElements} ${totalElements === 1 ? "publicación" : "publicaciones"}`}
         </p>
 
         <CatalogFilterBar
@@ -118,7 +118,7 @@ export default function PostCatalog({ lockedCategorySlug = null }) {
                 {loadingMore ? (
                   <Loader2 size={16} className="animate-spin" aria-hidden="true" />
                 ) : null}
-                Cargar mas
+                Cargar más
               </button>
             </div>
           )}

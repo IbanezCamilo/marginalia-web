@@ -42,7 +42,7 @@ export function useCatalogPosts({ apiParams = {}, size = 12 } = {}) {
       setTotalElements(data.page?.totalElements ?? totalElements);
       setTotalPages(data.page?.totalPages ?? totalPages);
     } catch (err) {
-      setError(getErrorMessage(err, "Error al cargar mas publicaciones."));
+      setError(getErrorMessage(err, "Error al cargar más publicaciones."));
     } finally {
       setLoadingMore(false);
     }

@@ -100,7 +100,7 @@ export default function AdminUsers() {
             ? `Esta acción eliminará a "${confirmDeleteUserName}" de forma permanente y revocará su acceso a la plataforma.`
             : "Esta acción es permanente y revocará el acceso de la cuenta a la plataforma."
         }
-        confirmLabel="Si, eliminar"
+        confirmLabel="Sí, eliminar"
         onConfirm={confirmDelete}
         variant="destructive"
       />

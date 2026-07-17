@@ -46,7 +46,7 @@ export function useCreateCategory( onSave, isOpen, onClose ){
     try {
       setSaving(true);
       await onSave({ name: trimmed });
-      toast.success("Categoria creada correctamente");
+      toast.success("Categoría creada correctamente");
       onClose();
     } catch (err) {
       toast.error(getErrorMessage(err, "No se pudo crear la categoría."));

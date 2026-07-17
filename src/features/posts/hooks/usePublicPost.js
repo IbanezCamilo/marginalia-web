@@ -16,7 +16,7 @@ export function usePublicPost(slug) {
       const data = await publicPostService.getBySlug(slug);
       setPost(data);
     } catch (err) {
-      setError(getErrorMessage(err, "No pudimos cargar este articulo."));
+      setError(getErrorMessage(err, "No pudimos cargar este artículo."));
     } finally {
       setLoading(false);
     }

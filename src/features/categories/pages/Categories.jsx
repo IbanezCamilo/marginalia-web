@@ -43,7 +43,7 @@ export default function Categories() {
     return (
       <PageError
         icon={Folder}
-        title="No pudimos cargar las categorias"
+        title="No pudimos cargar las categorías"
         message={error}
         onRetry={loadCategories}
       />
@@ -56,29 +56,29 @@ export default function Categories() {
         open={confirmState.open}
         onOpenChange={(open) => setConfirmState((prev) => ({ ...prev, open }))}
         onConfirm={handleConfirmDelete}
-        title="¿Eliminar esta categoria?"
+        title="¿Eliminar esta categoría?"
         description={
           confirmDeleteCategoryName
             ? `Esta acción eliminará "${confirmDeleteCategoryName}" de forma permanente. Los posts asociados quedarán sin categoría.`
-            : "Esta accion es permanente. Los posts asociados quedaran sin categoria."
+            : "Esta acción es permanente. Los posts asociados quedarán sin categoría."
         }
-        confirmLabel="Si, eliminar"
+        confirmLabel="Sí, eliminar"
       />
 
       <div className="mb-6 rounded-md border border-border bg-surface-warm p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-rose-700 dark:text-rose-400">
-              Taxonomia
-            </p>
+              Taxonomía
+</p>
             <h1 className="mt-2 font-serif text-4xl text-foreground">
-              Categorias
+              Categorías
               <span className="ml-3 inline-flex translate-y-[-0.25rem] items-center rounded-full border border-border bg-card px-2.5 py-1 text-xs font-medium text-muted-foreground">
                 {loading ? <Skeleton className="h-4 w-5 rounded-full" /> : categories.length}
               </span>
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Gestiona los temas que ordenan el archivo publico del blog.
+              Gestiona los temas que ordenan el archivo público del blog.
             </p>
           </div>
 
@@ -87,7 +87,7 @@ export default function Categories() {
             className="bg-rose-700 hover:bg-rose-800"
           >
             <Plus size={16} />
-            Nueva Categoria
+            Nueva Categoría
           </Button>
         </div>
       </div>
@@ -97,9 +97,9 @@ export default function Categories() {
       ) : categories.length === 0 ? (
         <EmptyState
           icon={Folder}
-          title="Aun no hay categorias"
-          description="Crea una primera categoria para que las publicaciones se puedan explorar por tema."
-          action={{ label: "Crear categoria", onClick: () => setCreateModalOpen(true) }}
+          title="Aún no hay categorías"
+          description="Crea una primera categoría para que las publicaciones se puedan explorar por tema."
+          action={{ label: "Crear categoría", onClick: () => setCreateModalOpen(true) }}
         />
       ) : (
         <div className="overflow-hidden rounded-md border border-border bg-card shadow-[0_1px_2px_rgba(28,25,23,0.04)]">

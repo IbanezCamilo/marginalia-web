@@ -96,7 +96,7 @@ export default function SidebarCollapsible({
             className={`rounded-md p-1.5 text-stone-500 transition-colors hover:bg-stone-200/70 hover:text-stone-950 dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-stone-100 ${
               isCollapsed ? "mx-auto" : ""
             }`}
-            aria-label={isCollapsed ? "Expandir menu" : "Contraer menu"}
+            aria-label={isCollapsed ? "Expandir menú" : "Contraer menú"}
           >
             <ChevronLeft
               size={20}

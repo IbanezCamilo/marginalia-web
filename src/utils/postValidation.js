@@ -6,9 +6,9 @@ export const validatePost = (post, initialStatus) => {
 
   if (initialStatus === "PUBLISHED") {
     if (!post.title?.trim()) {
-      errors.push("El titulo es obligatorio para publicar");
+      errors.push("El título es obligatorio para publicar");
     } else if (post.title.trim().length < 5) {
-      errors.push("El titulo debe tener al menos 5 caracteres");
+      errors.push("El título debe tener al menos 5 caracteres");
     }
 
     if (!hasContent) {
@@ -16,13 +16,13 @@ export const validatePost = (post, initialStatus) => {
     }
 
     if (!post.categoryId) {
-      errors.push("Debes seleccionar una categoria");
+      errors.push("Debes seleccionar una categoría");
     }
   }
 
   if (initialStatus === "DRAFT") {
     if (!post.title?.trim() && !hasContent) {
-      errors.push("Un borrador debe tener al menos titulo o contenido");
+      errors.push("Un borrador debe tener al menos título o contenido");
     }
   }
 

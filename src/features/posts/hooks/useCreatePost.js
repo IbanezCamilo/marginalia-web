@@ -86,9 +86,11 @@ export function useCreatePost() {
 
       await postService.create(postData, image);
 
-      toast.success(`Post ${
-          initialStatus === "PUBLISHED" ? "Publicado" : "Guardado como borrador"
-        } exitosamente!`,)
+      toast.success(
+        initialStatus === "PUBLISHED"
+          ? "¡Post publicado exitosamente!"
+          : "Borrador guardado exitosamente",
+      )
 
       setPost(INITIAL_POST);
       setImage(null);

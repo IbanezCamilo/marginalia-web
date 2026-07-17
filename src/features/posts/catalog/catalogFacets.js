@@ -4,10 +4,10 @@ import { usePublicCategories } from "@/features/categories/hooks/usePublicCatego
 // Sort labels/keys moved verbatim from PostCatalog.jsx — same keys the API whitelists.
 export const SORT_LABELS = {
   featured: "Destacados",
-  recent: "Mas recientes",
-  oldest: "Mas antiguas",
-  title_asc: "Titulo A-Z",
-  title_desc: "Titulo Z-A",
+  recent: "Más recientes",
+  oldest: "Más antiguas",
+  title_asc: "Título A-Z",
+  title_desc: "Título Z-A",
 };
 
 // Raw Spring Data sort strings we used to write to the URL; old bookmarks still carry them.
