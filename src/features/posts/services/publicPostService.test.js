@@ -21,19 +21,26 @@ describe("publicPostService", () => {
     expect(apiClient.get).toHaveBeenCalledWith(`${BASE}/my-post`)
   })
 
-  it("getCatalog defaults to the featured sort and omits categoryId when not given", async () => {
-    await publicPostService.getCatalog()
+  it("getCatalog sends any filter params generically, skipping null/empty ones", async () => {
+    await publicPostService.getCatalog({
+      category: "ficcion",
+      time: "short",
+      authorId: "7",
+      q: "borges",
+      sort: "recent",
+      categoryId: null,
+      page: 1,
+      size: 6,
+    })
 
     expect(apiClient.get).toHaveBeenCalledWith(
-      `${BASE}?sort=featured&page=0&size=12`,
+      `${BASE}?category=ficcion&time=short&authorId=7&q=borges&sort=recent&page=1&size=6`,
     )
   })
 
-  it("getCatalog includes categoryId and passes an explicit sort key through", async () => {
-    await publicPostService.getCatalog({ categoryId: 3, sort: "title_asc", page: 1, size: 6 })
+  it("getCatalog defaults to page 0 size 12 with no filters", async () => {
+    await publicPostService.getCatalog()
 
-    expect(apiClient.get).toHaveBeenCalledWith(
-      `${BASE}?categoryId=3&sort=title_asc&page=1&size=6`,
-    )
+    expect(apiClient.get).toHaveBeenCalledWith(`${BASE}?page=0&size=12`)
   })
 })

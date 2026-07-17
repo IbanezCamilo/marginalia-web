@@ -24,4 +24,10 @@ describe("publicAuthorService", () => {
 
     expect(apiClient.get).toHaveBeenCalledWith("/public/authors/7/posts?page=2&size=5")
   })
+
+  it("getAllAuthors fetches the public author facet list", async () => {
+    await publicAuthorService.getAllAuthors()
+
+    expect(apiClient.get).toHaveBeenCalledWith("/public/authors")
+  })
 })

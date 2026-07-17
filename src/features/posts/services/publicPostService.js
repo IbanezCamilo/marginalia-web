@@ -10,10 +10,13 @@ export const publicPostService = {
 
   getBySlug: (slug) => apiClient.get(`${BASE_ENDPOINT}/${slug}`),
 
-  getCatalog: ({ categoryId, sort = "featured", page = 0, size = 12 } = {}) => {
+  // Generic facet passthrough: whatever params the facet registry produces are appended
+  // as-is (null/empty skipped). New facets need no changes here.
+  getCatalog: ({ page = 0, size = 12, ...filters } = {}) => {
     const params = new URLSearchParams();
-    if (categoryId != null) params.set("categoryId", categoryId);
-    params.set("sort", sort);
+    for (const [key, value] of Object.entries(filters)) {
+      if (value != null && value !== "") params.set(key, value);
+    }
     params.set("page", page);
     params.set("size", size);
     return apiClient.get(`${BASE_ENDPOINT}?${params.toString()}`);
