@@ -22,6 +22,10 @@ import { EmptyState } from "@/shared/components/EmptyState";
 import { TableSkeleton } from "@/shared/components/TableSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAdminAuthorRequests } from "@/features/admin/hooks/useAdminAuthorRequests";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+
+const CLAIM_BADGE =
+  "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900 dark:bg-sky-950 dark:text-sky-400";
 
 const STATUS_BADGE = {
   PENDING:  "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-400",
@@ -56,6 +60,7 @@ const truncate = (str, max = 60) =>
   str && str.length > max ? str.slice(0, max) + "…" : (str ?? "—");
 
 export default function AdminAuthorRequests() {
+  const { state: { user: currentUser } } = useAuth();
   const {
     requests,
     totalElements,
@@ -243,7 +248,12 @@ export default function AdminAuthorRequests() {
                 </TableRow>
               </TableHeader>
               <TableBody className="divide-y divide-border">
-                {requests.map((req) => (
+                {requests.map((req) => {
+                  // Claim fields are only non-null while the claim is active
+                  // (the backend nulls expired claims in the response).
+                  const claimedByOther =
+                    req.claimedById != null && req.claimedById !== currentUser?.id;
+                  return (
                   <TableRow
                     key={req.id}
                     className="transition-colors hover:bg-surface-warm"
@@ -263,6 +273,15 @@ export default function AdminAuthorRequests() {
                       >
                         {STATUS_LABEL[req.status] ?? req.status}
                       </span>
+                      {req.status === "PENDING" && req.claimedByName && (
+                        <span
+                          className={`mt-1.5 block w-fit rounded-full border px-2.5 py-1 text-xs font-medium ${CLAIM_BADGE}`}
+                        >
+                          {claimedByOther
+                            ? `En revisión por ${req.claimedByName}`
+                            : "En revisión por ti"}
+                        </span>
+                      )}
                     </TableCell>
                     <TableCell className="hidden max-w-xs px-6 py-4 text-sm text-muted-foreground lg:table-cell">
                       {req.adminNote ? (
@@ -279,6 +298,8 @@ export default function AdminAuthorRequests() {
                         <div className="flex items-center gap-2">
                           <Button
                             size="sm"
+                            disabled={claimedByOther}
+                            title={claimedByOther ? `En revisión por ${req.claimedByName}` : undefined}
                             onClick={() => openResolve("approve", req.id)}
                             className="h-7 bg-emerald-700 px-3 text-xs hover:bg-emerald-800"
                           >
@@ -287,6 +308,8 @@ export default function AdminAuthorRequests() {
                           <Button
                             size="sm"
                             variant="outline"
+                            disabled={claimedByOther}
+                            title={claimedByOther ? `En revisión por ${req.claimedByName}` : undefined}
                             onClick={() => openResolve("reject", req.id)}
                             className="h-7 border-rose-200 px-3 text-xs text-rose-700 hover:bg-rose-50 hover:text-rose-800 dark:border-rose-900 dark:text-rose-400 dark:hover:bg-rose-950 dark:hover:text-rose-300"
                           >
@@ -298,7 +321,8 @@ export default function AdminAuthorRequests() {
                       )}
                     </TableCell>
                   </TableRow>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           </div>

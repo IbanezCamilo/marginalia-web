@@ -5,7 +5,13 @@ import { adminAuthorRequestService } from "@/features/admin/services/adminAuthor
 import { useAdminAuthorRequests } from "./useAdminAuthorRequests"
 
 vi.mock(import("@/features/admin/services/adminAuthorRequestService"), () => ({
-  adminAuthorRequestService: { list: vi.fn(), approve: vi.fn(), reject: vi.fn() },
+  adminAuthorRequestService: {
+    list: vi.fn(),
+    approve: vi.fn(),
+    reject: vi.fn(),
+    claim: vi.fn(),
+    release: vi.fn(),
+  },
 }))
 
 vi.mock(import("sonner"), () => ({
@@ -20,6 +26,8 @@ const PAGE_RESPONSE = {
 describe("useAdminAuthorRequests", () => {
   beforeEach(() => {
     adminAuthorRequestService.list.mockResolvedValue(PAGE_RESPONSE)
+    adminAuthorRequestService.claim.mockResolvedValue({})
+    adminAuthorRequestService.release.mockResolvedValue(undefined)
   })
 
   it("loads pending requests by default on mount", async () => {
@@ -44,7 +52,10 @@ describe("useAdminAuthorRequests", () => {
     adminAuthorRequestService.approve.mockResolvedValueOnce(undefined)
     const { result } = renderHook(() => useAdminAuthorRequests())
     await waitFor(() => expect(result.current.loading).toBe(false))
-    act(() => result.current.openResolve("approve", 1))
+    // openResolve claims the request first, so it must be awaited
+    await act(async () => {
+      await result.current.openResolve("approve", 1)
+    })
 
     await act(async () => {
       await result.current.confirmResolve()
@@ -59,7 +70,9 @@ describe("useAdminAuthorRequests", () => {
     adminAuthorRequestService.reject.mockResolvedValueOnce(undefined)
     const { result } = renderHook(() => useAdminAuthorRequests())
     await waitFor(() => expect(result.current.loading).toBe(false))
-    act(() => result.current.openResolve("reject", 1))
+    await act(async () => {
+      await result.current.openResolve("reject", 1)
+    })
     act(() => result.current.setResolveState((prev) => ({ ...prev, adminNote: "Not detailed enough" })))
 
     await act(async () => {
@@ -74,7 +87,9 @@ describe("useAdminAuthorRequests", () => {
     adminAuthorRequestService.approve.mockRejectedValueOnce(new Error("boom"))
     const { result } = renderHook(() => useAdminAuthorRequests())
     await waitFor(() => expect(result.current.loading).toBe(false))
-    act(() => result.current.openResolve("approve", 1))
+    await act(async () => {
+      await result.current.openResolve("approve", 1)
+    })
 
     await act(async () => {
       await result.current.confirmResolve()
@@ -83,5 +98,76 @@ describe("useAdminAuthorRequests", () => {
     expect(toast.error).toHaveBeenCalledWith("No se pudo procesar la solicitud.")
     expect(result.current.resolveState.open).toBe(true)
     expect(result.current.resolving).toBe(false)
+  })
+
+  it("claims the request before opening the resolution dialog", async () => {
+    const { result } = renderHook(() => useAdminAuthorRequests())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    await act(async () => {
+      await result.current.openResolve("approve", 1)
+    })
+
+    expect(adminAuthorRequestService.claim).toHaveBeenCalledWith(1)
+    expect(result.current.resolveState.open).toBe(true)
+  })
+
+  it("does not open the dialog and reloads when the claim fails", async () => {
+    adminAuthorRequestService.claim.mockRejectedValueOnce(new Error("claimed by someone else"))
+    const { result } = renderHook(() => useAdminAuthorRequests())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    adminAuthorRequestService.list.mockClear()
+
+    await act(async () => {
+      await result.current.openResolve("approve", 1)
+    })
+
+    expect(toast.error).toHaveBeenCalledWith("No se pudo reservar la solicitud.")
+    expect(result.current.resolveState.open).toBe(false)
+    expect(adminAuthorRequestService.list).toHaveBeenCalledWith("PENDING", 0)
+  })
+
+  it("releases the claim when the dialog is closed without resolving", async () => {
+    const { result } = renderHook(() => useAdminAuthorRequests())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    await act(async () => {
+      await result.current.openResolve("approve", 1)
+    })
+
+    act(() => result.current.closeResolve())
+
+    expect(adminAuthorRequestService.release).toHaveBeenCalledWith(1)
+    expect(result.current.resolveState.open).toBe(false)
+  })
+
+  it("swallows release failures when cancelling", async () => {
+    adminAuthorRequestService.release.mockRejectedValueOnce(new Error("boom"))
+    const { result } = renderHook(() => useAdminAuthorRequests())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    await act(async () => {
+      await result.current.openResolve("reject", 1)
+    })
+
+    await act(async () => {
+      result.current.closeResolve()
+    })
+
+    expect(result.current.resolveState.open).toBe(false)
+  })
+
+  it("does not release after a successful resolution", async () => {
+    adminAuthorRequestService.approve.mockResolvedValueOnce(undefined)
+    const { result } = renderHook(() => useAdminAuthorRequests())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    await act(async () => {
+      await result.current.openResolve("approve", 1)
+    })
+
+    await act(async () => {
+      await result.current.confirmResolve()
+    })
+
+    // The backend clears the claim as part of approve/reject
+    expect(adminAuthorRequestService.release).not.toHaveBeenCalled()
   })
 })

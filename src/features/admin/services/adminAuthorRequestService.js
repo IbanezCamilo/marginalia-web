@@ -9,6 +9,12 @@ export const adminAuthorRequestService = {
   pendingCount: () =>
     apiClient.get("/admin/author-requests/pending-count"),
 
+  claim: (id) =>
+    apiClient.put(`/admin/author-requests/${id}/claim`),
+
+  release: (id) =>
+    apiClient.delete(`/admin/author-requests/${id}/claim`),
+
   approve: (id, adminNote) =>
     apiClient.put(`/admin/author-requests/${id}/approve`, {
       adminNote: adminNote || null,
