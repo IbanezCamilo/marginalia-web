@@ -3,7 +3,7 @@ import { apiClient } from "@/lib/apiClient"
 import { adminAuthorRequestService } from "./adminAuthorRequestService"
 
 vi.mock(import("@/lib/apiClient"), () => ({
-  apiClient: { get: vi.fn(), put: vi.fn() },
+  apiClient: { get: vi.fn(), put: vi.fn(), delete: vi.fn() },
 }))
 
 describe("adminAuthorRequestService", () => {
@@ -25,6 +25,18 @@ describe("adminAuthorRequestService", () => {
     await adminAuthorRequestService.pendingCount()
 
     expect(apiClient.get).toHaveBeenCalledWith("/admin/author-requests/pending-count")
+  })
+
+  it("claim puts to the claim endpoint", async () => {
+    await adminAuthorRequestService.claim(5)
+
+    expect(apiClient.put).toHaveBeenCalledWith("/admin/author-requests/5/claim")
+  })
+
+  it("release deletes the claim endpoint", async () => {
+    await adminAuthorRequestService.release(5)
+
+    expect(apiClient.delete).toHaveBeenCalledWith("/admin/author-requests/5/claim")
   })
 
   it("approve sends the admin note, defaulting to null", async () => {

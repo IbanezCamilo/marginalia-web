@@ -41,11 +41,24 @@ export function useAdminAuthorRequests() {
     // load is triggered by the useEffect watching statusFilter
   };
 
-  const openResolve = (type, requestId) => {
-    setResolveState({ open: true, type, requestId, adminNote: "" });
+  const openResolve = async (type, requestId) => {
+    // Claim the request first so other admins see "En revisión" before we act;
+    // a 409 means someone else got there first — surface who and refresh the list.
+    try {
+      await adminAuthorRequestService.claim(requestId);
+      setResolveState({ open: true, type, requestId, adminNote: "" });
+    } catch (err) {
+      toast.error(getErrorMessage(err, "No se pudo reservar la solicitud."));
+      await load(currentPage, statusFilter);
+    }
   };
 
   const closeResolve = () => {
+    // Cancel path: release the claim explicitly instead of letting it expire.
+    // Fire-and-forget — a failed release only means the claim expires by TTL.
+    if (resolveState.requestId != null) {
+      adminAuthorRequestService.release(resolveState.requestId).catch(() => {});
+    }
     setResolveState(INITIAL_RESOLVE);
   };
 
@@ -60,10 +73,14 @@ export function useAdminAuthorRequests() {
         await adminAuthorRequestService.reject(requestId, adminNote);
         toast.success("Solicitud rechazada.");
       }
-      closeResolve();
+      // Resolution already cleared the claim server-side — no release needed.
+      setResolveState(INITIAL_RESOLVE);
       await load(currentPage, statusFilter);
     } catch (err) {
       toast.error(getErrorMessage(err, "No se pudo procesar la solicitud."));
+      // A 409 here means a stale version or a stolen claim — refresh so the
+      // table shows the real state (badge or final resolution).
+      await load(currentPage, statusFilter);
     } finally {
       setResolving(false);
     }
