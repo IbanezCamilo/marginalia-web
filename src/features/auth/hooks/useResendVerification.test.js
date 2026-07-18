@@ -40,6 +40,17 @@ describe("useResendVerification", () => {
     expect(result.current.cooldown).toBe(0)
   })
 
+  it("normalizes the email (trim + lowercase) before sending", async () => {
+    emailVerificationService.resend.mockResolvedValueOnce(null)
+    const { result } = renderHook(() => useResendVerification())
+
+    await act(async () => {
+      await result.current.resend("  CamiloIp@Outlook.COM ")
+    })
+
+    expect(emailVerificationService.resend).toHaveBeenCalledWith("camiloip@outlook.com")
+  })
+
   it("ignores calls while the cooldown is active", async () => {
     emailVerificationService.resend.mockResolvedValue(null)
     const { result } = renderHook(() => useResendVerification())

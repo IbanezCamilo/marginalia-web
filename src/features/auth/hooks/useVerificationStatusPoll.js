@@ -32,7 +32,9 @@ export function useVerificationStatusPoll(email) {
   const doneRef = useRef(false);
 
   useEffect(() => {
-    const trimmed = email?.trim();
+    // Emails are stored lowercase server-side; normalize so a mixed-case email
+    // (e.g. typed into the resend form) doesn't poll a nonexistent address.
+    const trimmed = email?.trim().toLowerCase();
     if (!trimmed || doneRef.current) return undefined;
 
     let intervalId = null;

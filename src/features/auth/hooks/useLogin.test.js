@@ -63,6 +63,25 @@ describe("useLogin", () => {
     expect(result.current.loading).toBe(false)
   })
 
+  it("normalizes the email (trim + lowercase) before submitting, leaving the password untouched", async () => {
+    userService.login.mockResolvedValueOnce({})
+    const { result } = renderHook(() => useLogin())
+
+    act(() => {
+      result.current.setEmail("  CamiloIp@Outlook.COM ")
+      result.current.setPassword(" Secret ")
+    })
+
+    await act(async () => {
+      await result.current.handleSubmit(submitEvent)
+    })
+
+    expect(userService.login).toHaveBeenCalledWith({
+      email: "camiloip@outlook.com",
+      password: " Secret ",
+    })
+  })
+
   it("sets an error and does not navigate on failure", async () => {
     userService.login.mockRejectedValueOnce(new Error("bad credentials"))
     const { result } = renderHook(() => useLogin())

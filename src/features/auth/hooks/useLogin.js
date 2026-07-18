@@ -36,7 +36,9 @@ export function useLogin() {
 
     setLoading(true);
     try {
-      await userService.login({ email, password });
+      // Emails are stored lowercase server-side; normalize so casing never
+      // causes a spurious credentials error. Password is sent untouched.
+      await userService.login({ email: email.trim().toLowerCase(), password });
       await refreshUser();
       navigate("/user/dashboard");
     } catch (err) {

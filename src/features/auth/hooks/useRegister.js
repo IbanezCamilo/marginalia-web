@@ -26,14 +26,17 @@ export function useRegister() {
     if (Object.keys(errors).length > 0) return;
 
     setLoading(true);
+    // Emails are stored lowercase server-side; submit the normalized value and
+    // reuse it for the check-email flow so verification polling matches.
+    const normalizedEmail = email.trim().toLowerCase();
     try {
       // Registration no longer opens a session: the account stays blocked
       // until the emailed verification link is clicked.
-      await userService.register({ name, email, password });
+      await userService.register({ name: name.trim(), email: normalizedEmail, password });
       // Survives a refresh of the check-email page, which otherwise loses the
       // email (and with it the verification polling) with the router state.
-      sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, email.trim());
-      navigate("/auth/check-email", { state: { email } });
+      sessionStorage.setItem(PENDING_VERIFICATION_EMAIL_KEY, normalizedEmail);
+      navigate("/auth/check-email", { state: { email: normalizedEmail } });
     } catch (err) {
       setError(getErrorMessage(err, "Error de conexión con el servidor."));
     } finally {

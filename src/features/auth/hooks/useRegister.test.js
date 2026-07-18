@@ -63,6 +63,32 @@ describe("useRegister", () => {
     expect(sessionStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY)).toBe("a@b.com")
   })
 
+  it("normalizes the email (trim + lowercase) and trims the name before submitting", async () => {
+    userService.register.mockResolvedValueOnce({})
+    const { result } = renderHook(() => useRegister())
+
+    act(() => {
+      result.current.setName("  Alice ")
+      result.current.setEmail("  CamiloIp@Outlook.COM ")
+      result.current.setPassword("secret")
+    })
+
+    await act(async () => {
+      await result.current.handleSubmit(submitEvent)
+    })
+
+    expect(userService.register).toHaveBeenCalledWith({
+      name: "Alice",
+      email: "camiloip@outlook.com",
+      password: "secret",
+    })
+    // The check-email flow must poll the same normalized address the backend stored.
+    expect(navigateMock).toHaveBeenCalledWith("/auth/check-email", {
+      state: { email: "camiloip@outlook.com" },
+    })
+    expect(sessionStorage.getItem(PENDING_VERIFICATION_EMAIL_KEY)).toBe("camiloip@outlook.com")
+  })
+
   it("sets an error and does not navigate on failure", async () => {
     userService.register.mockRejectedValueOnce(new Error("email taken"))
     const { result } = renderHook(() => useRegister())

@@ -38,7 +38,9 @@ export function useResendVerification() {
 
     setSending(true);
     try {
-      await emailVerificationService.resend(email.trim());
+      // Emails are stored lowercase server-side; normalize so casing never
+      // makes the resend silently miss the account.
+      await emailVerificationService.resend(email.trim().toLowerCase());
       toast.success("Si el correo está registrado, recibirás un nuevo enlace de verificación.");
       startCooldown();
       return true;
