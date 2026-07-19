@@ -61,7 +61,9 @@ export default function TopBar({ onMenuClick }) {
           Panel editorial
         </p>
         <p className="text-sm text-muted-foreground">
-          Administra publicaciones, categorías y perfil.
+          {user?.role === "READER"
+            ? "Administra tu cuenta y perfil."
+            : "Administra publicaciones, categorías y perfil."}
         </p>
       </div>
 

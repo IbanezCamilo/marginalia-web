@@ -51,7 +51,7 @@ const SKELETON_COLUMNS = [
 
 const formatDate = (dateStr) =>
   dateStr
-    ? new Intl.DateTimeFormat("es-CO", { day: "numeric", month: "short", year: "numeric" }).format(
+    ? new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "long", year: "numeric" }).format(
         new Date(dateStr),
       )
     : "—";
