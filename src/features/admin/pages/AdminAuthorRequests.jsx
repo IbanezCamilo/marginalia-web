@@ -80,6 +80,7 @@ export default function AdminAuthorRequests() {
     confirmResolve,
     setResolveState,
   } = useAdminAuthorRequests();
+  const resolveRequest = requests.find((r) => r.id === resolveState.requestId);
 
   if (error) {
     return (
@@ -107,6 +108,18 @@ export default function AdminAuthorRequests() {
               ? "El usuario recibirá el rol de Autor. Puedes añadir una nota opcional."
               : "La solicitud será rechazada. Puedes indicar el motivo de forma opcional."}
           </p>
+          <div className="space-y-1.5">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">
+              Motivación del solicitante
+            </p>
+            {resolveRequest?.motivation ? (
+              <p className="max-h-40 overflow-y-auto whitespace-pre-line break-words rounded-md border border-border bg-muted px-3 py-2 text-sm text-foreground">
+                {resolveRequest.motivation}
+              </p>
+            ) : (
+              <p className="text-sm italic text-muted-foreground">Sin motivación.</p>
+            )}
+          </div>
           <div className="space-y-1.5">
             <Label
               htmlFor="adminNote"
