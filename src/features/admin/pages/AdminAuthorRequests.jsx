@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ClipboardList, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -61,6 +62,7 @@ const truncate = (str, max = 60) =>
 
 export default function AdminAuthorRequests() {
   const { state: { user: currentUser } } = useAuth();
+  const [detailRequest, setDetailRequest] = useState(null);
   const {
     requests,
     totalElements,
@@ -159,6 +161,41 @@ export default function AdminAuthorRequests() {
               )}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={detailRequest != null} onOpenChange={(open) => !open && setDetailRequest(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-serif text-2xl text-foreground">
+              {detailRequest?.requesterName}
+            </DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Solicitud enviada el {formatDate(detailRequest?.createdAt)}.
+          </p>
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Motivación</p>
+              {detailRequest?.motivation ? (
+                <p className="max-h-40 overflow-y-auto whitespace-pre-line break-words rounded-md border border-border bg-muted px-3 py-2 text-sm text-foreground">
+                  {detailRequest.motivation}
+                </p>
+              ) : (
+                <p className="text-sm italic text-muted-foreground">—</p>
+              )}
+            </div>
+            <div className="space-y-1.5">
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Nota</p>
+              {detailRequest?.adminNote ? (
+                <p className="max-h-40 overflow-y-auto whitespace-pre-line break-words rounded-md border border-border bg-muted px-3 py-2 text-sm text-foreground">
+                  {detailRequest.adminNote}
+                </p>
+              ) : (
+                <p className="text-sm italic text-muted-foreground">—</p>
+              )}
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -265,7 +302,18 @@ export default function AdminAuthorRequests() {
                       {req.requesterEmail}
                     </TableCell>
                     <TableCell className="hidden px-6 py-4 text-sm text-muted-foreground lg:table-cell">
-                      {truncate(req.motivation)}
+                      {req.motivation ? (
+                        <button
+                          type="button"
+                          onClick={() => setDetailRequest(req)}
+                          title="Ver texto completo"
+                          className="cursor-pointer text-left underline decoration-dotted underline-offset-4 transition-colors hover:text-foreground"
+                        >
+                          {truncate(req.motivation)}
+                        </button>
+                      ) : (
+                        "—"
+                      )}
                     </TableCell>
                     <TableCell className="px-6 py-4">
                       <span
@@ -283,9 +331,16 @@ export default function AdminAuthorRequests() {
                         </span>
                       )}
                     </TableCell>
-                    <TableCell className="hidden max-w-xs px-6 py-4 text-sm text-muted-foreground lg:table-cell">
+                    <TableCell className="hidden px-6 py-4 text-sm text-muted-foreground lg:table-cell">
                       {req.adminNote ? (
-                        <span className="block whitespace-pre-line break-words">{req.adminNote}</span>
+                        <button
+                          type="button"
+                          onClick={() => setDetailRequest(req)}
+                          title="Ver texto completo"
+                          className="cursor-pointer text-left underline decoration-dotted underline-offset-4 transition-colors hover:text-foreground"
+                        >
+                          {truncate(req.adminNote)}
+                        </button>
                       ) : (
                         "—"
                       )}
