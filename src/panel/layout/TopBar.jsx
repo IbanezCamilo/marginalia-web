@@ -96,9 +96,11 @@ export default function TopBar({ onMenuClick }) {
                 <span>Perfil</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem disabled className="gap-2">
-              <Settings size={17} />
-              <span>Configuración</span>
+            <DropdownMenuItem asChild>
+              <Link to="settings" className="flex w-full cursor-pointer items-center gap-2">
+                <Settings size={17} />
+                <span>Configuración</span>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem

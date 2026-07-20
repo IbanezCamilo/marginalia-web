@@ -15,6 +15,7 @@ import AuthorRequestPage from "@/features/authorRequest/pages/AuthorRequestPage.
 import AdminAuthorRequests from "@/features/admin/pages/AdminAuthorRequests.jsx";
 import AdminUsers from "@/features/admin/pages/AdminUsers.jsx";
 import PostModeration from "@/features/moderation/pages/PostModeration.jsx";
+import SettingsPage from "@/features/settings/pages/SettingsPage.jsx";
 import PostPage from "@/pages/PostPage.jsx";
 import CategoryPage from "@/pages/CategoryPage.jsx";
 import CatalogPage from "@/pages/CatalogPage.jsx";
@@ -84,6 +85,7 @@ export const router = createBrowserRouter([
               { path: "create-post", element: <CreatePost /> },
               { path: "edit-post/:id", element: <EditPost /> },
               { path: "profile", element: <ProfilePage /> },
+              { path: "settings", element: <SettingsPage /> },
               { path: "author-request", element: <AuthorRequestPage /> },
               { path: "posts", element: <Posts /> },
               {
