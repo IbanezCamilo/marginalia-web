@@ -61,4 +61,14 @@ describe("SettingsPage", () => {
 
     expect(screen.getByRole("switch")).not.toBeChecked()
   })
+
+  it("shows the empty state for a READER even when loading failed", () => {
+    authState.user = { role: "READER" }
+    prefsState.error = "No se pudieron cargar tus preferencias."
+
+    render(<SettingsPage />)
+
+    expect(screen.getByText("Aún no hay ajustes disponibles")).toBeInTheDocument()
+    expect(screen.queryByText("No pudimos cargar tus preferencias")).not.toBeInTheDocument()
+  })
 })
