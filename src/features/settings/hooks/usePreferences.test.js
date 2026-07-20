@@ -70,4 +70,31 @@ describe("usePreferences", () => {
     expect(result.current.preferences[KEY]).toBe("true")
     expect(toast.error).toHaveBeenCalled()
   })
+
+  it("guards against same-tick double invocation with synchronous ref guard", async () => {
+    preferencesService.getPreferences.mockResolvedValueOnce({ [KEY]: "true" })
+
+    // Mock a slow updatePreferences that we manually resolve
+    let resolveUpdate
+    preferencesService.updatePreferences.mockImplementationOnce(
+      () => new Promise((resolve) => {
+        resolveUpdate = resolve
+      })
+    )
+
+    const { result } = renderHook(() => usePreferences())
+    await waitFor(() => expect(result.current.loading).toBe(false))
+
+    // Call toggle twice synchronously before the promise resolves
+    await act(async () => {
+      result.current.toggle(KEY)
+      result.current.toggle(KEY)
+      // Resolve the pending request
+      resolveUpdate({ [KEY]: "false" })
+    })
+
+    // Verify updatePreferences was called only once, not twice
+    expect(preferencesService.updatePreferences).toHaveBeenCalledTimes(1)
+    expect(preferencesService.updatePreferences).toHaveBeenCalledWith({ [KEY]: "false" })
+  })
 })

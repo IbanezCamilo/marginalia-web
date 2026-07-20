@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { preferencesService } from "@/features/settings/services/preferencesService";
 import { getErrorMessage } from "@/lib/apiError";
@@ -8,6 +8,7 @@ export function usePreferences() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const savingRef = useRef(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -27,10 +28,12 @@ export function usePreferences() {
 
   const toggle = useCallback(
     async (key) => {
-      if (!preferences || saving) return;
+      if (!preferences || savingRef.current) return;
       const previous = preferences[key];
       const next = previous === "true" ? "false" : "true";
 
+      // Synchronous ref guard to prevent same-tick double invocation
+      savingRef.current = true;
       // Optimistic flip; the server's resolved map is authoritative on success.
       setPreferences((prev) => ({ ...prev, [key]: next }));
       setSaving(true);
@@ -41,10 +44,11 @@ export function usePreferences() {
         setPreferences((prev) => ({ ...prev, [key]: previous }));
         toast.error(getErrorMessage(err, "No se pudo guardar tu preferencia."));
       } finally {
+        savingRef.current = false;
         setSaving(false);
       }
     },
-    [preferences, saving],
+    [preferences],
   );
 
   return { preferences, loading, saving, error, reload: load, toggle };
