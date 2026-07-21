@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { BookOpen, Camera, KeyRound, Mail, PenLine, Shield } from "lucide-react";
+import { AtSign, BookOpen, Camera, KeyRound, Mail, PenLine, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageError } from "@/shared/components/PageError";
 import ProfileImageUpload from "../components/ProfileImageUpload";
 import ProfileEditDialog from "../components/ProfileEditDialog";
 import ChangePasswordDialog from "../components/ChangePasswordDialog";
+import ChangeEmailDialog from "../components/ChangeEmailDialog";
 import { useMyProfile } from "../hooks/useMyProfile";
 
 const ROLE_LABELS = {
@@ -17,6 +18,7 @@ export default function ProfilePage() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
   const { user, loading, error, deleting, loadProfile, handleImageUpdate, handleImageDelete, handleDataUpdate } =
     useMyProfile();
 
@@ -57,6 +59,9 @@ export default function ProfilePage() {
   if (!user) return null;
 
   const roleLabel = ROLE_LABELS[user.role] ?? user.role;
+  // The owner's email is managed by the OWNER_EMAIL environment variable (the server
+  // rejects a change with 403), so we don't offer the action at all.
+  const isOwner = user.role === "OWNER";
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -115,6 +120,16 @@ export default function ProfilePage() {
                 <PenLine size={15} />
                 Editar perfil
               </Button>
+              {!isOwner && (
+                <Button
+                  onClick={() => setEmailModalOpen(true)}
+                  variant="outline"
+                  className="border-border bg-transparent"
+                >
+                  <AtSign size={15} />
+                  Cambiar correo
+                </Button>
+              )}
               <Button
                 onClick={() => setPasswordModalOpen(true)}
                 variant="outline"
@@ -124,6 +139,13 @@ export default function ProfilePage() {
                 Cambiar contraseña
               </Button>
             </div>
+
+            {isOwner && (
+              <p className="mt-3 text-xs italic text-muted-foreground">
+                El correo del propietario se gestiona mediante una variable de entorno y no
+                puede cambiarse desde aquí.
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -145,6 +167,10 @@ export default function ProfilePage() {
       <ChangePasswordDialog
         isOpen={passwordModalOpen}
         onClose={() => setPasswordModalOpen(false)}
+      />
+      <ChangeEmailDialog
+        isOpen={emailModalOpen}
+        onClose={() => setEmailModalOpen(false)}
       />
     </div>
   );

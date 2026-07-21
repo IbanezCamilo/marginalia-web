@@ -39,19 +39,6 @@ export default function ProfileEditDialog({ user, onSave, isOpen, onClose }) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              value={user.email}
-              disabled
-              className="bg-muted"
-            />
-            <p className="text-xs text-muted-foreground">
-              El email no se puede modificar
-            </p>
-          </div>
-
-          <div className="space-y-2">
             <Label htmlFor="description">Biografía</Label>
             <Textarea
               id="description"
