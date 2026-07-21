@@ -54,4 +54,9 @@ export const userService = {
     changePassword: (currentPassword, newPassword) =>
         apiClient.put(`${BASE_ENDPOINT}/password`, { currentPassword, newPassword }),
 
+    // Requests an email change; requires the current password. Responds 202 — the change
+    // is not applied until the new address is confirmed via the emailed link.
+    changeEmail: ({ newEmail, currentPassword }) =>
+        apiClient.put(`${BASE_ENDPOINT}/email`, { newEmail, currentPassword }),
+
 };

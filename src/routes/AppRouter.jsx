@@ -4,6 +4,8 @@ import LoginPage from "@/features/auth/pages/LoginPage.jsx";
 import RegisterPage from "@/features/auth/pages/RegisterPage.jsx";
 import CheckEmailPage from "@/features/auth/pages/CheckEmailPage.jsx";
 import VerifyEmailPage from "@/features/auth/pages/VerifyEmailPage.jsx";
+import ConfirmEmailChangePage from "@/features/auth/pages/ConfirmEmailChangePage.jsx";
+import CancelEmailChangePage from "@/features/auth/pages/CancelEmailChangePage.jsx";
 import CreatePost from "../features/posts/pages/CreatePost.jsx";
 import EditPost from "../features/posts/pages/EditPost.jsx";
 import DashBoard from "../features/dashboard/pages/Dashboard.jsx";
@@ -47,6 +49,18 @@ export const router = createBrowserRouter([
         // Top-level: the backend builds the emailed link as {frontend.url}/verify-email?token=...
         path: "/verify-email",
         element: <VerifyEmailPage />,
+      },
+
+      {
+        // Email-change confirm link sent to the NEW address.
+        path: "/confirm-email-change",
+        element: <ConfirmEmailChangePage />,
+      },
+
+      {
+        // Email-change cancel link sent to the OLD (current) address.
+        path: "/cancel-email-change",
+        element: <CancelEmailChangePage />,
       },
 
       {
