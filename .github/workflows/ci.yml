@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Node 22 matches the build stage of the Dockerfile, so CI and the image
+      # resolve dependencies against the same runtime.
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      # Blocks on critical advisories in shipped code. Deliberately not --audit-level=high:
+      # two high advisories are currently present and assessed as not applicable, and a
+      # gate that is red on arrival is a gate someone disables. They are:
+      #   - react-router GHSA-qwww-vcr4-c8h2 — RSC-mode only; this app uses
+      #     createBrowserRouter (src/routes/AppRouter.jsx). Fix needs a 7.x -> 8.x major.
+      #   - linkify-it GHSA-v245-v573-v5vm — reached only via TipTap's markdown
+      #     serializer; post content is stored and rendered as ProseMirror JSON.
+      # Newly introduced vulnerable dependencies are caught by the dependency-review
+      # job below, which compares against the base branch rather than absolute state.
+      # Revisit both when TipTap or React Router is next upgraded.
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=critical
+
+      # Catches breakage that only shows up in a real build, e.g. an import whose
+      # casing differs from the file on disk (fine on Windows/macOS, fatal on Linux).
+      - name: Build
+        run: npm run build
+
+  # Fails the PR when a change adds a dependency with a known advisory. PR-only:
+  # the action diffs base against head, so a direct push has nothing to compare.
+  dependency-review:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Review dependencies for known vulnerabilities
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
