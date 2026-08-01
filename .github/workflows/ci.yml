@@ -51,6 +51,13 @@ jobs:
 
   # Fails the PR when a change adds a dependency with a known advisory. PR-only:
   # the action diffs base against head, so a direct push has nothing to compare.
+  #
+  # PREREQUISITE: the repository's Dependency graph must be enabled, under
+  # Settings -> Code security and analysis. It is on by default for public repos;
+  # if it is off the action errors with "Dependency review is not supported on this
+  # repository". Enable the setting rather than making this job non-blocking — the
+  # npm audit step above still gates on critical advisories either way, but this is
+  # what catches a newly introduced high-severity dependency.
   dependency-review:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
