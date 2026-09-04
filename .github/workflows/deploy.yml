@@ -2,7 +2,7 @@ name: Deploy Frontend
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}
